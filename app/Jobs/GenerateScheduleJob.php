@@ -29,9 +29,10 @@ class GenerateScheduleJob implements ShouldQueue
     // Penalty weights (hard constraints 10x higher than soft)
     private int $guruConflictWeight = 100;
     private int $kelasConflictWeight = 100;
-    private int $distributionWeight = 10;
+    private int $distributionWeight = 39;
     private int $consecutiveWeight = 30;
-    private int $dayPriorityWeight = 5;
+    private int $compactnessWeight = 30;     // Mapel tersebar ke terlalu banyak hari
+    private int $dayPriorityWeight = 30;
 
     public function handle(): void
     {
@@ -54,14 +55,16 @@ class GenerateScheduleJob implements ShouldQueue
         // Build gene list
         $genes = [];
         $mapelMaxPerHari = [];
+        $mapelJamPerMinggu = [];
         foreach ($guruMapels as $gm) {
             $mapelMaxPerHari[$gm->mapel_id] = $gm->mapel->max_jam_per_hari;
+            $mapelJamPerMinggu[$gm->mapel_id] = $gm->mapel->jam_per_minggu;
             for ($j = 0; $j < $gm->mapel->jam_per_minggu; $j++) {
                 $genes[] = [
                     'guru_mapel_id' => $gm->id,
-                    'guru_id'       => $gm->guru_id,
-                    'kelas_id'      => $gm->kelas_id,
-                    'mapel_id'      => $gm->mapel_id,
+                    'guru_id' => $gm->guru_id,
+                    'kelas_id' => $gm->kelas_id,
+                    'mapel_id' => $gm->mapel_id,
                 ];
             }
         }
@@ -86,10 +89,10 @@ class GenerateScheduleJob implements ShouldQueue
         foreach ($hariAktif as $hariIdx => $hari) {
             foreach ($jamIds as $jamId) {
                 $slotMap[] = [
-                    'hari'             => $hari,
+                    'hari' => $hari,
                     'jam_pelajaran_id' => $jamId,
-                    'hari_idx'         => $hariIdx,
-                    'jam_pos'          => $jamPositionMap[$jamId],
+                    'hari_idx' => $hariIdx,
+                    'jam_pos' => $jamPositionMap[$jamId],
                 ];
             }
         }
@@ -105,11 +108,12 @@ class GenerateScheduleJob implements ShouldQueue
         $totalHari = count($hariAktif);
 
         $evalContext = [
-            'genes'           => $genes,
-            'slotMap'         => $slotMap,
+            'genes' => $genes,
+            'slotMap' => $slotMap,
             'mapelMaxPerHari' => $mapelMaxPerHari,
-            'totalHari'       => $totalHari,
-            'slotsPerDay'     => $slotsPerDay,
+            'mapelJamPerMinggu' => $mapelJamPerMinggu,
+            'totalHari' => $totalHari,
+            'slotsPerDay' => $slotsPerDay,
         ];
 
         // ── INITIAL POPULATION ──
@@ -162,7 +166,7 @@ class GenerateScheduleJob implements ShouldQueue
 
             // Debug log every 100 generations
             if ($gen % 100 === 0) {
-                Log::info("GA Gen {$gen}: Score={$bestScore}, Guru={$scores[$bestIdx]['guru_conflicts']}, Kelas={$scores[$bestIdx]['kelas_conflicts']}, Dist={$scores[$bestIdx]['dist_violations']}, Cons={$scores[$bestIdx]['consecutive_violations']}, DayPri={$scores[$bestIdx]['day_priority_penalty']}");
+                Log::info("GA Gen {$gen}: Score={$bestScore}, Guru={$scores[$bestIdx]['guru_conflicts']}, Kelas={$scores[$bestIdx]['kelas_conflicts']}, Dist={$scores[$bestIdx]['dist_violations']}, Cons={$scores[$bestIdx]['consecutive_violations']}, Compact={$scores[$bestIdx]['compactness_violations']}, DayPri={$scores[$bestIdx]['day_priority_penalty']}");
             }
 
             // Early stop
@@ -227,11 +231,11 @@ class GenerateScheduleJob implements ShouldQueue
             for ($g = 0; $g < $totalGenes; $g++) {
                 $slot = $slotMap[$bestChromosome[$g]];
                 $entries[] = [
-                    'guru_mapel_id'   => $genes[$g]['guru_mapel_id'],
-                    'hari'            => $slot['hari'],
+                    'guru_mapel_id' => $genes[$g]['guru_mapel_id'],
+                    'hari' => $slot['hari'],
                     'jam_pelajaran_id' => $slot['jam_pelajaran_id'],
-                    'created_at'      => now(),
-                    'updated_at'      => now(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             }
             Jadwal::insert($entries);
@@ -248,7 +252,7 @@ class GenerateScheduleJob implements ShouldQueue
         Cache::put('ga_violations', $hard, 600);
         Cache::put('ga_dist_violations', $final['dist_violations'], 600);
 
-        Log::info("GA DONE: Score={$final['total']}, Hard={$hard}, Dist={$final['dist_violations']}, Cons={$final['consecutive_violations']}, DayPri={$final['day_priority_penalty']}");
+        Log::info("GA DONE: Score={$final['total']}, Hard={$hard}, Dist={$final['dist_violations']}, Cons={$final['consecutive_violations']}, Compact={$final['compactness_violations']}, DayPri={$final['day_priority_penalty']}");
 
         if ($hard === 0 && $final['dist_violations'] === 0 && $final['consecutive_violations'] === 0) {
             Cache::put('ga_message', 'Jadwal berhasil digenerate tanpa bentrok, persebaran & urutan optimal! 🎯', 600);
@@ -288,8 +292,10 @@ class GenerateScheduleJob implements ShouldQueue
 
             foreach ($slotMap as $s => $slot) {
                 // Skip if guru or kelas conflict
-                if (isset($usedGuruSlots[$gene['guru_id']][$s])) continue;
-                if (isset($usedKelasSlots[$gene['kelas_id']][$s])) continue;
+                if (isset($usedGuruSlots[$gene['guru_id']][$s]))
+                    continue;
+                if (isset($usedKelasSlots[$gene['kelas_id']][$s]))
+                    continue;
 
                 $score = 0;
 
@@ -349,6 +355,7 @@ class GenerateScheduleJob implements ShouldQueue
         $genes = $ctx['genes'];
         $slotMap = $ctx['slotMap'];
         $mapelMaxPerHari = $ctx['mapelMaxPerHari'];
+        $mapelJamPerMinggu = $ctx['mapelJamPerMinggu'];
         $totalHari = $ctx['totalHari'];
         $slotsPerDay = $ctx['slotsPerDay'];
 
@@ -356,6 +363,7 @@ class GenerateScheduleJob implements ShouldQueue
         $kelasConflicts = 0;
         $distViolations = 0;
         $consecutiveViolations = 0;
+        $compactnessViolations = 0;
         $dayPriorityPenalty = 0;
 
         $guruSlots = [];
@@ -387,18 +395,29 @@ class GenerateScheduleJob implements ShouldQueue
             $kelasHariFill[$kelasId][$hariIdx] = ($kelasHariFill[$kelasId][$hariIdx] ?? 0) + 1;
         }
 
-        // Soft: distribution + consecutive
+        // Soft: distribution + consecutive + compactness
         foreach ($kelasMapelHari as $key => $hariData) {
             $mapelId = (int) explode('-', $key)[1];
             $maxPerHari = $mapelMaxPerHari[$mapelId] ?? 2;
+            $jamMinggu = $mapelJamPerMinggu[$mapelId] ?? 2;
+
+            // Compactness: mapel should use minimum number of days
+            // E.g., MTK 4 jam max 2/hari → ceil(4/2)=2 hari minimum
+            $minDays = (int) ceil($jamMinggu / $maxPerHari);
+            $actualDays = count($hariData);
+            if ($actualDays > $minDays) {
+                $compactnessViolations += ($actualDays - $minDays);
+            }
 
             foreach ($hariData as $hariIdx => $positions) {
                 $count = count($positions);
 
+                // Distribution: too many on one day
                 if ($count > $maxPerHari) {
                     $distViolations += ($count - $maxPerHari);
                 }
 
+                // Consecutive: positions should be adjacent
                 if ($count > 1) {
                     sort($positions);
                     for ($i = 1; $i < $count; $i++) {
@@ -425,15 +444,17 @@ class GenerateScheduleJob implements ShouldQueue
             + ($kelasConflicts * $this->kelasConflictWeight)
             + ($distViolations * $this->distributionWeight)
             + ($consecutiveViolations * $this->consecutiveWeight)
+            + ($compactnessViolations * $this->compactnessWeight)
             + ($dayPriorityPenalty * $this->dayPriorityWeight);
 
         return [
-            'guru_conflicts'         => $guruConflicts,
-            'kelas_conflicts'        => $kelasConflicts,
-            'dist_violations'        => $distViolations,
+            'guru_conflicts' => $guruConflicts,
+            'kelas_conflicts' => $kelasConflicts,
+            'dist_violations' => $distViolations,
             'consecutive_violations' => $consecutiveViolations,
-            'day_priority_penalty'   => $dayPriorityPenalty,
-            'total'                  => $total,
+            'compactness_violations' => $compactnessViolations,
+            'day_priority_penalty' => $dayPriorityPenalty,
+            'total' => $total,
         ];
     }
 
@@ -511,7 +532,8 @@ class GenerateScheduleJob implements ShouldQueue
                 // Build list of occupied slots for this gene's guru and kelas (excluding self)
                 $blockedSlots = [];
                 for ($g2 = 0; $g2 < $geneCount; $g2++) {
-                    if ($g2 === $idx) continue;
+                    if ($g2 === $idx)
+                        continue;
                     $s2 = $chromosome[$g2];
                     if ($genes[$g2]['guru_id'] === $genes[$idx]['guru_id'] || $genes[$g2]['kelas_id'] === $genes[$idx]['kelas_id']) {
                         $blockedSlots[$s2] = true;
@@ -586,7 +608,8 @@ class GenerateScheduleJob implements ShouldQueue
         foreach ($conflictPairs as [$g1, $g2]) {
             // Try relocating g2 to each possible slot
             for ($s = 0; $s < $totalSlots; $s++) {
-                if ($s === $chromosome[$g2]) continue;
+                if ($s === $chromosome[$g2])
+                    continue;
                 $trial = $bestChromosome;
                 $trial[$g2] = $s;
                 $trialScore = $this->evaluate($trial, $ctx)['total'];
@@ -596,7 +619,8 @@ class GenerateScheduleJob implements ShouldQueue
                 }
             }
             // Early exit if perfect
-            if ($bestScore === 0) return $bestChromosome;
+            if ($bestScore === 0)
+                return $bestChromosome;
         }
 
         // Strategy 2: Improve consecutive placement
@@ -608,7 +632,8 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         foreach ($genesByKelasMapel as $indices) {
-            if (count($indices) < 2) continue;
+            if (count($indices) < 2)
+                continue;
 
             for ($i = 0; $i < count($indices) - 1; $i++) {
                 for ($j = $i + 1; $j < count($indices); $j++) {
@@ -624,7 +649,8 @@ class GenerateScheduleJob implements ShouldQueue
                     }
                 }
             }
-            if ($bestScore === 0) return $bestChromosome;
+            if ($bestScore === 0)
+                return $bestChromosome;
         }
 
         return $bestChromosome;
