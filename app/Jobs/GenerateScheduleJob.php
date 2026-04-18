@@ -29,10 +29,10 @@ class GenerateScheduleJob implements ShouldQueue
     // Penalty weights (hard constraints 10x higher than soft)
     private int $guruConflictWeight = 100;
     private int $kelasConflictWeight = 100;
-    private int $distributionWeight = 39;
+    private int $distributionWeight = 50;
     private int $consecutiveWeight = 30;
     private int $compactnessWeight = 30;     // Mapel tersebar ke terlalu banyak hari
-    private int $dayPriorityWeight = 30;
+    private int $dayPriorityWeight = 50;     // Hari awal HARUS full sebelum hari berikutnya
 
     public function handle(): void
     {
@@ -107,11 +107,30 @@ class GenerateScheduleJob implements ShouldQueue
         $slotsPerDay = count($jamIds);
         $totalHari = count($hariAktif);
 
+        // ── STRUCTURAL: compute allowed slots per kelas (fill from left) ──
+        // Count total lessons per kelas
+        $kelasLessonCount = [];
+        foreach ($genes as $gene) {
+            $kelasLessonCount[$gene['kelas_id']] = ($kelasLessonCount[$gene['kelas_id']] ?? 0) + 1;
+        }
+
+        // For each kelas, allowed slots = first N slots (ordered Mon-jam1, Mon-jam2, ..., Tue-jam1, ...)
+        // This GUARANTEES: Senin full → Selasa full → ... → last day partial
+        $kelasAllowedSlots = [];
+        foreach ($kelasLessonCount as $kelasId => $lessonCount) {
+            $allowed = [];
+            for ($s = 0; $s < $totalSlots && count($allowed) < $lessonCount; $s++) {
+                $allowed[] = $s;
+            }
+            $kelasAllowedSlots[$kelasId] = $allowed;
+        }
+
         $evalContext = [
             'genes' => $genes,
             'slotMap' => $slotMap,
             'mapelMaxPerHari' => $mapelMaxPerHari,
             'mapelJamPerMinggu' => $mapelJamPerMinggu,
+            'kelasAllowedSlots' => $kelasAllowedSlots,
             'totalHari' => $totalHari,
             'slotsPerDay' => $slotsPerDay,
         ];
@@ -122,11 +141,12 @@ class GenerateScheduleJob implements ShouldQueue
         $smartCount = (int) ($this->populationSize * 0.3);
         for ($i = 0; $i < $this->populationSize; $i++) {
             if ($i < $smartCount) {
-                $population[] = $this->createSmartChromosome($totalGenes, $genes, $slotMap, $totalSlots);
+                $population[] = $this->createSmartChromosome($totalGenes, $genes, $slotMap, $kelasAllowedSlots);
             } else {
                 $chromosome = [];
                 for ($g = 0; $g < $totalGenes; $g++) {
-                    $chromosome[] = $this->biasedRandSlot($totalSlots);
+                    $allowed = $kelasAllowedSlots[$genes[$g]['kelas_id']];
+                    $chromosome[] = $allowed[array_rand($allowed)];
                 }
                 $population[] = $chromosome;
             }
@@ -270,16 +290,15 @@ class GenerateScheduleJob implements ShouldQueue
     /**
      * Greedy initialization: place genes without conflicts, preferring consecutive & early days.
      */
-    private function createSmartChromosome(int $totalGenes, array $genes, array $slotMap, int $totalSlots): array
+    private function createSmartChromosome(int $totalGenes, array $genes, array $slotMap, array $kelasAllowedSlots): array
     {
         $chromosome = array_fill(0, $totalGenes, 0);
         $usedGuruSlots = [];
         $usedKelasSlots = [];
 
-        // Track where each kelas-mapel is already placed: "kelasId-mapelId" => [hariIdx => [jamPos, ...]]
+        // Track where each kelas-mapel is already placed
         $kelasMapelPlacements = [];
 
-        // Shuffle gene order for diversity but process in batches by guru_mapel
         $indices = range(0, $totalGenes - 1);
         shuffle($indices);
 
@@ -287,11 +306,13 @@ class GenerateScheduleJob implements ShouldQueue
             $gene = $genes[$g];
             $bestSlot = -1;
             $bestScore = -PHP_INT_MAX;
-
+            $allowed = $kelasAllowedSlots[$gene['kelas_id']];
             $key = "{$gene['kelas_id']}-{$gene['mapel_id']}";
 
-            foreach ($slotMap as $s => $slot) {
-                // Skip if guru or kelas conflict
+            // Only iterate over allowed slots for this kelas
+            foreach ($allowed as $s) {
+                $slot = $slotMap[$s];
+
                 if (isset($usedGuruSlots[$gene['guru_id']][$s]))
                     continue;
                 if (isset($usedKelasSlots[$gene['kelas_id']][$s]))
@@ -299,18 +320,18 @@ class GenerateScheduleJob implements ShouldQueue
 
                 $score = 0;
 
-                // Prefer earlier slots (earlier days fill first)
-                $score += ($totalSlots - $s) * 0.1;
+                // Prefer earlier slots
+                $score += (count($allowed) - $s) * 0.1;
 
-                // Big bonus for consecutive placement with same mapel on same day
+                // Big bonus for consecutive with same mapel on same day
                 if (isset($kelasMapelPlacements[$key])) {
                     foreach ($kelasMapelPlacements[$key] as $hariIdx => $positions) {
                         if ($hariIdx === $slot['hari_idx']) {
                             foreach ($positions as $pos) {
                                 if (abs($slot['jam_pos'] - $pos) === 1) {
-                                    $score += 100; // Adjacent = huge bonus
+                                    $score += 100;
                                 } elseif (abs($slot['jam_pos'] - $pos) === 2) {
-                                    $score += 20;  // Close = small bonus
+                                    $score += 20;
                                 }
                             }
                         }
@@ -324,8 +345,8 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             if ($bestSlot === -1) {
-                // Fallback: random (no conflict-free slot found)
-                $bestSlot = rand(0, $totalSlots - 1);
+                // Fallback: random from allowed
+                $bestSlot = $allowed[array_rand($allowed)];
             }
 
             $chromosome[$g] = $bestSlot;
@@ -429,13 +450,26 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // Soft: day priority
+        // Soft: day priority — STRICT fill from left (earlier days must be full first)
+        // If day D has empty slots but any day after D has filled slots → big penalty
         foreach ($kelasHariFill as $kelasId => $hariFills) {
-            for ($d = 1; $d < $totalHari; $d++) {
-                $prevFill = $hariFills[$d - 1] ?? 0;
-                $currFill = $hariFills[$d] ?? 0;
-                if ($currFill > $prevFill && $prevFill < $slotsPerDay) {
-                    $dayPriorityPenalty += ($currFill - $prevFill);
+            for ($d = 0; $d < $totalHari; $d++) {
+                $fill = $hariFills[$d] ?? 0;
+                $emptySlots = $slotsPerDay - $fill;
+
+                if ($emptySlots > 0) {
+                    // Check if ANY later day has lessons
+                    $laterHasLessons = false;
+                    for ($d2 = $d + 1; $d2 < $totalHari; $d2++) {
+                        if (($hariFills[$d2] ?? 0) > 0) {
+                            $laterHasLessons = true;
+                            break;
+                        }
+                    }
+                    if ($laterHasLessons) {
+                        // Penalize each empty slot on this day heavily
+                        $dayPriorityPenalty += $emptySlots;
+                    }
                 }
             }
         }
@@ -501,7 +535,7 @@ class GenerateScheduleJob implements ShouldQueue
     private function smartMutate(array $chromosome, array $ctx, int $totalSlots): array
     {
         $genes = $ctx['genes'];
-        $slotMap = $ctx['slotMap'];
+        $kelasAllowedSlots = $ctx['kelasAllowedSlots'];
         $geneCount = count($chromosome);
 
         // Find conflicting gene indices
@@ -522,14 +556,14 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         if (!empty($conflictIndices)) {
-            // Mutate 30-50% of conflicting genes toward conflict-free slots
             $mutCount = max(1, (int) (count($conflictIndices) * 0.4));
             shuffle($conflictIndices);
 
             for ($i = 0; $i < min($mutCount, count($conflictIndices)); $i++) {
                 $idx = $conflictIndices[$i];
+                $allowed = $kelasAllowedSlots[$genes[$idx]['kelas_id']];
 
-                // Build list of occupied slots for this gene's guru and kelas (excluding self)
+                // Build blocked slots for this gene
                 $blockedSlots = [];
                 for ($g2 = 0; $g2 < $geneCount; $g2++) {
                     if ($g2 === $idx)
@@ -540,19 +574,17 @@ class GenerateScheduleJob implements ShouldQueue
                     }
                 }
 
-                // Find available slots
+                // Find available from allowed slots only
                 $available = [];
-                for ($s = 0; $s < $totalSlots; $s++) {
+                foreach ($allowed as $s) {
                     if (!isset($blockedSlots[$s])) {
                         $available[] = $s;
                     }
                 }
 
                 if (!empty($available)) {
-                    // Prefer earlier slots among available
                     $picked = $available[0];
                     if (count($available) > 3) {
-                        // Pick from top 30% (early bias)
                         $topN = max(1, (int) (count($available) * 0.3));
                         $picked = $available[rand(0, $topN - 1)];
                     }
@@ -560,10 +592,11 @@ class GenerateScheduleJob implements ShouldQueue
                 }
             }
         } else {
-            // No conflicts: apply small random mutation for exploration
+            // No conflicts: small random mutation within allowed slots
             for ($g = 0; $g < $geneCount; $g++) {
                 if ($this->randFloat() < $this->mutationRate) {
-                    $chromosome[$g] = $this->biasedRandSlot($totalSlots);
+                    $allowed = $kelasAllowedSlots[$genes[$g]['kelas_id']];
+                    $chromosome[$g] = $allowed[array_rand($allowed)];
                 }
             }
         }
@@ -578,12 +611,11 @@ class GenerateScheduleJob implements ShouldQueue
     private function localSearch(array $chromosome, array $ctx): array
     {
         $genes = $ctx['genes'];
-        $slotMap = $ctx['slotMap'];
+        $kelasAllowedSlots = $ctx['kelasAllowedSlots'];
         $bestScore = $this->evaluate($chromosome, $ctx)['total'];
         $bestChromosome = $chromosome;
-        $totalSlots = count($slotMap);
 
-        // Strategy 1: Swap slots between pairs of conflicting genes
+        // Strategy 1: Relocate conflicting genes to allowed slots
         $guruSlots = [];
         $kelasSlots = [];
         $conflictPairs = [];
@@ -604,10 +636,10 @@ class GenerateScheduleJob implements ShouldQueue
             $kelasSlots[$kelasId][$s] = $g;
         }
 
-        // Try moving each conflicting gene to a better slot
+        // Try moving each conflicting gene within its allowed slots
         foreach ($conflictPairs as [$g1, $g2]) {
-            // Try relocating g2 to each possible slot
-            for ($s = 0; $s < $totalSlots; $s++) {
+            $allowed = $kelasAllowedSlots[$genes[$g2]['kelas_id']];
+            foreach ($allowed as $s) {
                 if ($s === $chromosome[$g2])
                     continue;
                 $trial = $bestChromosome;
@@ -618,7 +650,6 @@ class GenerateScheduleJob implements ShouldQueue
                     $bestChromosome = $trial;
                 }
             }
-            // Early exit if perfect
             if ($bestScore === 0)
                 return $bestChromosome;
         }
