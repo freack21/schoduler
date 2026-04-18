@@ -32,7 +32,7 @@ class Dashboard extends Component
                 ->get();
         }
 
-        $allHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $allHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
         $jamList = JamPelajaran::orderBy('jam_ke')->get();
 
         return view('livewire.siswa.dashboard', [

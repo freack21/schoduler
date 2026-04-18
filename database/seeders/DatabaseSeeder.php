@@ -269,7 +269,9 @@ class DatabaseSeeder extends Seeder
         // ─────────────────────────────────────────────────────────────────
         // SISWA (210 Siswa - 10 per kelas x 21 kelas)
         // ─────────────────────────────────────────────────────────────────
-        $this->seedSiswa($allKelas);
+        $siswaCount = 25;
+        $this->seedSiswa($allKelas, $siswaCount);
+        $allSiswaCount = $allKelas->count() * $siswaCount;
 
         // ─────────────────────────────────────────────────────────────────
         // PENGATURAN DEFAULT
@@ -284,7 +286,7 @@ class DatabaseSeeder extends Seeder
         Jadwal::truncate();
 
         $this->command->info('✅ Seeder selesai! Data SMA Negeri 1 Tapung Hulu siap digunakan.');
-        $this->command->info('📊 Total: 1 Admin, ' . count($guruModels) . ' Guru, 210 Siswa, 21 Kelas, ' . $allMapel->count() . ' Mapel');
+        $this->command->info('📊 Total: 1 Admin, ' . count($guruModels) . ' Guru, ' . $allSiswaCount . ' Siswa, ' . $allKelas->count() . ' Kelas, ' . $allMapel->count() . ' Mapel');
     }
 
     /**
@@ -338,9 +340,9 @@ class DatabaseSeeder extends Seeder
     }
 
     /**
-     * Generate 210 siswa (10 per kelas)
+     * Generate siswa
      */
-    private function seedSiswa($allKelas): void
+    private function seedSiswa($allKelas, $siswaCount): void
     {
         $namaDepan = [
             'Ahmad',
@@ -405,7 +407,7 @@ class DatabaseSeeder extends Seeder
         $counter = 1;
 
         foreach ($allKelas as $kelas) {
-            for ($i = 0; $i < 10; $i++) {
+            for ($i = 0; $i < $siswaCount; $i++) {
                 $nama = $namaDepan[array_rand($namaDepan)] . ' ' . $namaBelakang[array_rand($namaBelakang)];
                 $nisn = '00' . str_pad((string) $counter, 8, '0', STR_PAD_LEFT);
 
