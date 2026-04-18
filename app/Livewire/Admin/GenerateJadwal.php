@@ -111,21 +111,18 @@ class GenerateJadwal extends Component
                     ->whereHas('guruMapel', fn($q) => $q->where('kelas_id', $kelas->id))
                     ->get();
 
-                // First pass: count total occurrences of each mapel per day
-                $mapelCountPerDay = []; // "hari-mapel_kode" => total
-                foreach ($hariAktif as $h) {
-                    foreach ($jamList as $jam) {
-                        $entry = $jadwal->first(fn($j) => $j->hari === $h && $j->jam_pelajaran_id === $jam->id);
-                        if ($entry) {
-                            $key = $h . '-' . $entry->guruMapel->mapel->kode;
-                            $mapelCountPerDay[$key] = ($mapelCountPerDay[$key] ?? 0) + 1;
-                        }
-                    }
+                // Count total occurrences of each mapel across ALL days (for this kelas)
+                $mapelTotalCount = []; // mapel_kode => total across week
+                $mapelJamPerMinggu = []; // mapel_kode => jam_per_minggu from DB
+                foreach ($jadwal as $entry) {
+                    $kode = $entry->guruMapel->mapel->kode;
+                    $mapelTotalCount[$kode] = ($mapelTotalCount[$kode] ?? 0) + 1;
+                    $mapelJamPerMinggu[$kode] = $entry->guruMapel->mapel->jam_per_minggu;
                 }
 
-                // Second pass: build matrix with occurrence number
+                // Build matrix with GLOBAL sequence number (across all days)
                 $matrix = [];
-                $mapelSeqPerDay = []; // running counter per day-mapel
+                $mapelGlobalSeq = []; // mapel_kode => running counter across all days
                 foreach ($hariAktif as $h) {
                     foreach ($jamList as $jam) {
                         if ($jam->is_istirahat) continue;
@@ -133,14 +130,13 @@ class GenerateJadwal extends Component
                         $entry = $jadwal->first(fn($j) => $j->hari === $h && $j->jam_pelajaran_id === $jam->id);
                         if ($entry) {
                             $kode = $entry->guruMapel->mapel->kode;
-                            $key = $h . '-' . $kode;
-                            $mapelSeqPerDay[$key] = ($mapelSeqPerDay[$key] ?? 0) + 1;
-                            $total = $mapelCountPerDay[$key];
+                            $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
+                            $totalJam = $mapelJamPerMinggu[$kode] ?? $mapelTotalCount[$kode];
                             $matrix[$h][$jam->id] = [
                                 'mapel' => $kode,
-                                'guru' => $entry->guruMapel->guru->user->nama_lengkap,
-                                'seq' => $mapelSeqPerDay[$key],   // x1, x2, ...
-                                'total' => $total,                 // total on this day
+                                'guru'  => $entry->guruMapel->guru->user->nama_lengkap,
+                                'seq'   => $mapelGlobalSeq[$kode], // global: 1, 2, 3, 4
+                                'total' => $totalJam,               // jam_per_minggu
                             ];
                         } else {
                             $matrix[$h][$jam->id] = null;
@@ -149,7 +145,7 @@ class GenerateJadwal extends Component
                 }
 
                 $jadwalData[] = [
-                    'kelas' => $kelas->nama,
+                    'kelas'  => $kelas->nama,
                     'matrix' => $matrix,
                 ];
             }

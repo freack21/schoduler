@@ -151,9 +151,7 @@
                                                     <div class="bg-blue-50 rounded-lg px-2 py-1.5">
                                                         <div class="font-bold text-blue-700">
                                                             {{ $cell['mapel'] }}
-                                                            @if($cell['total'] > 1)
-                                                                <span class="text-[10px] font-normal text-blue-400">(x{{ $cell['seq'] }})</span>
-                                                            @endif
+                                                            <span class="text-[10px] font-normal text-blue-400">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
                                                         </div>
                                                         <div class="text-[10px] text-gray-500 truncate max-w-[80px]">{{ $cell['guru'] }}</div>
                                                     </div>
