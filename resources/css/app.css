@@ -1,0 +1,199 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-primary: #0A2647;
+    --color-primary-light: #0D3B6E;
+    --color-primary-dark: #071B34;
+    --color-secondary: #F5A623;
+    --color-secondary-light: #F7BC5C;
+    --color-sidebar: #1E293B;
+    --color-content-bg: #F1F5F9;
+    --color-bg-light: #F8FAFC;
+}
+
+@utility btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+        background-color: var(--color-primary-light);
+    }
+}
+
+@utility btn-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+        background-color: var(--color-secondary-light);
+    }
+}
+
+@utility btn-danger {
+    background-color: #ef4444;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+        background-color: #dc2626;
+    }
+}
+
+@utility btn-outline {
+    border: 1px solid #d1d5db;
+    color: #374151;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+        background-color: #f9fafb;
+    }
+}
+
+@utility card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    padding: 1.5rem;
+    border: 1px solid #f3f4f6;
+}
+
+@utility input-field {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: all 0.2s;
+    &:focus {
+        box-shadow: 0 0 0 2px rgb(10 38 71 / 0.2);
+        border-color: var(--color-primary);
+    }
+}
+
+@utility label-field {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+@utility table-header {
+    background-color: #f9fafb;
+    color: #374151;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+@utility table-row {
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.15s;
+    &:hover {
+        background-color: rgb(249 250 251 / 0.5);
+    }
+}
+
+@utility sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    color: #d1d5db;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    &:hover {
+        background-color: rgb(255 255 255 / 0.1);
+        color: white;
+    }
+}
+
+@utility sidebar-link-active {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+@utility stat-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    padding: 1.5rem;
+    border: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: box-shadow 0.3s;
+    &:hover {
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+}
+
+@utility badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+@utility modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+@utility modal-content {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    width: 100%;
+    max-width: 32rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@layer base {
+    body {
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
