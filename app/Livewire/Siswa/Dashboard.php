@@ -29,6 +29,11 @@ class Dashboard extends Component
             $teman = $siswa->kelas->siswa()
                 ->with('user')
                 ->where('siswa.id', '!=', $siswa->id)
+                ->orderBy(
+                    \App\Models\User::select('nama_lengkap')
+                        ->whereColumn('users.id', 'siswa.user_id'),
+                    'asc'
+                )
                 ->get();
         }
 

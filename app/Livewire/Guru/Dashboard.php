@@ -25,8 +25,12 @@ class Dashboard extends Component
 
         // Get schedule
         $hariMap = [
-            'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu',
-            'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu',
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
         ];
         $hariIni = $hariMap[Carbon::now()->format('l')] ?? 'Senin';
 
@@ -41,7 +45,7 @@ class Dashboard extends Component
             ->get()
             ->groupBy('hari') : collect();
 
-        $allHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $allHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
         $jamList = JamPelajaran::orderBy('jam_ke')->get();
 
         return view('livewire.guru.dashboard', [

@@ -16,7 +16,7 @@ class LoggedInMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->check()) {
-            return redirect()->route('login');
+            return $next($request);
         } else {
             return match (auth()->user()->role) {
                 'admin' => redirect()->route('admin.dashboard'),
