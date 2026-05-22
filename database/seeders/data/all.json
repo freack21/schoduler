@@ -1,0 +1,3931 @@
+{
+  "guru": [
+    {
+      "nip": "19700327 200701 1 002",
+      "nama": "H. Bustanudin, S.Pd, M.Pd",
+      "mapel": "Kepala Sekolah"
+    },
+    {
+      "nip": "19730617 200501 1 005",
+      "nama": "Parulian Manalu, S.P",
+      "mapel": "Kimia Lanjutan (12)"
+    },
+    {
+      "nip": "19690625 200701 2 007",
+      "nama": "Hotmaida Napitupulu, S.Pd",
+      "mapel": "Biologi Lanjutan (12)"
+    },
+    {
+      "nip": "19790727 200801 2 021",
+      "nama": "Indah Sri Wahyuni, S.Pd",
+      "mapel": "Bahasa Inggris (10,11,12)"
+    },
+    {
+      "nip": "19720525 200801 1 012",
+      "nama": "Ahmad Tagor, SE",
+      "mapel": "Ekonomi, Ekonomi Lanjutan (11)"
+    },
+    {
+      "nip": "19761206 200801 2 009",
+      "nama": "Santiani Purba, S.Pd, M.Pd",
+      "mapel": "Ekonomi (10), Ekonomi Lanjutan (11,12)"
+    },
+    {
+      "nip": "19820517 200902 1 006",
+      "nama": "Mudrika, S.Si, M.Pd",
+      "mapel": ""
+    },
+    {
+      "nip": "19860329 201001 2 023",
+      "nama": "Tri Multi Fitria, M.Pd",
+      "mapel": "Seni Budaya (12)"
+    },
+    {
+      "nip": "19670827 200801 1 006",
+      "nama": "Wagino Alias Wakidi, S.Pd",
+      "mapel": "Biologi Lanjutan (11,12)"
+    },
+    {
+      "nip": "19730223 200701 2 001",
+      "nama": "Krismiwidianingsih, S.Sos",
+      "mapel": "Sosiologi (10), Sosiologi Lanjutan (11)"
+    },
+    {
+      "nip": "19740407 200801 2 014",
+      "nama": "Hefnirita, S.Pd",
+      "mapel": "Sejarah (10), Sejarah Peminatan Lanjutan (11)"
+    },
+    {
+      "nip": "19900927 202012 2 010",
+      "nama": "Rhapna Maulida, S.Pd",
+      "mapel": "Matematika Wajib (12)"
+    },
+    {
+      "nip": "19750409 202112 2 002",
+      "nama": "Nirwana Harahap, S.Pd",
+      "mapel": "PPKN (12)"
+    },
+    {
+      "nip": "19700716 202321 1 003",
+      "nama": "Sutego, ST",
+      "mapel": ""
+    },
+    {
+      "nip": "19710825 202321 2 003",
+      "nama": "Elita Daswati, S.Ag, S.Pd",
+      "mapel": "PPKN (10, 11)"
+    },
+    {
+      "nip": "19780901 202321 2 015",
+      "nama": "Wirna Susanti, S.Pd",
+      "mapel": "Fisika (10), Fisika Lanjutan (12)"
+    },
+    {
+      "nip": "19781223 202321 2 012",
+      "nama": "Evi Depita Simanungkalit, SH",
+      "mapel": "PPKN (11)"
+    },
+    {
+      "nip": "19800505 202321 1 013",
+      "nama": "Sutrisno, SE",
+      "mapel": "Sejarah  (11,12), Sejarah Peminatan Lanjutan (12)"
+    },
+    {
+      "nip": "19810513 202321 2 017",
+      "nama": "Irma Suryani Nasution, S.Pdl",
+      "mapel": "Bahasa Inggris (10,11)"
+    },
+    {
+      "nip": "19811206 202321 1 009",
+      "nama": "R. Hendri, S.Pd",
+      "mapel": "PJOK (11)"
+    },
+    {
+      "nip": "19820227 202321 2 013",
+      "nama": "Jeni Marda, S.Pd.I",
+      "mapel": "P. Agama Islam (11,12)"
+    },
+    {
+      "nip": "19830808 202321 2 021",
+      "nama": "Lilis Suryani, S.S",
+      "mapel": "Bahasa Indonesia (11,12)"
+    },
+    {
+      "nip": "19830902 202321 2 017",
+      "nama": "Nurafni, S.Pd",
+      "mapel": "Sejarah (11,12), Sejarah Peminatan Lanjutan (11)"
+    },
+    {
+      "nip": "19860707 202321 2 053",
+      "nama": "Lidya Febrianti, S.Pd",
+      "mapel": "Matematika Wajib (12), Matematika Lanjut (12)"
+    },
+    {
+      "nip": "19860808 202321 1 021",
+      "nama": "M. Rokim, S.Pd",
+      "mapel": "BK (12)"
+    },
+    {
+      "nip": "19861225 202321 1 027",
+      "nama": "Rio Priono, S.Kom",
+      "mapel": "Informatika"
+    },
+    {
+      "nip": "19870415 202321 1 010",
+      "nama": "Yudi Chandra, S.Pd",
+      "mapel": "BK (10,12)"
+    },
+    {
+      "nip": "19880326 202321 2 020",
+      "nama": "Rahma Yuli, S.Pd",
+      "mapel": "Matematika Wajib (11), Matematika Lanjut (11)"
+    },
+    {
+      "nip": "19880506 202321 2 033",
+      "nama": "Meiwanti Br Manurung, S.PdK",
+      "mapel": "P. Agama Kristen (11, 12)"
+    },
+    {
+      "nip": "19880820 202321 1 011",
+      "nama": "Tripuja Wahyu Utomo, S.Pd",
+      "mapel": "Geografi (10), Geografi Lanjutan (12)"
+    },
+    {
+      "nip": "19881203 202321 2 024",
+      "nama": "Desti Nofra, S.Pd",
+      "mapel": "BK (11,12)"
+    },
+    {
+      "nip": "19890512 202321 2 049",
+      "nama": "Rohmi Wati, S.Kom.I",
+      "mapel": "BK (10)"
+    },
+    {
+      "nip": "19901101 202321 1 016",
+      "nama": "Indra Priono, S.Pd",
+      "mapel": "BK (11)"
+    },
+    {
+      "nip": "19910117 202321 2 025",
+      "nama": "Fefrina Herida Silaban, S.Pd",
+      "mapel": "Bahasa Indonesia (11,12)"
+    },
+    {
+      "nip": "19910222 202321 2 027",
+      "nama": "Roindah Febrizah Simbolon, S.Pd",
+      "mapel": "Matematika Wajib (11), Fisika (10)"
+    },
+    {
+      "nip": "19940618 202321 1 009",
+      "nama": "Erwin Santo Galingging, S.Pd",
+      "mapel": "P. Agama Kristen (10,11)"
+    },
+    {
+      "nip": "19940714 202321 2 037",
+      "nama": "Yulia Sa\u2019ada, S.Pd",
+      "mapel": "Matematika Wajib (10), Matematika Lanjut (11,12)"
+    },
+    {
+      "nip": "19940911 202321 2 022",
+      "nama": "Sri Wahyuningsih, S.Pd",
+      "mapel": "Sejarah, Sejarah Peminatan Lanjutan (11)"
+    },
+    {
+      "nip": "19960614 202321 1 006",
+      "nama": "Anju Joseph Manalu, S.Pd",
+      "mapel": "PJOK (12)"
+    },
+    {
+      "nip": "19711082 202421 1 001",
+      "nama": "Mangihut Manurung, SP",
+      "mapel": "PKWU (11,12)"
+    },
+    {
+      "nip": "19890410 202421 2 036",
+      "nama": "Suci Apriani, S.Pd",
+      "mapel": "PKWU (10,11)"
+    },
+    {
+      "nip": "19941101 202421 2 012",
+      "nama": "Selly Marcella, S.Pd",
+      "mapel": "Kimia (10), Kimia Lanjutan (12)"
+    },
+    {
+      "nip": "19990409 202421 1 003",
+      "nama": "Aldo Jesandro Manalu, S.Pd",
+      "mapel": "PJOK (10)"
+    },
+    {
+      "nip": "",
+      "nama": "Annawati Tarigan, S.S",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Haidawati, S.Pd",
+      "mapel": "Biologi (10 ), Biologi Lanjutan (11)"
+    },
+    {
+      "nip": "",
+      "nama": "Miftahul Jannah, S.Pd",
+      "mapel": "Biologi Lanjutan (11), Seni Budaya (11)"
+    },
+    {
+      "nip": "",
+      "nama": "Rizki Ramdani, SE",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Khusnul Khotimah, S.Pd",
+      "mapel": "Bahasa Indonesia (10,11), Seni Budaya (11,12)"
+    },
+    {
+      "nip": "",
+      "nama": "Nia Yustini, S.Pd",
+      "mapel": "Matematika Wajib (11), Matematika Lanjut (11)"
+    },
+    {
+      "nip": "",
+      "nama": "Nardi Irawan, S.Pd",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Nurhasanah, S.Pd",
+      "mapel": "Matematika Wajib (11)"
+    },
+    {
+      "nip": "",
+      "nama": "Nurhafizoh, S.Sos",
+      "mapel": "P. Agama Islam (10, 11)"
+    },
+    {
+      "nip": "",
+      "nama": "Nada Haini, S.Pd",
+      "mapel": "Biologi (10), Biologi Lanjutan (11), Seni Budaya (10,11)"
+    },
+    {
+      "nip": "",
+      "nama": "Mei Panduwinata, S.Pd",
+      "mapel": "Bahasa Indonesia (10,11), Informatika (10)"
+    },
+    {
+      "nip": "",
+      "nama": "Lukman, A.Ma",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Santoso",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Saryuti",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Jummiati",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Hilda Hariati",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Ramli MN",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Agustantina",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Adi Syahputra",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Syahri Amrizal",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Srijayanti",
+      "mapel": ""
+    },
+    {
+      "nip": "",
+      "nama": "Iwana Putri Rinjani",
+      "mapel": "Ekonomi (10), Ekonomi Lanjutan (11)"
+    },
+    {
+      "nip": "",
+      "nama": "Akbar Johari",
+      "mapel": "PKWU (10,11), Informatika (10,11,12)"
+    }
+  ],
+  "siswa": [
+    {
+      "nama": "A. BAHRIANSYAH PANE",
+      "nisn": "0059238645",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ABIGAIL SELVY BENING AYUNDI",
+      "nisn": "0087974191",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ADIKA BAGUS TRIAN",
+      "nisn": "0096736906",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ADITIYA TRI YANDA",
+      "nisn": "0101638580",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "AGUNG HAIRULSHA",
+      "nisn": "0091999528",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "AHMAD ALAMSYAH SITUMORANG",
+      "nisn": "0099989790",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "AHMADI HARAHAP",
+      "nisn": "0094335276",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "AIE MIFTAHUL CHANIA",
+      "nisn": "0109852762",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ALDO PARULIAN",
+      "nisn": "0097235493",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ALFIANDA RAMADHAN",
+      "nisn": "0096888829",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ANA AFIFAH BR TOBING",
+      "nisn": "0102762593",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ANGGI DEA ANASTASYA BR. SIANIPAR",
+      "nisn": "0109821983",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "CHOKI JULIANTO WIBOWO",
+      "nisn": "0097073798",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DEAR AGUSTIN BR PURBA",
+      "nisn": "0104945928",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DEDEK AMANDA",
+      "nisn": "0098140314",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DESWAN SAVERIUS LUMBAN GAOL",
+      "nisn": "0097527019",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DIANA CLAUDIA BR PAKPAHAN",
+      "nisn": "0086187588",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DINDA ANDINI SAPUTRI",
+      "nisn": "0095167365",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DINDA SEPTIA BR SITANGGANG",
+      "nisn": "0105730795",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "DZIKRI FIKRI NISA",
+      "nisn": "0098647159",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ELISA ELVIKA BR. PURBA",
+      "nisn": "0105801160",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ELISA PUTRI BR NAINGGOLAN",
+      "nisn": "0103764552",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "FIRDAUS SAPUTRA LAOWO",
+      "nisn": "0107370063",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "GIBE RIANTI",
+      "nisn": "'0099315828",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "HAFIZAH PUTRI ANGGRAINI",
+      "nisn": "3092420807",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "HISKIA AGUNG MANALU",
+      "nisn": "0091124512",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "IRFANDI MANULLANG",
+      "nisn": "0105388731",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "IRWAN ERIKSON MANALU",
+      "nisn": "0106693934",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "JHON CRISTIAN FAJAR SIGIRO",
+      "nisn": "0107144173",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MELKI SETIAWAN LAOLI",
+      "nisn": "0101856448",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "NANDA AULIA",
+      "nisn": "0092649874",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "PETRA RIPSWIK LUMBAN GAOL",
+      "nisn": "0099943849",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "PUTRI AMELIA",
+      "nisn": "0102497921",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "RAFAEL GIDEON KRISTIANTO TOBING",
+      "nisn": "0102311579",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "REZKIA AMALIA PANE",
+      "nisn": "0093985162",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "WILDA MARIANTI DELA",
+      "nisn": "0104090986",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "4",
+      "nisn": "",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ALBERTUS PURBA",
+      "nisn": "0101505903",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ALDEVA LYMIT LENANSA",
+      "nisn": "0102080262",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "BENNI SIHOTANG",
+      "nisn": "",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "JEI TANTONI PANGGABEAN",
+      "nisn": "0081304475",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "JULFAISAL GEA",
+      "nisn": "0099490118",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MARFEL JUANDA SIMBOLON",
+      "nisn": "0105599246",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MARTINUS SARAGIH",
+      "nisn": "0094560665",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MARVEL MANULLANG",
+      "nisn": "0105556348",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MESSY PUTRA NDRAHA",
+      "nisn": "0102211887",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MICHAEL SAN FRISKO BARUS",
+      "nisn": "0099998669",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD ASYAM ARKANA",
+      "nisn": "0107554666",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD BILAL AZANI",
+      "nisn": "3093284626",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD FATHIR ALFARISI",
+      "nisn": "0098445546",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD NUR FAKHRI",
+      "nisn": "0096760930",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD RAMADAN",
+      "nisn": "0101507686",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD RASDI NASUTION",
+      "nisn": "0092358090",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUHAMMAD RIDHO",
+      "nisn": "3094289423",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "MUSBAR AHMAT BRAM SIMAMORA",
+      "nisn": "0095632863",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "NAZRIL IRHAM",
+      "nisn": "0109622289",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "NIA ADELINA BR. SIHOMBING",
+      "nisn": "0097217263",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "OLIVIA NURHAYATI BR TOGATOROP",
+      "nisn": "0103053249",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "RATIH ANILA MANURUNG",
+      "nisn": "0094490945",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "RINA SYHFIRA BR LUBIS",
+      "nisn": "0091961791",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ROMA ITO PANDIANGAN",
+      "nisn": "0092176685",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ROMASTA ISSABELLA SIAHAAN",
+      "nisn": "0107200111",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SA'DIYAH HERAWIENANDA",
+      "nisn": "01082196550",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SALSABILLA NADIFA",
+      "nisn": "0103203515",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SALWA TRI AULIA",
+      "nisn": "0101624969",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SELVIA PERONIKA SIMARMATA",
+      "nisn": "0088381664",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SINTIYA OLIVIYA",
+      "nisn": "0106938032",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SUCI ANGGRIYANI",
+      "nisn": "0107596020",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SYAFFA DWI INDRA PUTRI",
+      "nisn": "3091111286",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "SYAHRON NEISYA RAHMA",
+      "nisn": "0096868569",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "TSUAIBATUL ASLAMIAH",
+      "nisn": "3104811646",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "VIDIANA MARSELA DAMANIK",
+      "nisn": "0107336318",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "WAFIQ ATHAYA RIZKI",
+      "nisn": "3100369236",
+      "kelas": "10-1"
+    },
+    {
+      "nama": "ACHYER TARULI SITANGGANG",
+      "nisn": "0108515888",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ALEXANDER NABABAN",
+      "nisn": "0097563328",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ALVIN PRATAMA LIHARDO SARAGIH",
+      "nisn": "0104156181",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ADIT LUKMAN",
+      "nisn": "",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DAFA ARISKI",
+      "nisn": "",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DAFFA PUTRA NAYSAR",
+      "nisn": "0082367047",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DAKA DARMA",
+      "nisn": "0096035297",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DARMA ARIYA",
+      "nisn": "0106341309",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DAVA ALMUSTAQIIM",
+      "nisn": "0105306369",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DESWIN SAVERIUS LUMBAN GAOL",
+      "nisn": "0093130311",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "EDI NURROHIM",
+      "nisn": "3101855893",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ELISABET TAMPUBOLON",
+      "nisn": "0104740400",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "EVITA BR SARAGIH",
+      "nisn": "0097454674",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FADLY RODO LUMBAN GAOL",
+      "nisn": "0098310320",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FAIZ ZABADI ILHAM",
+      "nisn": "0107850673",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FAREL AZKA RAYHAN",
+      "nisn": "0109103496",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FEBRYANTO",
+      "nisn": "0106653231",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FERI MUSBAR",
+      "nisn": "0095748608",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FLORA ALDINI BR. SIMATUPANG",
+      "nisn": "0108627553",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "FRANSISKA MARIANCE BR. PURBA",
+      "nisn": "0107596416",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "GLORYANA BR PANGARIBUAN",
+      "nisn": "0098356473",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "GRACE ANASTASYA",
+      "nisn": "0101742280",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ISMIATUN HASANAH",
+      "nisn": "3108286223",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "KASIH RAMADANI",
+      "nisn": "0094668149",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "KASIH SRI MULIANA BR LUMBAN BATU",
+      "nisn": "0103245877",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "KIRANA RATU SYAHDIAH",
+      "nisn": "0103738147",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "LAURA SABRINA SIREGAR",
+      "nisn": "0109926201",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "LILIS ROSALINA",
+      "nisn": "0079560456",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "MAYLANI EKA SAPUTRI",
+      "nisn": "0106778230",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "MELANI SYAKIRAH",
+      "nisn": "0105610792",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "MERY CRISTIN BR BANUREA",
+      "nisn": "0092774559",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "MISNAYA",
+      "nisn": "3092489584",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "MUTIARA DWINOV",
+      "nisn": "0097884694",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "NABILA MAYZA ALIFAH",
+      "nisn": "0106758521",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "NAYLA ANDIRA",
+      "nisn": "3102997194",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "REVANKRIS JIDIRAYOGA L. SINAGA",
+      "nisn": "0096154759",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "SUDIRMAN",
+      "nisn": "",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "5",
+      "nisn": "",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ADIEL PAMUNGKAS",
+      "nisn": "0093237096",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "AMELLA LOVANI BR SEMBIRING",
+      "nisn": "0091320298",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "CITRA NATALIA LAOLY",
+      "nisn": "0098484221",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "DANIEL SEMBIRING",
+      "nisn": "0097277815",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "NAZRIL ILHAM",
+      "nisn": "009966261",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "NURUL HAMDIYAH HUZAHRA P",
+      "nisn": "0108510402",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "PARULIAN PANE",
+      "nisn": "0093806459",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RAFA SEPTIAN",
+      "nisn": "0101725516",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RAHMAD SYAWALUDDIN LUBIS",
+      "nisn": "0095530023",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RANDA SIANTURI",
+      "nisn": "0106434813",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RASYA FERDILIANU PRATAMA",
+      "nisn": "0092824768",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RAYN SIANTURI",
+      "nisn": "0088696677",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "REY SONY SYAHPUTRA",
+      "nisn": "0099141301",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RIDHO ALAMSYAH SARUMPAET",
+      "nisn": "0102645431",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RIDHO RAHMAD",
+      "nisn": "0093186636",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "RIPAL HAMDANI SIREGAR",
+      "nisn": "0103046564",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "SELVI BR SILABAN",
+      "nisn": "007600196",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "SELVIANI BR TAMBUNAN",
+      "nisn": "0095877733",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "SUCI WAN CERMIN HALAWA",
+      "nisn": "113525536",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "SUHERI NASUTION",
+      "nisn": "0087619438",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "THERESIA NAPITUPULU",
+      "nisn": "0103774905",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "TOTTI LASE",
+      "nisn": "0092664515",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "UMI OLIVIA",
+      "nisn": "0105348045",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "VANIA BR SITUMORANG",
+      "nisn": "0104817622",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "VIVITRIA ARIANI",
+      "nisn": "0108229753",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "WAHYU JUARES HASIBUAN",
+      "nisn": "0107733713",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "WARNINGSIH NUR INTAN",
+      "nisn": "3100736681",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "WASBIN NAINGGOLAN",
+      "nisn": "0094840406",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "WENNYE CINTIA",
+      "nisn": "0097242487",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "WILLIAM JHOSEP MENDROFA",
+      "nisn": "0086412329",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "WINDA ASTUTI ZALUKHU",
+      "nisn": "0093601561",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "YOHANA STEVANI",
+      "nisn": "0107070619",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ZAHFIR MULIA FARRAS",
+      "nisn": "0096741678",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ZAHRA FADILA",
+      "nisn": "0101499198",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ZAZKIA AZMI NABILA",
+      "nisn": "0103393039",
+      "kelas": "10-2"
+    },
+    {
+      "nama": "ALMIRA SYILFANI",
+      "nisn": "0102896185",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "AQILLA AZZA KUSWARIN",
+      "nisn": "3104589509",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "FAISAL DWI ANUGRAH",
+      "nisn": "0098351001",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "FHAROZI SIAHAAN",
+      "nisn": "0101953395",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "FRENGKI SINAGA",
+      "nisn": "0096749128",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "GABRIEL JAYA HUTAPEA",
+      "nisn": "0107010594",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "GILBERT GLEN ANDREAS DAMANIK",
+      "nisn": "0096930408",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "HABEL RIONALDO GURNING",
+      "nisn": "0105697436",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "HANDA PATRIAGA",
+      "nisn": "3108540866",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "IMMANUEL ISHAK SIREGAR",
+      "nisn": "0108103673",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "IRCA MONITA",
+      "nisn": "3094384134",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "IRFANSYAH MANULLANG",
+      "nisn": "0107343203",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "JAKSON ADIRA SAMUEL NAINGGOLAN",
+      "nisn": "0109358826",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "JAMES WAKRIS LAOLI",
+      "nisn": "0103105064",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "JORGI SAFARAZ",
+      "nisn": "0098336622",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "KIKI FAREL NASUTION",
+      "nisn": "0092186229",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "LAURA MAGHDALENA BR NABABAN",
+      "nisn": "0105892003",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "LESIANA BR SIMANJUNTAK",
+      "nisn": "0083836297",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "LEVY  LEANDRA",
+      "nisn": "0097497599",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "LISMAWATI TELAUMBANUA",
+      "nisn": "92500885",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "LUSTINA BR. HUTABARAT",
+      "nisn": "0092881550",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "M. ARIF",
+      "nisn": "0101735110",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "M. NOVAL",
+      "nisn": "0097983536",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "MATHYAS SURITNO SIMANJUNTAK",
+      "nisn": "0092510023",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NADYA FLORENTIN SINURAT",
+      "nisn": "0096141203",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NATASYA AULIA",
+      "nisn": "3102564143",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NATASYA CINTA LABALKIS",
+      "nisn": "0108023004",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NAURAH RAYYANI",
+      "nisn": "0108942621",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NAZWA PUTRI NOVANNY",
+      "nisn": "3097870252",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NINA ADELIA BR GINTING",
+      "nisn": "3086617375",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NUR JANNAH",
+      "nisn": "0107118824",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RAFINZHA AVRIL",
+      "nisn": "0092634666",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RASTI JULIA",
+      "nisn": "0082478059",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "SELVI BR PASARIBU",
+      "nisn": "0109249703",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "SILVI VANESA MUNTHE",
+      "nisn": "0068870029",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "TIARA INDAH LESTARI",
+      "nisn": "0101162928",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "6",
+      "nisn": "",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "AFGANIO FAREL TAMPUBOLON",
+      "nisn": "0108987951",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "ANINDA NATASYA",
+      "nisn": "3101374229",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "AQILLAH TIBR SORMIN",
+      "nisn": "0108148471",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "AULIA RAHMADANI",
+      "nisn": "0095280429",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "CHIKA OLIVIA",
+      "nisn": "0309300089",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "CHIYA MARELINA BR. NAINGGOLAN",
+      "nisn": "102417714",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "CHRISTIAN ERIK ESTRADA SARAGIH",
+      "nisn": "0102596678",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "CIKA HAIRUNISA",
+      "nisn": "0097362017",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "ELY ROMIAN",
+      "nisn": "0107947403",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "ENDA TEBINA BR SEMBIRING",
+      "nisn": "0109647403",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "FAEZYA AZ-ZAHRA",
+      "nisn": "3108907066",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "FELISMAN NAZARA",
+      "nisn": "0104054713",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "GLADIS OKTAVIA SANDOVA",
+      "nisn": "0093508876",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "HERMIN IMELDA",
+      "nisn": "",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "HOTNITA BR HARAHAP",
+      "nisn": "0103422163",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "IMANUEL CARLOS ROBENTINO MALAU",
+      "nisn": "0105718127",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "JUMIATUN",
+      "nisn": "0098174582",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NATALIA ANGELINA SIHOMBING",
+      "nisn": "0089565831",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NEYFA LUQIANA",
+      "nisn": "3102353888",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "NURVIA PUSPITA SARI BR RITONGA",
+      "nisn": "99164504",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RADIMAN PRATAMA NAINGGOLAN",
+      "nisn": "0104889159",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RAHMIKE DWI ARYANTI",
+      "nisn": "3090112274",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RIDO SADISTRIA",
+      "nisn": "0103851284",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RIDWAN MIKOLA SYAPUTRA",
+      "nisn": "0096749128",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RIYAN SETIAWAN PURBA",
+      "nisn": "0103860756",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RIZKY ALDIANSYAH SIR",
+      "nisn": "0107356851",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "ROCKY ANDREANO",
+      "nisn": "3091132093",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "ROHANA KASIH FILADELFIA. S",
+      "nisn": "0093945056",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "RONGGO SILALAHI",
+      "nisn": "0087672431",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "SANDIKA PRABU",
+      "nisn": "0108084429",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "SAWALUDIN SEMBIRING",
+      "nisn": "0084675952",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "SONY KURNIAWAN SIMARMATA",
+      "nisn": "0095600670",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "TIO PASKA",
+      "nisn": "0092179243",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "WILLY BENIQNO ARDILES",
+      "nisn": "0096242255",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "WISNU PRATAMA",
+      "nisn": "0106626729",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "YEREMIA OSKAR LEON SIMANJUNTAK",
+      "nisn": "0107845415",
+      "kelas": "10-3"
+    },
+    {
+      "nama": "ABDI KURNIAWAN",
+      "nisn": "0094636812",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ADINDA NUR SIVA",
+      "nisn": "0096138192",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "AHMAT SAYFULLAH",
+      "nisn": "0094742622",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ANDINI STEVANI BR PASARIBU",
+      "nisn": "0084179568",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "APRIANA JESSICA MANALU",
+      "nisn": "0098676567",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "AUFA ZANIRA ARIFIA",
+      "nisn": "0059638991",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "CHANDRA PRAJA",
+      "nisn": "0096609709",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "CYNTHIA DEVI BR. TAMBUNAN",
+      "nisn": "0088672275",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ECY YOLANDA BE SIRAIT",
+      "nisn": "0085810579",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "EKA NURIYANTI",
+      "nisn": "3082034974",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "FAREL TODO TUA SINAGA",
+      "nisn": "0096963573",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "FINON SAMORA",
+      "nisn": "3099337156",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "FLORENTINA SIBURIAN",
+      "nisn": "0096135115",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "HAFIFAH RANNISA",
+      "nisn": "0083474361",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "HAICKHAL LUMBAN BATU",
+      "nisn": "0071695112",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "JELSI BR SITUMORANG",
+      "nisn": "0084482056",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "LUDFI YANDA DEWI",
+      "nisn": "0099061178",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MARSHANDA PUTRI BR SITIO",
+      "nisn": "0087488708",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MARTINUS RAJAMAN PURBA",
+      "nisn": "0092925842",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MASANDI TAMBUNAN",
+      "nisn": "0097875593",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MAYA LESTARI BR SIHOMBING",
+      "nisn": "0098284763",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MIRZA ATH'ILAH SIREGAR",
+      "nisn": "3097017902",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "NISSA CAMILA AL KHAIRIYA",
+      "nisn": "3095454661",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "RAJAMIN JHANSHENA",
+      "nisn": "0073058924",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "RASITA MAHARANI BR GINTING",
+      "nisn": "0084802174",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "RESKY ADITIA SIBURA",
+      "nisn": "0081926026",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "RIZKI SYAFIQAROBY",
+      "nisn": "0094359929",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "RIKA EKASARI SITORUS",
+      "nisn": "0096630633",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SALSA NILAM SARI",
+      "nisn": "0089863981",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SELAMAT PARLINTUA SITUMORANG",
+      "nisn": "0074456788",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SHIVA QUILLA",
+      "nisn": "0086933430",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SYAFA AULIA",
+      "nisn": "0098342096",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "TIARA BR SIMANJUNTAK",
+      "nisn": "0087374338",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "VYEMCY PUTRA SANDYAN",
+      "nisn": "0087741801",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "5",
+      "nisn": "",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ANUGRAH SADEWO",
+      "nisn": "0085169245",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ARYUNI LUTVIA",
+      "nisn": "0098401519",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "AUREL STEVEN",
+      "nisn": "0099649801",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "BILQIS",
+      "nisn": "0092349400",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "DIAH AYU RAHMADANI",
+      "nisn": "0093897032",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ENJELINA PUTRI AULIA PURBA",
+      "nisn": "0097482419",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "FEBI YANTI",
+      "nisn": "0097349472",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "GEIMA REYNALDO PANGGABEAN",
+      "nisn": "0093536629",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "GILANG RAMADHAN",
+      "nisn": "0086682115",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "GRESIA OKTAVIA PANJAITAN",
+      "nisn": "0084897288",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "HILYA HILALATUL HANI",
+      "nisn": "0081582498",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "INDAH AYU LESTARI",
+      "nisn": "0093826470",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "JEPRI ABEL",
+      "nisn": "0081627956",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "JONATHAN FEBRIAN SIANIPAR",
+      "nisn": "0094545858",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "KAYFA KHAIRUNNISSA",
+      "nisn": "0093083368",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "KRISMANTO RAMADANI",
+      "nisn": "0081423235",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "LAURA RACHEL AMANDA SITUMORANG",
+      "nisn": "0089553838",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MIRANDA SOFIANA SITUMORANG",
+      "nisn": "0085181620",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "MUHAMMAD AFGAN",
+      "nisn": "0091246832",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "NATASYA DILLA",
+      "nisn": "3097212662",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "NUR INDA RIZKI",
+      "nisn": "0097905475",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "OLGA SYAHPUTRA",
+      "nisn": "3097344395",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "PASKITA MAULAINA",
+      "nisn": "0071971394",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "RACHEL MARTHIN PUDANNI MARPAUNG",
+      "nisn": "0098406387",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ROHAN ALPEREDO SIREGAR",
+      "nisn": "0099009352",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ROSYAH ALZANA PUTRI",
+      "nisn": "0092919909",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SAYYIDAH AISYAH",
+      "nisn": "3088283718",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SELVI LESTINA PASKA BR NABABAN",
+      "nisn": "0095761868",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SHAHIBUL WAFA",
+      "nisn": "0088858693",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "SRI HAYATUN",
+      "nisn": "0091862212",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "U'UM UMAYAH",
+      "nisn": "3093131291",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "WINDA MAGDALENA TELAUMBANUA",
+      "nisn": "0095231177",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "YUNUS LEHON RISKI LUMBAN BATU",
+      "nisn": "009260126",
+      "kelas": "11-1"
+    },
+    {
+      "nama": "ABDUL RAFI GULE",
+      "nisn": "0085045832",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "AKBAR YUDIS TIRA",
+      "nisn": "0098167673",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ALAN NAINGGOLAN",
+      "nisn": "0081359662",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "AMELIA FITRIA",
+      "nisn": "0086382058",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ASHILA RAMADHANI",
+      "nisn": "0093015325",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "DARA KURNIA NINGSIH",
+      "nisn": "0086719816",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "DENNIS VALENTINA BR HOMBING",
+      "nisn": "0092591430",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "DIMAS ARDIANSYAH",
+      "nisn": "0095083624",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ELFARIDA BR. HARIANJA",
+      "nisn": "0092012262",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ELISA FADILAH PASYA",
+      "nisn": "0091438681",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "FADYA AL ZAHIRA",
+      "nisn": "0083702344",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "FERNANDO MAHARAJA",
+      "nisn": "0081223664",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "GEISYAH SILALAHI",
+      "nisn": "0092019924",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "HANDIKA SARAGIH",
+      "nisn": "0089882946",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "HAURA SYA BANI PUTRI",
+      "nisn": "0094528533",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "JENNI SARTIKA BR SIMAMORA",
+      "nisn": "0094802463",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "JEPRI",
+      "nisn": "0072662597",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MARULAM GALINGGING",
+      "nisn": "0095897762",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MEILISA ANGGRAINI",
+      "nisn": "0097016542",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MHD. ALFA RIZI",
+      "nisn": "0095097478",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MUHAMMAD NUR KHOLIS",
+      "nisn": "0093282250",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MUHAMMAD REZA PAHLEVI",
+      "nisn": "3098245098",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "NUR SYAFA RINDA",
+      "nisn": "0095520430",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "NURLINDA SABAM RIA SARAGI",
+      "nisn": "0091421474",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "RAMAH DION",
+      "nisn": "0082226939",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "RETNO WULAN",
+      "nisn": "0097750865",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "RINO PARSAULIAN TAMBA",
+      "nisn": "0095300759",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ROSIANNA BR SITUMORANG",
+      "nisn": "0098735152",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "SITI RAHAMA",
+      "nisn": "0095573426",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "TEMMI YUNUS SIANTURI",
+      "nisn": "0074156090",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "TIARA NOVA LIANTI BR SIMAMORA",
+      "nisn": "0085021494",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "6",
+      "nisn": "",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "AFIFAH SYAHIRA",
+      "nisn": "0092309367",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "CHESYA",
+      "nisn": "0091699970",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "CINDI ERNA WINTA HALAWA",
+      "nisn": "0098701888",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "DINA DESTIKA",
+      "nisn": "0068298480",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "DINDA KANYA PASARIBU",
+      "nisn": "0098589693",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ERI FEBRIANI LAOLI",
+      "nisn": "0072802919",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "GIO PANI PRASETIA",
+      "nisn": "0095403754",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "GLEN DWI BOY MANULLANG",
+      "nisn": "0087428138",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "GRESYA BR SITANGGANG",
+      "nisn": "0096086210",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "INAYAH TUSSA BILA",
+      "nisn": "0084920607",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "IRENE DINI ABDULLAH",
+      "nisn": "0092605697",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "JHON ELIAMAN SINAMBELA",
+      "nisn": "0099654060",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "KHOIRUN NISA TAMBUNAN",
+      "nisn": "3098551503",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "LIA MAHARISA PASARIBU",
+      "nisn": "0091584507",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "M. DUHA CAHYANTO",
+      "nisn": "3083666404",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MUHAMMAD AIMAN ARIF",
+      "nisn": "0096294589",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "MULANI SONANTA BR SINAGA",
+      "nisn": "0082770911",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "NAYLATUL IZZATI",
+      "nisn": "0096584301",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "NURAINI NABILAH SIREGAR",
+      "nisn": "0095918737",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "RAFAEL SAPUTRA SIMANULANG",
+      "nisn": "0097137220",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "REVANDRA ADITYA",
+      "nisn": "3097586266",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "RIZQI AULIA",
+      "nisn": "0097478036",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "RONI PARDAMEAN TAMBA",
+      "nisn": "0095708316",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "SAFA NABILA AZRA NASUTION",
+      "nisn": "0097801356",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "SINAR MASA JELITA HARIA",
+      "nisn": "0095019149",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "SOFFI RAMADI",
+      "nisn": "0081794623",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "SUCI RAHMADANI",
+      "nisn": "3093856497",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "VERNITA AYUNDA",
+      "nisn": "3091713657",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "WITA APRILLA BR NAINGGOLAN",
+      "nisn": "0095140007",
+      "kelas": "11-2"
+    },
+    {
+      "nama": "ADE PRASTYA",
+      "nisn": "0097455101",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "ALFA IGO TRI ANGGARA",
+      "nisn": "0084246795",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "ANJANI SETIA NINGSIH ROHMADANI",
+      "nisn": "0072962220",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "AYU SEPTIA SARI",
+      "nisn": "0084515643",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "DEA INDRIANI",
+      "nisn": "0084289458",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "DESI GEBI RISMA BR SINAGA",
+      "nisn": "0097596469",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "DINO ALFIANSYAH",
+      "nisn": "0097954738",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "ELIZABETH BR. SITUMORANG",
+      "nisn": "0085079616",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "FREDIKS ONESSIUS LUMBAN GAOL",
+      "nisn": "0083175885",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "GIOVANNI APRILLIA BR SIMANJUNTAK",
+      "nisn": "0091222912",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "HENNI KURNIASIH",
+      "nisn": "0098254990",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "IFON KRISNA SARIO HALAWA",
+      "nisn": "0095800448",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "JIHAN SAHARA",
+      "nisn": "0084689676",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "KAISYAH INDRYANI",
+      "nisn": "0083839043",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "KASIH KARUNIA WATI LAOWO",
+      "nisn": "0081369527",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MARVEL DAVID MOSES MANALU",
+      "nisn": "0096150521",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MEGA MAGDALENA SITUMEANG",
+      "nisn": "0094479280",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MELANI NURLATIFAH",
+      "nisn": "0089539708",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MHD. IKHSAN MUHTARIN",
+      "nisn": "0087859298",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MICHEL JORDAN BAKKARA",
+      "nisn": "0088813655",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MUHAMMAD FIKRI HASIBUAN",
+      "nisn": "0094717322",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MUHAMMAD RIDHO TRIYADI",
+      "nisn": "0096847950",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "NUR AINI",
+      "nisn": "0084479715",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RAZU TANJUNG",
+      "nisn": "0081279143",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RIO RAJA GUKGUK",
+      "nisn": "0077520199",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RIRIN FEBRI KURNIATI",
+      "nisn": "0098813154",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RUTH DERMAWANTI. S",
+      "nisn": "0082981328",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SALSABILA AZZAHRA",
+      "nisn": "0095924857",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SRI ANGGIANI",
+      "nisn": "3096332385",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SYARIFAH FITRI KHAIRANI",
+      "nisn": "0087390795",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "TRESIA ENJELIKA SIRAIT",
+      "nisn": "0098417208",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "TRIO YUPENUS TELAUMBANUA",
+      "nisn": "0093836132",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "7",
+      "nisn": "",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "AHMAD DAFFA HIDAYAH",
+      "nisn": "3097828145",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "ASRI FALINI",
+      "nisn": "0096450442",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "AZRIL WIRA PRATAMA",
+      "nisn": "0092014687",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "CITRA RAMA YUNI SINAGA",
+      "nisn": "0098502239",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "DANIEL PATTO SIMAMORA",
+      "nisn": "0092321233",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "DIYAN AMELIYA",
+      "nisn": "0076939593",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "DUMA HOTMAULI DAME MANALU",
+      "nisn": "0091649599",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "FANNY CHRISTY SIMATUPANG",
+      "nisn": "0084920964",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "FITRI OKTARIYATI SETIANINGRUM",
+      "nisn": "0088655596",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "GLENTINO PURBA",
+      "nisn": "0089877446",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "HABIB AL FIQIH",
+      "nisn": "0085983102",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "INDAH NURJANAH",
+      "nisn": "0094994668",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "INDRIANI BR MANALU",
+      "nisn": "0097998572",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "JOEL RIFALDI SIANTURI",
+      "nisn": "0081227213",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "KARLOS MICAEL",
+      "nisn": "",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "LINDA AYUNI",
+      "nisn": "3087951409",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "M. IQBAL MAULANA",
+      "nisn": "0096536772",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MAR NATA EFLIN",
+      "nisn": "0086743975",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "MUHAMMAD BAGUS KUNCORO",
+      "nisn": "0085791074",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "NANCY YOLANDA SINAGA",
+      "nisn": "0094498887",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "NAZWA NUR FADILLAH",
+      "nisn": "0096182453",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RAFI SUGIHARTO",
+      "nisn": "3081226724",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RAHMA FELISHA",
+      "nisn": "0094294664",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RALYN GRACIA SEMBIRING",
+      "nisn": "0099333225",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "RENDI WIJAYA",
+      "nisn": "0097897085",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "REZKY WAHYU NURCAHYO",
+      "nisn": "0092795325",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SAFIYAH CLARA SIFA",
+      "nisn": "0082023670",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SAMUEL ZENDRATO",
+      "nisn": "0082239777",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SEPTI RAMADANI BR SIREGAR",
+      "nisn": "0085064224",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SONYA HUTABARAT",
+      "nisn": "0088803883",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SULFI HULANDARI",
+      "nisn": "0083833044",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "SUTAN MUDO",
+      "nisn": "0086968279",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "YOHANA DINDA HUTAGALUNG",
+      "nisn": "0088317655",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "ZARAH AGUSTIN",
+      "nisn": "0081292054",
+      "kelas": "11-3"
+    },
+    {
+      "nama": "AGIL RAMADITIYANSAH",
+      "nisn": "0092908005",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "ANDRI PANGABEAN",
+      "nisn": "3074836419",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "ANGGA KRISDIANTARA",
+      "nisn": "0087330000",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "APRILIA STEVANI BR SIMANJUNTAK",
+      "nisn": "0096583510",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "ARY ANGGRIANI",
+      "nisn": "0095534254",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "AZKYA AULINA ANANDA",
+      "nisn": "0083073955",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "DEA PAHMALA",
+      "nisn": "0084346373",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "DESRI DIAN LOREN SITINJAK",
+      "nisn": "0073628406",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "ENISA JUNIARTA BR. BATU BARA",
+      "nisn": "0091415456",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "FAHRI SURYA PRAMUDIA",
+      "nisn": "0091523331",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "GANTENG SIHOMBING",
+      "nisn": "0075584171",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "GRACIA INDIRA T. BOLON",
+      "nisn": "0095559262",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "HIJRAH ARMAISILAH",
+      "nisn": "0097662717",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "INDRA PANDIANGAN",
+      "nisn": "0087696034",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "JULIANTO ARDIANSYAH",
+      "nisn": "0092970733",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "KEISYA OLIVIA BR SITANGGANG",
+      "nisn": "00993083339",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "KHARISMA RAMADHANI",
+      "nisn": "0095898719",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "MEL ELFRIDA BR. SITINJAK",
+      "nisn": "0096650097",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "MICHAEL RONI TUA DAMANIK",
+      "nisn": "0098539818",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "MUHAMMAD RIZA KAPU",
+      "nisn": "0084625712",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "MUSVITA",
+      "nisn": "0095099582",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "NUR AINI",
+      "nisn": "0092066133",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "PASKA ROMA LESTARI LUBIS",
+      "nisn": "0091736687",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "PUTRI ADELIA NORA MUNTHE",
+      "nisn": "0092583644",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "REFAN ADITYA",
+      "nisn": "0082619725",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "RISKI HAMONANGAN ARITONANG",
+      "nisn": "0082973624",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "RIZKA AULIA PUTRI",
+      "nisn": "0099528067",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "RUTH SETIA NAINGGOLAN",
+      "nisn": "0099848325",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SANDI PRATAMA",
+      "nisn": "0097699951",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SASKIA DENA",
+      "nisn": "0094755708",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SELFA YUSLINDA",
+      "nisn": "3086301392",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SRI DEWI",
+      "nisn": "0082851409",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "TRIUTAMI ARISKA",
+      "nisn": "3084770928",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "ULI DAME KRISTIANI BR SIREGAR",
+      "nisn": "0083175403",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "WAWAN SYAPUTRA SIMBOLON",
+      "nisn": "0083233141",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "8",
+      "nisn": "",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "AGISTA SAIFUL MILAH",
+      "nisn": "0087955213",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "ASRI RAHMADANI",
+      "nisn": "3091835647",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "CAHYO DIMAS ANGGARA",
+      "nisn": "0095212630",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "CHIKA RAMADANI",
+      "nisn": "0095323893",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "CRISTIN ANGEL NATALIA SIMANJUNTAK",
+      "nisn": "0086481604",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "DENI WAHYU NAINGGOLAN",
+      "nisn": "0098511489",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "DONITA BR SIAHAAN",
+      "nisn": "0081016755",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "DWI PARAS WATI SIANTURI",
+      "nisn": "0082150568",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "FETRAN ZELITA HULU",
+      "nisn": "0096828582",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "GEBI ULANDARI",
+      "nisn": "0099000823",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "GOKTUA RIVALDO HUTASOIT",
+      "nisn": "0098386705",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "HELMI WAHYU SYAHPUTRA",
+      "nisn": "0085275738",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "INDAH PERMATA SARI",
+      "nisn": "0095130009",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "IRFANDI",
+      "nisn": "0082740607",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "JELISMAN ZALUKHU",
+      "nisn": "0077367809",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "LIVIA MEILANI",
+      "nisn": "0099685676",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "M. SYAIFUL ALIEF FAUZI",
+      "nisn": "0086464193",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "MARIA ANGGRENI BR TAMBA",
+      "nisn": "0083212599",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "MUHAMMAD FACHRI IRAWAN",
+      "nisn": "0093627691",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "NIA SURYA DONA",
+      "nisn": "0081684821",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "NICA YAKASIH",
+      "nisn": "0091328698",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "RANTI ZATIFA",
+      "nisn": "3087843535",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "REINALDI SIHITE",
+      "nisn": "0092443122",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "RHEFAN AFRIANSYAH",
+      "nisn": "0093308691",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SALSA AUDIA PUTRI. BR RITONGA",
+      "nisn": "0091379370",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SANDI DANIEL SITUMORANG",
+      "nisn": "0081388637",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SHESA ANGGRENY",
+      "nisn": "0087301219",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "STEVANI ROSALINA MENDROFA",
+      "nisn": "0083235791",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "SUMARNI",
+      "nisn": "0095489633",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "TRISTAN IRWANSYAH",
+      "nisn": "0098038452",
+      "kelas": "11-4"
+    },
+    {
+      "nama": "AMELIA",
+      "nisn": "0079041447",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "ANGGI CLAUDIA BR.SINAGA",
+      "nisn": "0088417484",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "BETARIA NIA DANIATI BR SIMANJUNTAK",
+      "nisn": "0079248341",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "CELSY MONITA",
+      "nisn": "0083636254",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "DESI AYU NINGRUM",
+      "nisn": "0079789326",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "DINU RISKY FIRANSYAH",
+      "nisn": "0088884362",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "FRISCILA CECILIA MONIC BR RUMAPEA",
+      "nisn": "0085411676",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "GITA KASIH LUMBAN GAOL",
+      "nisn": "0085311197",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "HUSNAH ULANDARI",
+      "nisn": "0076712243",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "ILMEN SAH PUTRA",
+      "nisn": "0084189113",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "JULIAN ISKANDAR",
+      "nisn": "0075090993",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "LISMAR SINURAT",
+      "nisn": "0079340366",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "M. IQBAL MAULANA",
+      "nisn": "0082784187",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MERLIN FRIANI TELAUMBANUA",
+      "nisn": "0073678150",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MUHAMMAD ALFRIDHO VITYAN",
+      "nisn": "0071951897",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MUTIA SAPRILIA",
+      "nisn": "0089101718",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "OBAMA MARASI PARDOMUAN MALAU",
+      "nisn": "0085171698",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "PUTRI HANANIA MENDROFA",
+      "nisn": "0089768182",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "PUTRI RAHMADANI",
+      "nisn": "0072189482",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RAHMAD BAYU",
+      "nisn": "0074923990",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RAHMAZA SHINTA",
+      "nisn": "0083106434",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "REGINA BR SILABAN",
+      "nisn": "0073694914",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "REIFALDI HASIBUAN",
+      "nisn": "0084639559",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RONAULI KEYZIA EIRENE SITORUS",
+      "nisn": "0086023048",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "SALMAN ALVARIZI",
+      "nisn": "0071185941",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "SAPITRI RAMADANI",
+      "nisn": "0088927320",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "SHAFWAN ROZAN IFTIKAR",
+      "nisn": "0078431375",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "SYAHPUTRI JULIANA",
+      "nisn": "0086245068",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "THERESIA VIA MARTINA",
+      "nisn": "0085434019",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "VEBYONI CHINTIA BR.LUMBAN GAOL",
+      "nisn": "00825348887",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "VERONIKA MARIS NAINGGOLAN",
+      "nisn": "0078857292",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "VIVI ALEYDA RAHMADANI",
+      "nisn": "008467106",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "ZAHRA ALVIANITA",
+      "nisn": "0084856839",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "5",
+      "nisn": "",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "ADRIAN MARIHOT SIRAIT",
+      "nisn": "0077115182",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "AFGAN BIN ROHIM",
+      "nisn": "0083849801",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "AHMAD FAHRIZA",
+      "nisn": "0082817795",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "AHMAD FAIZAL",
+      "nisn": "0085115340",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "BINA CHRISTIN LAOLI",
+      "nisn": "0064868396",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "CHEERI SIFA ANGGREANI BR SEMBIRING",
+      "nisn": "0087416628",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "CHERINE AGUSTIN BR SEMBIRING",
+      "nisn": "0086202073",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "DELVY LAOWO",
+      "nisn": "0061469999",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "DEWI SRI LESTARI",
+      "nisn": "0075939663",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "DODI KRISTIAN TAMPUBOLON",
+      "nisn": "0076481201",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "FACHRUL FAHRIZAL",
+      "nisn": "0081927395",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "FADHLAN AL BIRRI",
+      "nisn": "0075715769",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "FHATIA RAHMA",
+      "nisn": "0075928079",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "GADIS SARAGI SIDABALOK",
+      "nisn": "0077116797",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "GITA",
+      "nisn": "0076359477",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "HASDA SIRINGO RINGO",
+      "nisn": "0078868817",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "IRAWAN TELAUMBANUA",
+      "nisn": "0081482430",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "JONI PIRMAN LIUS ZAI",
+      "nisn": "0071053406",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "JONIVER PASARIBU",
+      "nisn": "0085095049",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "KENDIS AUFHI SUBHAWA",
+      "nisn": "0086116648",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "KEYSIA FRANCISKA",
+      "nisn": "3087511632",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "LASTRI BR. NABABAN",
+      "nisn": "0086615401",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MELATI OKTAVIA",
+      "nisn": "0082460354",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MELLATI",
+      "nisn": "0083621581",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MESRIDA",
+      "nisn": "0079739751",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "MUHAMMAD HAIKAL  SYAWAL",
+      "nisn": "0072993124",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "REZA RIZALDI PRASTYO",
+      "nisn": "0086580405",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RIA NOFITA SARI",
+      "nisn": "0081357391",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RIAN KARMIS",
+      "nisn": "0071104510",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RISMA MANGIRING BR. SIMAMORA",
+      "nisn": "0088787858",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "RYAN MENDROFA",
+      "nisn": "0089759200",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "SULIS ANDRIANI",
+      "nisn": "0072601260",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "YUANCI OLMI SEPTIONE LAOLY",
+      "nisn": "0082659914",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "YULTI BR SIMANJUNTAK",
+      "nisn": "0064104232",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "ZOUS FIANSYAH SIMBOLON",
+      "nisn": "0072768429",
+      "kelas": "12-1"
+    },
+    {
+      "nama": "ARGA RAMADHAN HENDRI",
+      "nisn": "0081186619",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "AURA SETIA NINGRUM",
+      "nisn": "0073641246",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "BELLA PUSPITA",
+      "nisn": "0086001168",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "BUDI NURROHMAN",
+      "nisn": "0086150671",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "CINTA LEWRA BR BARUS",
+      "nisn": "0082104499",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "DITA KHOIRILIAH",
+      "nisn": "0082507691",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ELISABETH BR SINAGA",
+      "nisn": "0079300012",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ESTER GRESS ANGGEL. S",
+      "nisn": "0081193382",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "FELISITAS",
+      "nisn": "0071829369",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "FLORENTINA BR MANURUNG",
+      "nisn": "9976378304",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "HALIMAH TUSYAHDIYA",
+      "nisn": "0088816096",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "HARKA FAHIRA",
+      "nisn": "0086245068",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "JAPARIF MANGOLOI MANALU",
+      "nisn": "0079674135",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "JONA SOALOON HUTAPEA",
+      "nisn": "0087621233",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "JUMIYARSIH",
+      "nisn": "0081120870",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "KAYLA SIVA LESTARY PURBA",
+      "nisn": "0083676111",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "KEYZIA FEBRIANI SIMANJUNTAK",
+      "nisn": "0082328212",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "KHASIFA UMIRA",
+      "nisn": "0081396047",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "MAHMUL ARFAIZ",
+      "nisn": "0081923493",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "NAOMI BR. MANULLANG",
+      "nisn": "0084408836",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "NUR RAHMAYANI",
+      "nisn": "0076472231",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RAHMA INDRI. M",
+      "nisn": "0073049470",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RIKA RAHMADANI",
+      "nisn": "0065498955",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RINI REZKIANA",
+      "nisn": "0089372238",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SAID IKROMUL HARIRI",
+      "nisn": "0086817559",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SALSABILA AZUHRA PUTRI",
+      "nisn": "0084234290",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SITI SARAH",
+      "nisn": "0075783512",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SYAHRIAL ALAMSYAH HARAHAP",
+      "nisn": "0086457980",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SYUKUR JUANVER HULU",
+      "nisn": "0073479680",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "TASYA ELITA SYAPUTRI BR. HUTASOIT",
+      "nisn": "0076820753",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "THERESIA NOVERA SIHOMBING",
+      "nisn": "0076750776",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "YUNI SHELA SITOHANG",
+      "nisn": "0075699598",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ZIVANA LATISA",
+      "nisn": "0088285839",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "6",
+      "nisn": "",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ALFATIA AZZAHRA",
+      "nisn": "0072143819",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ARDIANSYAHTA GINTING",
+      "nisn": "0075823739",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "BINTANG REZEKI RAMADHAN",
+      "nisn": "0073258241",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "DOEL FREDDY HASIBUAN",
+      "nisn": "0081836487",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ENDANG TANTRI NAINGGOLAN",
+      "nisn": "0073617031",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ERMIKA RONAULI BR. SIMANJUNTAK",
+      "nisn": "0086474264",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "FRENGKY NADAP DAP",
+      "nisn": "0082428758",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "GITA SULIATI",
+      "nisn": "0068004723",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "GUSTI BAGUS SETIAWAN",
+      "nisn": "0057441181",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "HABEL SEPTIAN SITORUS",
+      "nisn": "0087966756",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "IKHSAN SYAFIKRI",
+      "nisn": "0081186619",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "JAYA MALEM TARIGAN",
+      "nisn": "0066813147",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "JUWITA ANGGRAINI",
+      "nisn": "0084033924",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "MARCEL JONATHAN LAOLI",
+      "nisn": "0085216754",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "MARIA FRANSISKA LESTARI BR.SORMIN",
+      "nisn": "0885969506",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "MICHAEL RIZQI SINURAT",
+      "nisn": "0062395221",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "MONIKA BR. SIANTURI",
+      "nisn": "0071412076",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "NUR AISYAH JAMIL",
+      "nisn": "0063285291",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "PERLI SEMBIRING",
+      "nisn": "0073066019",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "PUTRI MAER SYAPIAH HASIBUAN",
+      "nisn": "008190092",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RAHEL WANTRY TINAMBUNAN",
+      "nisn": "0079749807",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RATU ALLISHIA",
+      "nisn": "0086906972",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RENO SAPUTRA",
+      "nisn": "0084212891",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ROYNALDO FEBRIANTO PURBA",
+      "nisn": "0071655651",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RURA HOLONG NABABAN",
+      "nisn": "0077308148",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RUTMAYANA BR.PURBA",
+      "nisn": "0076809324",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "RYAN DANIEL NAINGGOLAN",
+      "nisn": "0073716907",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SHARUL",
+      "nisn": "0082571767",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SITI AZIZAH TURROHMA",
+      "nisn": "0051030394",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SITI MASITHOH MAHARANI",
+      "nisn": "0089558963",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SUCI TRI HANDAYANI",
+      "nisn": "0072669812",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "SUHADA NURFANDY SITORUS",
+      "nisn": "0085414142",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "ULFA NURAINI",
+      "nisn": "0088757840",
+      "kelas": "12-2"
+    },
+    {
+      "nama": "A.ADVEN RENDI SIHALOHO",
+      "nisn": "0076396505",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "ADIT SETIAWAN",
+      "nisn": "0073387106",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "ANDHIKO CRISTIANTO SEMBIRING",
+      "nisn": "0072319353",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "BUNGA ANGGARAINI BR PURBA",
+      "nisn": "0085011988",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "BUNGA OKTAVIA",
+      "nisn": "0075487234",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "CHELSEA AMANDA BR HASIBUAN",
+      "nisn": "0086049607",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "DEDY YUSUF SIMANJUNTAK",
+      "nisn": "0069929813",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "DINDA FEBRIANI",
+      "nisn": "0085039357",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "DODY SETIAWAN",
+      "nisn": "0071246334",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "GALUH FUZI RAMAYANI",
+      "nisn": "0077931507",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "HENGKI IRWANTO BARASA",
+      "nisn": "0078114096",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "JEFRI SITUMORANG",
+      "nisn": "0046819379",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "JUNAR AFRIAN RAJA GUK GUK",
+      "nisn": "0083303688",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "KEYSIAH NUR ANGGRAINI",
+      "nisn": "0087484248",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "M. ARGA PRATAMA",
+      "nisn": "0074620811",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "M. RAIHAN RAWADI",
+      "nisn": "0073807366",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "MARVEL BERKAT SETIAWAN LAOLI",
+      "nisn": "0085320229",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "MASHITA RAMADANI",
+      "nisn": "0083219264",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "MUMAMMAD NICO AL FAHRI",
+      "nisn": "",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "NABILA RAMADANI",
+      "nisn": "0087281108",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "NATASYA GRETA OLIVIA SIHOMBING",
+      "nisn": "0083583088",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "NIKKE DWI NUGROHO",
+      "nisn": "0081642137",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "RACHEL NATALI HUTABARAT",
+      "nisn": "0073861391",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "REGINA GADIS CHANTIKA",
+      "nisn": "0084616867",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "RIZKY SURYA PRATAMA",
+      "nisn": "0055396164",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SADDIA FITRI BR SILITONGA",
+      "nisn": "0076569725",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SALWA JULIANI",
+      "nisn": "0087886064",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SANTI SAFITRI",
+      "nisn": "0084414878",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SYAFRINA ELEIDA",
+      "nisn": "0088828548",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SYNTIA DESTIKA HARIANJA",
+      "nisn": "0088239723",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "TIARA TRI ARBY",
+      "nisn": "0008621084",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "TRI ARDIANSYAH",
+      "nisn": "0075933939",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "VANI APRILIANI",
+      "nisn": "0082374272",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "VIKI RAHMADANI",
+      "nisn": "0071578995",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "7",
+      "nisn": "",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "ANGKY MARVEL RAYMON",
+      "nisn": "0083999222",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "ANNISA KHAIRANI",
+      "nisn": "0084872525",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "ASYA KARIMA",
+      "nisn": "0089456312",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "AYU WULANDARI",
+      "nisn": "0076195127",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "CALVIN ADINATA BUTAR BUTAR",
+      "nisn": "0078391270",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "CLAUDIA SIAGIAN",
+      "nisn": "0087842371",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "DENI IRWANDI",
+      "nisn": "00783552474",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "DIMAS RADITSYAH PUTRA",
+      "nisn": "0067084283",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "ERWIN SM. SIMANUNGKALIT",
+      "nisn": "0088761629",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "FAIRUZ ZABADI ILHAM",
+      "nisn": "0082144614",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "FAJAR SYUKUR MENDRIFA",
+      "nisn": "0088470323",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "FANDU CANDRA NIRWANSAH",
+      "nisn": "0072910435",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "GERSON JUNIOR MANARAJA",
+      "nisn": "0076576184",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "LIANA SARI",
+      "nisn": "0089758887",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "LAYINNATUSY SYIFA",
+      "nisn": "0076755054",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "LEVI ANWAR SITANGGANG",
+      "nisn": "0077143914",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "MIKA JULIANA BR NAPITUPULU",
+      "nisn": "0063422974",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "NUR' AINI",
+      "nisn": "0083739842",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "PUJI LESTARI",
+      "nisn": "0079679585",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "PUTRI SUMANTI PASARIBU",
+      "nisn": "77471754",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "QUINSHA AUREL BR BUTAR-BUTAR",
+      "nisn": "'0086494737",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "RADHO CRISTAN PRATAMA SILABAN",
+      "nisn": "0077977718",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SABAR PARULIAN SIAHAAN",
+      "nisn": "0084025091",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SANDY CHRISTIAN",
+      "nisn": "0076265660",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SAPUTRI",
+      "nisn": "0083649417",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SHAFA SALSABILA SARMEN",
+      "nisn": "0079779903",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SILVI VANESA MUNTHE",
+      "nisn": "0068870029",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "SORAYA KHAFIFAH",
+      "nisn": "0086921250",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "THALYTHA DINDA PUTRI RIANDRI",
+      "nisn": "0083896063",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "VALEN KRISTIAN LAOLI",
+      "nisn": "0081392975",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "WAHYU SAPUTRA",
+      "nisn": "0081253289",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "WAHYUDI NAINGGOLAN",
+      "nisn": "0077761743",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "YAIRUS SCOPELI PAKPAHAN",
+      "nisn": "0076862615",
+      "kelas": "12-3"
+    },
+    {
+      "nama": "AGUNG ARDIANSYAH PASARIBU",
+      "nisn": "0084667998",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "AISYA MURNIA AZRA",
+      "nisn": "0073663468",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "AL FIKRI TAULANI",
+      "nisn": "0063400457",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "ALIF ALFAREZA",
+      "nisn": "0084983486",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "ANUGERAH HABIB",
+      "nisn": "0082041782",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "ARDIA YANUS LAOLI",
+      "nisn": "0073610351",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "ARMITA JANWAR",
+      "nisn": "0082643927",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "BAGAS PRATAMA. S",
+      "nisn": "0088713789",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "CHRISTIN ADRINA MAYLANI BR DAMANIK",
+      "nisn": "0086946763",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "DEA VIONA",
+      "nisn": "008169905",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "EVA HOTNAULI BR SIREGAR",
+      "nisn": "0089727973",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "HARDITA RAMADANI",
+      "nisn": "0083355002",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "JONA SEPTIAWAN SIREGAR",
+      "nisn": "0084122245",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "JUAN MARKUS JULIANTO SIMANULLANG",
+      "nisn": "0085873428",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "JUSTIN KHUSTRIANI BR NAINGGOLAN",
+      "nisn": "0082594886",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "KRISTIAN MELKI",
+      "nisn": "0075357979",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "M. YOGI ANANDA",
+      "nisn": "0085537950",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "MAGDALENA BR. SIMATUPANG",
+      "nisn": "0089604296",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "MARCELYNO RAFAEL SINAGA",
+      "nisn": "0082793668",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "MIKAEL RANDY CILY",
+      "nisn": "0086634449",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "MUHAMMAD RAFI HASBY",
+      "nisn": "0075883016",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "MUHAMMAD RAFLY",
+      "nisn": "0077264281",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "NUR AJIJAH",
+      "nisn": "0075264023",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "NURUL FADHILAH",
+      "nisn": "0074168943",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "NURUL RIZQA SALSABILA",
+      "nisn": "0089042216",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "PUTRA MARU",
+      "nisn": "0077498706",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "PUTRI AKMALIA",
+      "nisn": "0083962259",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "REZA FADILAH",
+      "nisn": "0084585785",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "ROMAITO BR NAINGGOLAN",
+      "nisn": "0083236974",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "SAFIRA SEKAR AYU",
+      "nisn": "0089132633",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "SENDHY PUTRI LAURA BR SITANGGANG",
+      "nisn": "0083329345",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "TIA WULANDARI SIBURIAN",
+      "nisn": "",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "UMI MUTHMAINNAH AMANI",
+      "nisn": "'0076359008",
+      "kelas": "12-4"
+    },
+    {
+      "nama": "YAUMI FADHILLAH",
+      "nisn": "0082371832",
+      "kelas": "12-4"
+    }
+  ]
+}
