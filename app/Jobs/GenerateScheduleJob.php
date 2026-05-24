@@ -153,19 +153,19 @@ class GenerateScheduleJob implements ShouldQueue
 
         // ── INITIAL POPULATION ──
         $population = [];
-        $population[] = $this->createGreedyChromosome($genes, $slotMap, $kelasAllowedSlots);
+        $population[] = $this->repairChromosome($this->createGreedyChromosome($genes, $slotMap, $kelasAllowedSlots), $evalContext);
 
         $smartCount = min(20, max(5, (int) round($this->populationSize * 0.25)));
         for ($i = 1; $i < $this->populationSize; $i++) {
             if ($i <= $smartCount) {
-                $population[] = $this->createSmartChromosome($totalGenes, $genes, $slotMap, $kelasAllowedSlots);
+                $population[] = $this->repairChromosome($this->createSmartChromosome($totalGenes, $genes, $slotMap, $kelasAllowedSlots), $evalContext);
             } else {
                 $chromosome = [];
                 for ($g = 0; $g < $totalGenes; $g++) {
                     $allowed = $kelasAllowedSlots[$genes[$g]['kelas_id']];
                     $chromosome[] = $allowed[array_rand($allowed)];
                 }
-                $population[] = $chromosome;
+                $population[] = $this->repairChromosome($chromosome, $evalContext);
             }
         }
 
@@ -255,6 +255,8 @@ class GenerateScheduleJob implements ShouldQueue
 
                 $c1 = $this->smartMutate($c1, $evalContext, $totalSlots);
                 $c2 = $this->smartMutate($c2, $evalContext, $totalSlots);
+                $c1 = $this->repairChromosome($c1, $evalContext);
+                $c2 = $this->repairChromosome($c2, $evalContext);
 
                 $newPop[] = $c1;
                 if (count($newPop) < $this->populationSize) {
@@ -431,6 +433,68 @@ class GenerateScheduleJob implements ShouldQueue
             $guruSlots[$gene['guru_id']][$bestSlot] = true;
             $kelasSlots[$gene['kelas_id']][$bestSlot] = true;
             $kelasDayCount[$gene['kelas_id']][$slotMap[$bestSlot]['hari_idx']] = ($kelasDayCount[$gene['kelas_id']][$slotMap[$bestSlot]['hari_idx']] ?? 0) + 1;
+        }
+
+        return $chromosome;
+    }
+
+    private function repairChromosome(array $chromosome, array $ctx): array
+    {
+        $genes = $ctx['genes'];
+        $slotMap = $ctx['slotMap'];
+        $kelasAllowedSlots = $ctx['kelasAllowedSlots'];
+
+        $guruSlots = [];
+        $kelasSlots = [];
+        $conflictIndices = [];
+
+        foreach ($chromosome as $g => $slotIdx) {
+            $guruId = $genes[$g]['guru_id'];
+            $kelasId = $genes[$g]['kelas_id'];
+
+            if (isset($guruSlots[$guruId][$slotIdx]) || isset($kelasSlots[$kelasId][$slotIdx])) {
+                $conflictIndices[] = $g;
+                continue;
+            }
+
+            $guruSlots[$guruId][$slotIdx] = true;
+            $kelasSlots[$kelasId][$slotIdx] = true;
+        }
+
+        foreach ($conflictIndices as $g) {
+            $gene = $genes[$g];
+            $allowed = $kelasAllowedSlots[$gene['kelas_id']];
+            $bestSlot = null;
+            $bestScore = PHP_INT_MAX;
+
+            foreach ($allowed as $slotIdx) {
+                $conflictCount = 0;
+                if (isset($guruSlots[$gene['guru_id']][$slotIdx])) {
+                    $conflictCount += 1000;
+                }
+                if (isset($kelasSlots[$gene['kelas_id']][$slotIdx])) {
+                    $conflictCount += 1000;
+                }
+
+                $slot = $slotMap[$slotIdx];
+                $score = $conflictCount + ($slot['hari_idx'] * 10) + $slot['jam_pos'];
+
+                if ($score < $bestScore) {
+                    $bestScore = $score;
+                    $bestSlot = $slotIdx;
+                    if ($score === 0) {
+                        break;
+                    }
+                }
+            }
+
+            if ($bestSlot === null) {
+                $bestSlot = $allowed[array_rand($allowed)];
+            }
+
+            $chromosome[$g] = $bestSlot;
+            $guruSlots[$gene['guru_id']][$bestSlot] = true;
+            $kelasSlots[$gene['kelas_id']][$bestSlot] = true;
         }
 
         return $chromosome;
