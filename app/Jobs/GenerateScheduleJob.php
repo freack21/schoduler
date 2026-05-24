@@ -127,14 +127,11 @@ class GenerateScheduleJob implements ShouldQueue
         $this->configureParameters($totalGenes, $totalSlots);
         Cache::put('ga_max_generations', $this->maxGenerations, 600);
 
-        $bestOverallScore = PHP_INT_MAX;
-        $bestOverallHard = PHP_INT_MAX;
-        $bestOverallDist = PHP_INT_MAX;
-        $bestOverallFitness = 0.0;
+        $bestOverallScore = null;
+        $bestOverallHard = null;
+        $bestOverallDist = null;
+        $bestOverallFitness = null;
         Cache::put('ga_best_generation', 0, 600);
-        Cache::put('ga_best_hard', $bestOverallHard, 600);
-        Cache::put('ga_best_dist', $bestOverallDist, 600);
-        Cache::put('ga_best_fitness', $bestOverallFitness, 600);
 
         // ── STRUCTURAL: compute allowed slots per kelas ──
         $kelasLessonCount = [];
@@ -207,7 +204,7 @@ class GenerateScheduleJob implements ShouldQueue
             $currentHardViolations = $scores[$bestIdx]['guru_conflicts'] + $scores[$bestIdx]['kelas_conflicts'];
             $currentDistViolations = $scores[$bestIdx]['dist_violations'];
 
-            if ($bestScore < $bestOverallScore) {
+            if ($bestOverallScore === null || $bestScore < $bestOverallScore) {
                 $bestOverallScore = $bestScore;
                 $bestOverallHard = $currentHardViolations;
                 $bestOverallDist = $currentDistViolations;

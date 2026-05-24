@@ -49,6 +49,7 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         'artisan',
         'queue:work',
         '--once',
+        '--quiet',
         '--timeout=' . $timeout,
         '--tries=1',
     ], base_path(), null, null, $timeout + 30);
@@ -63,11 +64,14 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         $generation = (int) Cache::get('ga_generation', 0);
         $maxGenerations = (int) Cache::get('ga_max_generations', 100);
         $fitness = (float) Cache::get('ga_fitness', 0);
-        $hardViolations = (int) Cache::get('ga_violations', 0);
-        $distViolations = (int) Cache::get('ga_dist_violations', 0);
-        $bestHard = (int) Cache::get('ga_best_hard', 0);
-        $bestDist = (int) Cache::get('ga_best_dist', 0);
+        $hardViolations = Cache::get('ga_violations', 0);
+        $distViolations = Cache::get('ga_dist_violations', 0);
+        $bestHard = Cache::get('ga_best_hard');
+        $bestDist = Cache::get('ga_best_dist');
         $elapsed = time() - $startedAt;
+
+        $bestHardLabel = is_numeric($bestHard) ? (int) $bestHard : '-';
+        $bestDistLabel = is_numeric($bestDist) ? (int) $bestDist : '-';
 
         if ($generation > 0 && $status === 'starting') {
             $status = 'running';
@@ -79,16 +83,16 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         $bar = str_repeat('█', $filled) . str_repeat('░', $barWidth - $filled);
 
         $line = sprintf(
-            ' %s %3d%% | gen %d/%d | fitness %.6f | hard %d (%d best) | dist %d (%d best) | %s | %ss',
+            ' %s %3d%% | gen %d/%d | fitness %.6f | hard %s (%s best) | dist %s (%s best) | %s | %ss',
             $bar,
             $percent,
             $generation,
             $maxGenerations,
             $fitness,
-            $hardViolations,
-            $bestHard,
-            $distViolations,
-            $bestDist,
+            is_numeric($hardViolations) ? $hardViolations : '-',
+            $bestHardLabel,
+            is_numeric($distViolations) ? $distViolations : '-',
+            $bestDistLabel,
             strtoupper((string) $status),
             $elapsed
         );
