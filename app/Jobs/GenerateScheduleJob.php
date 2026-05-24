@@ -34,13 +34,30 @@ class GenerateScheduleJob implements ShouldQueue
     // [DIPERBAIKI] Compactness weight dihapus agar persebaran mapel lebih natural ke banyak hari
     private int $dayPriorityWeight = 50;    // Hari awal HARUS full sebelum hari berikutnya
 
+    private function configureParameters(int $totalGenes, int $totalSlots): void
+    {
+        $this->populationSize = min(120, max(60, (int) ceil($totalGenes * 0.5)));
+        $this->maxGenerations = min(80, max(40, (int) ceil($totalGenes * 0.35)));
+        $this->tournamentSize = min(5, max(3, (int) ceil(sqrt($this->populationSize))));
+        $this->eliteCount = max(3, (int) ceil($this->populationSize * 0.05));
+
+        if ($totalGenes > 200) {
+            $this->crossoverRate = 0.85;
+            $this->mutationRate = 0.04;
+        }
+
+        if ($totalGenes > 400) {
+            $this->populationSize = min($this->populationSize, 100);
+            $this->maxGenerations = min($this->maxGenerations, 60);
+        }
+    }
+
     public function handle(): void
     {
         Cache::put('ga_status', 'running', 600);
         Cache::put('ga_generation', 0, 600);
         Cache::put('ga_fitness', 0, 600);
         Cache::put('ga_violations', 0, 600);
-        Cache::put('ga_max_generations', $this->maxGenerations, 600);
 
         $guruMapels = GuruMapel::with(['mapel', 'guru', 'kelas'])->get();
         $jamPelajaranList = JamPelajaran::orderBy('jam_ke')->get();
@@ -107,6 +124,9 @@ class GenerateScheduleJob implements ShouldQueue
         $slotsPerDay = count($jamIds);
         $totalHari = count($hariAktif);
 
+        $this->configureParameters($totalGenes, $totalSlots);
+        Cache::put('ga_max_generations', $this->maxGenerations, 600);
+
         // ── STRUCTURAL: compute allowed slots per kelas ──
         $kelasLessonCount = [];
         foreach ($genes as $gene) {
@@ -133,9 +153,11 @@ class GenerateScheduleJob implements ShouldQueue
 
         // ── INITIAL POPULATION ──
         $population = [];
-        $smartCount = (int) ($this->populationSize * 0.3);
-        for ($i = 0; $i < $this->populationSize; $i++) {
-            if ($i < $smartCount) {
+        $population[] = $this->createGreedyChromosome($genes, $slotMap, $kelasAllowedSlots);
+
+        $smartCount = min(20, max(5, (int) round($this->populationSize * 0.25)));
+        for ($i = 1; $i < $this->populationSize; $i++) {
+            if ($i <= $smartCount) {
                 $population[] = $this->createSmartChromosome($totalGenes, $genes, $slotMap, $kelasAllowedSlots);
             } else {
                 $chromosome = [];
@@ -194,8 +216,8 @@ class GenerateScheduleJob implements ShouldQueue
                 break;
             }
 
-            // Local search every 50 generations on best chromosome
-            if ($gen % 50 === 0 && $gen > 0 && $bestChromosome) {
+            // Local search every 40 generations on the current best chromosome.
+            if ($gen > 0 && $gen % 40 === 0 && $bestChromosome) {
                 $improved = $this->localSearch($bestChromosome, $evalContext);
                 $improvedScore = $this->evaluate($improved, $evalContext)['total'];
                 if ($improvedScore < $bestScore) {
@@ -345,6 +367,70 @@ class GenerateScheduleJob implements ShouldQueue
             $usedGuruSlots[$gene['guru_id']][$bestSlot] = true;
             $usedKelasSlots[$gene['kelas_id']][$bestSlot] = true;
             $kelasMapelPlacements[$key][$slotMap[$bestSlot]['hari_idx']][] = $slotMap[$bestSlot]['jam_pos'];
+        }
+
+        return $chromosome;
+    }
+
+    private function createGreedyChromosome(array $genes, array $slotMap, array $kelasAllowedSlots): array
+    {
+        $geneCount = count($genes);
+        $chromosome = array_fill(0, $geneCount, 0);
+        $guruSlots = [];
+        $kelasSlots = [];
+        $kelasDayCount = [];
+        $teacherLoad = [];
+        $kelasLoad = [];
+
+        foreach ($genes as $gene) {
+            $teacherLoad[$gene['guru_id']] = ($teacherLoad[$gene['guru_id']] ?? 0) + 1;
+            $kelasLoad[$gene['kelas_id']] = ($kelasLoad[$gene['kelas_id']] ?? 0) + 1;
+        }
+
+        $indices = range(0, $geneCount - 1);
+        usort($indices, function ($a, $b) use ($genes, $teacherLoad, $kelasLoad) {
+            $scoreA = ($teacherLoad[$genes[$a]['guru_id']] ?? 0) + ($kelasLoad[$genes[$a]['kelas_id']] ?? 0) * 1.2;
+            $scoreB = ($teacherLoad[$genes[$b]['guru_id']] ?? 0) + ($kelasLoad[$genes[$b]['kelas_id']] ?? 0) * 1.2;
+            return $scoreB <=> $scoreA;
+        });
+
+        foreach ($indices as $g) {
+            $gene = $genes[$g];
+            $bestSlot = null;
+            $bestScore = PHP_INT_MAX;
+            $allowedSlots = $kelasAllowedSlots[$gene['kelas_id']];
+
+            foreach ($allowedSlots as $slotIndex) {
+                $conflicts = 0;
+                if (isset($guruSlots[$gene['guru_id']][$slotIndex])) {
+                    $conflicts += 1000;
+                }
+                if (isset($kelasSlots[$gene['kelas_id']][$slotIndex])) {
+                    $conflicts += 1000;
+                }
+
+                $hariIdx = $slotMap[$slotIndex]['hari_idx'];
+                $sameDayCount = $kelasDayCount[$gene['kelas_id']][$hariIdx] ?? 0;
+                $jamPos = $slotMap[$slotIndex]['jam_pos'];
+                $score = $conflicts + ($sameDayCount * 10) + ($hariIdx * 5) + $jamPos;
+
+                if ($score < $bestScore) {
+                    $bestScore = $score;
+                    $bestSlot = $slotIndex;
+                    if ($score === 0) {
+                        break;
+                    }
+                }
+            }
+
+            if ($bestSlot === null) {
+                $bestSlot = $allowedSlots[array_rand($allowedSlots)];
+            }
+
+            $chromosome[$g] = $bestSlot;
+            $guruSlots[$gene['guru_id']][$bestSlot] = true;
+            $kelasSlots[$gene['kelas_id']][$bestSlot] = true;
+            $kelasDayCount[$gene['kelas_id']][$slotMap[$bestSlot]['hari_idx']] = ($kelasDayCount[$gene['kelas_id']][$slotMap[$bestSlot]['hari_idx']] ?? 0) + 1;
         }
 
         return $chromosome;
