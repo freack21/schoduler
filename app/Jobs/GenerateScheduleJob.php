@@ -18,12 +18,12 @@ class GenerateScheduleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    // GA Parameters (optimized)
-    private int $populationSize = 200;
-    private int $maxGenerations = 100;
-    private float $crossoverRate = 0.9;
-    private float $mutationRate = 0.05;
-    private int $eliteCount = 5;
+    // Tuned GA parameters
+    private int $populationSize = 150;   // fixed size for stability
+    private int $maxGenerations = 500;   // enough generations for convergence
+    private float $crossoverRate = 0.85; // slightly less aggressive
+    private float $mutationRate = 0.15;  // higher exploration
+    private int $eliteCount = 15;        // 10% of population
     private int $tournamentSize = 5;
 
     // Penalty weights (hard constraints 10x higher than soft)
@@ -34,22 +34,13 @@ class GenerateScheduleJob implements ShouldQueue
     // [DIPERBAIKI] Compactness weight dihapus agar persebaran mapel lebih natural ke banyak hari
     private int $dayPriorityWeight = 50;    // Hari awal HARUS full sebelum hari berikutnya
 
+    /**
+     * Configure static parameters. Parameters are already set above.
+     * This method now only ensures eliteCount respects 10% rule.
+     */
     private function configureParameters(int $totalGenes, int $totalSlots): void
     {
-        $this->populationSize = min(120, max(60, (int) ceil($totalGenes * 0.5)));
-        $this->maxGenerations = min(80, max(40, (int) ceil($totalGenes * 0.35)));
-        $this->tournamentSize = min(5, max(3, (int) ceil(sqrt($this->populationSize))));
-        $this->eliteCount = max(3, (int) ceil($this->populationSize * 0.05));
-
-        if ($totalGenes > 200) {
-            $this->crossoverRate = 0.85;
-            $this->mutationRate = 0.04;
-        }
-
-        if ($totalGenes > 400) {
-            $this->populationSize = min($this->populationSize, 100);
-            $this->maxGenerations = min($this->maxGenerations, 60);
-        }
+        $this->eliteCount = max(1, (int) ceil($this->populationSize * 0.10));
     }
 
     public function handle(): void
@@ -139,8 +130,6 @@ class GenerateScheduleJob implements ShouldQueue
             $kelasLessonCount[$gene['kelas_id']] = ($kelasLessonCount[$gene['kelas_id']] ?? 0) + 1;
         }
 
-        // [DIPERBAIKI] Bebaskan semua kelas agar bisa menggunakan seluruh slot,
-        // Ini memberi kebebasan GA untuk menyelesaikan bentrok.
         $allSlots = range(0, $totalSlots - 1);
         $kelasAllowedSlots = [];
         foreach ($kelasLessonCount as $kelasId => $lessonCount) {
@@ -159,6 +148,7 @@ class GenerateScheduleJob implements ShouldQueue
 
         // ── INITIAL POPULATION ──
         $population = [];
+        // Greedy chromosome repaired to guarantee feasibility
         $population[] = $this->repairChromosome($this->createGreedyChromosome($genes, $slotMap, $kelasAllowedSlots), $evalContext);
 
         $smartCount = min(20, max(5, (int) round($this->populationSize * 0.25)));
@@ -171,7 +161,8 @@ class GenerateScheduleJob implements ShouldQueue
                     $allowed = $kelasAllowedSlots[$genes[$g]['kelas_id']];
                     $chromosome[] = $allowed[array_rand($allowed)];
                 }
-                $population[] = $this->repairChromosome($chromosome, $evalContext);
+                // No repair for random chromosomes to keep diversity
+                $population[] = $chromosome;
             }
         }
 
@@ -179,27 +170,28 @@ class GenerateScheduleJob implements ShouldQueue
         $bestScore = PHP_INT_MAX;
 
         // ── EVOLUTION LOOP ──
+        $stagnantGenerations = 0;
+        $lastBestScore = PHP_INT_MAX;
         for ($gen = 0; $gen < $this->maxGenerations; $gen++) {
-            // Evaluate
+            // Evaluate all individuals
             $scores = [];
             foreach ($population as $chromosome) {
                 $scores[] = $this->evaluate($chromosome, $evalContext);
             }
 
-            // Find best
+            // Identify best chromosome this generation
             $bestIdx = 0;
             for ($i = 1; $i < count($scores); $i++) {
                 if ($scores[$i]['total'] < $scores[$bestIdx]['total']) {
                     $bestIdx = $i;
                 }
             }
-
             if ($scores[$bestIdx]['total'] < $bestScore) {
                 $bestScore = $scores[$bestIdx]['total'];
                 $bestChromosome = $population[$bestIdx];
             }
 
-            // Update progress
+            // Progress cache updates
             $currentFitness = 1.0 / (1.0 + $bestScore);
             $currentHardViolations = $scores[$bestIdx]['guru_conflicts'] + $scores[$bestIdx]['kelas_conflicts'];
             $currentDistViolations = $scores[$bestIdx]['dist_violations'];
@@ -228,46 +220,46 @@ class GenerateScheduleJob implements ShouldQueue
                 Log::info("GA Gen {$gen}: Score={$bestScore}, Guru={$scores[$bestIdx]['guru_conflicts']}, Kelas={$scores[$bestIdx]['kelas_conflicts']}, Dist={$scores[$bestIdx]['dist_violations']}, Cons={$scores[$bestIdx]['consecutive_violations']}, DayPri={$scores[$bestIdx]['day_priority_penalty']}");
             }
 
-            // Early stop
+            // Early stop if perfect solution found
             if ($bestScore === 0) {
-                // Update final cache if early stop triggered
                 Cache::put('ga_generation', $gen + 1, 600);
                 Cache::put('ga_fitness', 1.0, 600);
                 break;
             }
 
-            // Local search every 40 generations on the current best chromosome.
-            if ($gen > 0 && $gen % 40 === 0 && $bestChromosome) {
+            // Local search every 10 generations (more aggressive)
+            if ($gen > 0 && $gen % 10 === 0 && $bestChromosome) {
                 $improved = $this->localSearch($bestChromosome, $evalContext);
                 $improvedScore = $this->evaluate($improved, $evalContext)['total'];
                 if ($improvedScore < $bestScore) {
                     $bestScore = $improvedScore;
                     $bestChromosome = $improved;
-                    // Inject back into population
                     $population[0] = $bestChromosome;
                 }
             }
 
-            // Elitism
+            // ----- ELITISM & REPRODUCTION -----
+            // Preserve elites
             $indexed = [];
-            for ($i = 0; $i < count($population); $i++) {
-                $indexed[] = ['c' => $population[$i], 's' => $scores[$i]['total']];
+            foreach ($population as $idx => $chrom) {
+                $indexed[] = ['c' => $chrom, 's' => $scores[$idx]['total']];
             }
             usort($indexed, fn($a, $b) => $a['s'] <=> $b['s']);
-
             $newPop = [];
             for ($i = 0; $i < $this->eliteCount; $i++) {
                 $newPop[] = $indexed[$i]['c'];
             }
 
+            // Prepare fitness values for tournament selection
             $fitnessValues = array_map(fn($s) => 1.0 / (1.0 + $s['total']), $scores);
 
             while (count($newPop) < $this->populationSize) {
                 $p1 = $this->tournamentSelect($population, $fitnessValues);
                 $p2 = $this->tournamentSelect($population, $fitnessValues);
 
+                // Use class-preserving crossover if enabled
                 if ($this->randFloat() < $this->crossoverRate) {
-                    [$c1, $c2] = $this->uniformCrossover($p1, $p2);
+                    [$c1, $c2] = $this->classPreservingCrossover($p1, $p2, $genes);
                 } else {
                     $c1 = $p1;
                     $c2 = $p2;
@@ -275,16 +267,46 @@ class GenerateScheduleJob implements ShouldQueue
 
                 $c1 = $this->smartMutate($c1, $evalContext, $totalSlots);
                 $c2 = $this->smartMutate($c2, $evalContext, $totalSlots);
-                $c1 = $this->repairChromosome($c1, $evalContext);
-                $c2 = $this->repairChromosome($c2, $evalContext);
-
+                // No repair here – let selection filter bad chromosomes
                 $newPop[] = $c1;
                 if (count($newPop) < $this->populationSize) {
                     $newPop[] = $c2;
                 }
             }
-
             $population = $newPop;
+
+            // Stagnation detection & restart
+            if ($bestScore < $lastBestScore) {
+                $stagnantGenerations = 0;
+                $lastBestScore = $bestScore;
+            } else {
+                $stagnantGenerations++;
+            }
+            if ($stagnantGenerations >= 30) {
+                // Keep top 20% elites, replace rest
+                $keepCount = (int) ceil($this->populationSize * 0.20);
+                $newPop = [];
+                for ($i = 0; $i < $keepCount; $i++) {
+                    $newPop[] = $indexed[$i]['c'];
+                }
+                // Adaptive mutation boost during restart
+                $originalMutation = $this->mutationRate;
+                $this->mutationRate = 0.25;
+                while (count($newPop) < $this->populationSize) {
+                    $p1 = $this->tournamentSelect($population, $fitnessValues);
+                    $p2 = $this->tournamentSelect($population, $fitnessValues);
+                    [$c1, $c2] = $this->classPreservingCrossover($p1, $p2, $genes);
+                    $c1 = $this->smartMutate($c1, $evalContext, $totalSlots);
+                    $c2 = $this->smartMutate($c2, $evalContext, $totalSlots);
+                    $newPop[] = $c1;
+                    if (count($newPop) < $this->populationSize) {
+                        $newPop[] = $c2;
+                    }
+                }
+                $this->mutationRate = $originalMutation;
+                $population = $newPop;
+                $stagnantGenerations = 0;
+            }
         }
 
         // ── SAVE RESULT ──
@@ -513,7 +535,7 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             $chromosome[$g] = $bestSlot;
-            $guruSlots[$gene['guru_id']][$bestSlot] = true;
+            $guruSlots[$guruId][$bestSlot] = true;
             $kelasSlots[$gene['kelas_id']][$bestSlot] = true;
         }
 
@@ -632,6 +654,7 @@ class GenerateScheduleJob implements ShouldQueue
             'consecutive_violations' => $consecutiveViolations,
             'day_priority_penalty' => $dayPriorityPenalty,
             'total' => $total,
+            'kelasMapelHari' => $kelasMapelHari, // Needed for local search heuristic
         ];
     }
 
@@ -655,6 +678,36 @@ class GenerateScheduleJob implements ShouldQueue
     //  CROSSOVER
     // ═══════════════════════════════════════════════════════════════
 
+    /**
+     * Class‑preserving crossover: keep all genes belonging to the same class (kelas_id)
+     * from one parent, and the rest from the other parent. This maintains feasible
+     * schedules per class and reduces destructive mixing.
+     */
+    private function classPreservingCrossover(array $p1, array $p2, array $genes): array
+    {
+        // Group gene indices by kelas_id
+        $classes = [];
+        foreach ($genes as $idx => $gene) {
+            $classes[$gene['kelas_id']][] = $idx;
+        }
+        $c1 = [];
+        $c2 = [];
+        foreach ($classes as $kelasId => $indices) {
+            $useParent1 = $this->randFloat() < 0.5;
+            $source = $useParent1 ? $p1 : $p2;
+            $other  = $useParent1 ? $p2 : $p1;
+            foreach ($indices as $i) {
+                $c1[$i] = $source[$i];
+                $c2[$i] = $other[$i];
+            }
+        }
+        // Ensure proper order of indices
+        ksort($c1);
+        ksort($c2);
+        return [$c1, $c2];
+    }
+
+    // Keep original uniform crossover for fallback (not used in main loop)
     private function uniformCrossover(array $p1, array $p2): array
     {
         $c1 = [];
@@ -753,16 +806,14 @@ class GenerateScheduleJob implements ShouldQueue
         $bestScore = $this->evaluate($chromosome, $ctx)['total'];
         $bestChromosome = $chromosome;
 
-        // Strategy 1: Relocate conflicting genes
+        // Strategy 1: Relocate conflicting genes (unchanged)
         $guruSlots = [];
         $kelasSlots = [];
         $conflictPairs = [];
-
         for ($g = 0; $g < count($chromosome); $g++) {
             $s = $chromosome[$g];
             $guruId = $genes[$g]['guru_id'];
             $kelasId = $genes[$g]['kelas_id'];
-
             if (isset($guruSlots[$guruId][$s])) {
                 $conflictPairs[] = [$guruSlots[$guruId][$s], $g];
             }
