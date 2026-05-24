@@ -127,6 +127,15 @@ class GenerateScheduleJob implements ShouldQueue
         $this->configureParameters($totalGenes, $totalSlots);
         Cache::put('ga_max_generations', $this->maxGenerations, 600);
 
+        $bestOverallScore = PHP_INT_MAX;
+        $bestOverallHard = PHP_INT_MAX;
+        $bestOverallDist = PHP_INT_MAX;
+        $bestOverallFitness = 0.0;
+        Cache::put('ga_best_generation', 0, 600);
+        Cache::put('ga_best_hard', $bestOverallHard, 600);
+        Cache::put('ga_best_dist', $bestOverallDist, 600);
+        Cache::put('ga_best_fitness', $bestOverallFitness, 600);
+
         // ── STRUCTURAL: compute allowed slots per kelas ──
         $kelasLessonCount = [];
         foreach ($genes as $gene) {
@@ -194,14 +203,28 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             // Update progress
-            $fitness = 1.0 / (1.0 + $bestScore);
-            $hardViolations = $scores[$bestIdx]['guru_conflicts'] + $scores[$bestIdx]['kelas_conflicts'];
+            $currentFitness = 1.0 / (1.0 + $bestScore);
+            $currentHardViolations = $scores[$bestIdx]['guru_conflicts'] + $scores[$bestIdx]['kelas_conflicts'];
+            $currentDistViolations = $scores[$bestIdx]['dist_violations'];
 
-            // Refresh progress every generation so terminal feedback does not appear stuck.
+            if ($bestScore < $bestOverallScore) {
+                $bestOverallScore = $bestScore;
+                $bestOverallHard = $currentHardViolations;
+                $bestOverallDist = $currentDistViolations;
+                $bestOverallFitness = $currentFitness;
+                Cache::put('ga_best_generation', $gen + 1, 600);
+                Cache::put('ga_best_hard', $bestOverallHard, 600);
+                Cache::put('ga_best_dist', $bestOverallDist, 600);
+                Cache::put('ga_best_fitness', round($bestOverallFitness, 6), 600);
+                Cache::put('ga_violations', $bestOverallHard, 600);
+                Cache::put('ga_dist_violations', $bestOverallDist, 600);
+                Cache::put('ga_fitness', round($bestOverallFitness, 6), 600);
+            }
+
             Cache::put('ga_generation', $gen + 1, 600);
-            Cache::put('ga_fitness', round($fitness, 6), 600);
-            Cache::put('ga_violations', $hardViolations, 600);
-            Cache::put('ga_dist_violations', $scores[$bestIdx]['dist_violations'], 600);
+            Cache::put('ga_fitness', round($currentFitness, 6), 600);
+            Cache::put('ga_violations', $bestOverallHard, 600);
+            Cache::put('ga_dist_violations', $bestOverallDist, 600);
 
             // Debug log every 50 generations
             if ($gen % 50 === 0) {

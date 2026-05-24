@@ -26,6 +26,10 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         'ga_violations',
         'ga_dist_violations',
         'ga_max_generations',
+        'ga_best_generation',
+        'ga_best_hard',
+        'ga_best_dist',
+        'ga_best_fitness',
         'ga_message',
     ] as $key) {
         Cache::forget($key);
@@ -61,7 +65,13 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         $fitness = (float) Cache::get('ga_fitness', 0);
         $hardViolations = (int) Cache::get('ga_violations', 0);
         $distViolations = (int) Cache::get('ga_dist_violations', 0);
+        $bestHard = (int) Cache::get('ga_best_hard', 0);
+        $bestDist = (int) Cache::get('ga_best_dist', 0);
         $elapsed = time() - $startedAt;
+
+        if ($generation > 0 && $status === 'starting') {
+            $status = 'running';
+        }
 
         $percent = $maxGenerations > 0 ? min(100, (int) floor(($generation / $maxGenerations) * 100)) : 0;
         $barWidth = 32;
@@ -69,14 +79,16 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         $bar = str_repeat('█', $filled) . str_repeat('░', $barWidth - $filled);
 
         $line = sprintf(
-            ' %s %3d%% | gen %d/%d | fitness %.6f | hard %d | dist %d | %s | %ss',
+            ' %s %3d%% | gen %d/%d | fitness %.6f | hard %d (%d best) | dist %d (%d best) | %s | %ss',
             $bar,
             $percent,
             $generation,
             $maxGenerations,
             $fitness,
             $hardViolations,
+            $bestHard,
             $distViolations,
+            $bestDist,
             strtoupper((string) $status),
             $elapsed
         );
