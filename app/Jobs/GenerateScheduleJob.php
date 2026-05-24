@@ -174,14 +174,12 @@ class GenerateScheduleJob implements ShouldQueue
             // Update progress
             $fitness = 1.0 / (1.0 + $bestScore);
             $hardViolations = $scores[$bestIdx]['guru_conflicts'] + $scores[$bestIdx]['kelas_conflicts'];
-            
-            // [DIPERBAIKI] Cache update dibatasi tiap 10 generasi agar tidak terjadi I/O bottleneck
-            if ($gen % 10 === 0 || $gen === $this->maxGenerations - 1) {
-                Cache::put('ga_generation', $gen + 1, 600);
-                Cache::put('ga_fitness', round($fitness, 6), 600);
-                Cache::put('ga_violations', $hardViolations, 600);
-                Cache::put('ga_dist_violations', $scores[$bestIdx]['dist_violations'], 600);
-            }
+
+            // Refresh progress every generation so terminal feedback does not appear stuck.
+            Cache::put('ga_generation', $gen + 1, 600);
+            Cache::put('ga_fitness', round($fitness, 6), 600);
+            Cache::put('ga_violations', $hardViolations, 600);
+            Cache::put('ga_dist_violations', $scores[$bestIdx]['dist_violations'], 600);
 
             // Debug log every 50 generations
             if ($gen % 50 === 0) {
