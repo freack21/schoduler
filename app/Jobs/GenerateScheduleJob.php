@@ -20,7 +20,7 @@ class GenerateScheduleJob implements ShouldQueue
 
     // Tuned GA parameters
     private int $populationSize = 50;    // Reduced from 150 for speed
-    private int $maxGenerations = 100;   // Reduced from 500 for speed
+    private int $maxGenerations = 300;   // Increased to allow grouping optimization
     private float $crossoverRate = 0.85; 
     private float $mutationRate = 0.15;  
     private int $eliteCount = 5;         
@@ -595,10 +595,19 @@ class GenerateScheduleJob implements ShouldQueue
             $kelasHariFill[$kelasId][$hariIdx] = ($kelasHariFill[$kelasId][$hariIdx] ?? 0) + 1;
         }
 
-        // Soft: distribution + consecutive (Compactness removed)
+        // Soft: distribution + consecutive + spread
         foreach ($kelasMapelHari as $key => $hariData) {
             $mapelId = (int) explode('-', $key)[1];
             $maxPerHari = $mapelMaxPerHari[$mapelId] ?? 2;
+            $jamMinggu = $mapelJamPerMinggu[$mapelId] ?? 2;
+            
+            $idealDays = (int) ceil($jamMinggu / $maxPerHari);
+            $actualDays = count($hariData);
+            
+            // Spread penalty: if subject is spread across more days than necessary
+            if ($actualDays > $idealDays) {
+                $distViolations += ($actualDays - $idealDays) * 2; // Weight spread penalty higher
+            }
 
             foreach ($hariData as $hariIdx => $positions) {
                 $count = count($positions);
