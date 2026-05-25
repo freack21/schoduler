@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
 
     private function loadAllJson(): array
     {
-        $path = database_path('seeders/data/all.json');
+        $path = database_path('seeders/data/data_seeder.json');
 
         if (! file_exists($path)) {
             throw new RuntimeException("File data tidak ditemukan: {$path}");
@@ -320,8 +320,14 @@ class DatabaseSeeder extends Seeder
 
     private function parseTingkatList(string $raw): array
     {
-        preg_match_all('/10|11|12/', $raw, $matches);
-        return array_values(array_unique($matches[0] ?? []));
+        preg_match_all('/(10|11|12)(?:-(MIPA|IPS))?/i', $raw, $matches, PREG_SET_ORDER);
+        $result = [];
+        foreach ($matches as $m) {
+            $base = $m[1];
+            $major = isset($m[2]) && $m[2] ? '-' . strtoupper($m[2]) : '';
+            $result[] = $base . $major;
+        }
+        return array_values(array_unique($result));
     }
 
     private function normalizeMapelName(string $name): string
@@ -342,23 +348,31 @@ class DatabaseSeeder extends Seeder
     {
         $tingkatListStr = array_map('strval', $tingkatList);
         return collect($kelasByJsonName)
-            ->filter(fn ($kelas, $jsonName) => in_array((string) Str::before($jsonName, '-'), $tingkatListStr, true))
+            ->filter(function ($kelas, $jsonName) use ($tingkatListStr) {
+                // If seeder says "11", it applies to "11-MIPA-1", "11-IPS-1", "11-1".
+                // If seeder says "11-MIPA", it only applies to "11-MIPA-1", "11-MIPA-2".
+                foreach ($tingkatListStr as $t) {
+                    if (str_starts_with($jsonName, $t)) return true;
+                }
+                return false;
+            })
             ->values()
             ->all();
     }
 
     private function formatKelasName(string $jsonName): string
     {
-        [$tingkat, $nomor] = array_pad(explode('-', $jsonName, 2), 2, '');
-
+        $parts = explode('-', $jsonName);
+        $tingkat = $parts[0] ?? '';
         $roman = match ($tingkat) {
             '10' => 'X',
             '11' => 'XI',
             '12' => 'XII',
             default => $tingkat,
         };
-
-        return $nomor !== '' ? "{$roman}-{$nomor}" : $roman;
+        
+        $parts[0] = $roman;
+        return implode('-', $parts);
     }
 
     private function kelasSortKey(string $kelas): string
