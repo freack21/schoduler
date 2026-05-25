@@ -19,11 +19,11 @@ class GenerateScheduleJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     // Tuned GA parameters
-    private int $populationSize = 150;   // fixed size for stability
-    private int $maxGenerations = 500;   // enough generations for convergence
-    private float $crossoverRate = 0.85; // slightly less aggressive
-    private float $mutationRate = 0.15;  // higher exploration
-    private int $eliteCount = 15;        // 10% of population
+    private int $populationSize = 50;    // Reduced from 150 for speed
+    private int $maxGenerations = 100;   // Reduced from 500 for speed
+    private float $crossoverRate = 0.85; 
+    private float $mutationRate = 0.15;  
+    private int $eliteCount = 5;         
     private int $tournamentSize = 5;
 
     // Penalty weights (hard constraints 10x higher than soft)
@@ -746,8 +746,8 @@ class GenerateScheduleJob implements ShouldQueue
             if (isset($guruSlots[$guruId][$slotIdx]) || isset($kelasSlots[$kelasId][$slotIdx])) {
                 $conflictIndices[] = $g;
             }
-            $guruSlots[$guruId][$slotIdx] = true;
-            $kelasSlots[$kelasId][$slotIdx] = true;
+            $guruSlots[$guruId][$slotIdx][] = $g;
+            $kelasSlots[$kelasId][$slotIdx][] = $g;
         }
 
         if (!empty($conflictIndices)) {
@@ -757,19 +757,32 @@ class GenerateScheduleJob implements ShouldQueue
             for ($i = 0; $i < min($mutCount, count($conflictIndices)); $i++) {
                 $idx = $conflictIndices[$i];
                 $allowed = $kelasAllowedSlots[$genes[$idx]['kelas_id']];
-
-                $blockedSlots = [];
-                for ($g2 = 0; $g2 < $geneCount; $g2++) {
-                    if ($g2 === $idx) continue;
-                    $s2 = $chromosome[$g2];
-                    if ($genes[$g2]['guru_id'] === $genes[$idx]['guru_id'] || $genes[$g2]['kelas_id'] === $genes[$idx]['kelas_id']) {
-                        $blockedSlots[$s2] = true;
-                    }
-                }
+                $guruId = $genes[$idx]['guru_id'];
+                $kelasId = $genes[$idx]['kelas_id'];
 
                 $available = [];
                 foreach ($allowed as $s) {
-                    if (!isset($blockedSlots[$s])) {
+                    $guruBlocked = false;
+                    if (isset($guruSlots[$guruId][$s])) {
+                        foreach ($guruSlots[$guruId][$s] as $gId) {
+                            if ($gId !== $idx) {
+                                $guruBlocked = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    $kelasBlocked = false;
+                    if (!$guruBlocked && isset($kelasSlots[$kelasId][$s])) {
+                        foreach ($kelasSlots[$kelasId][$s] as $gId) {
+                            if ($gId !== $idx) {
+                                $kelasBlocked = true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (!$guruBlocked && !$kelasBlocked) {
                         $available[] = $s;
                     }
                 }
@@ -806,7 +819,7 @@ class GenerateScheduleJob implements ShouldQueue
         $bestScore = $this->evaluate($chromosome, $ctx)['total'];
         $bestChromosome = $chromosome;
 
-        // Strategy 1: Relocate conflicting genes (unchanged)
+        // Strategy 1: Relocate conflicting genes
         $guruSlots = [];
         $kelasSlots = [];
         $conflictPairs = [];
@@ -825,6 +838,12 @@ class GenerateScheduleJob implements ShouldQueue
             $kelasSlots[$kelasId][$s] = $g;
         }
 
+        // Cap conflict pairs to avoid massive evaluation loops
+        if (count($conflictPairs) > 50) {
+            shuffle($conflictPairs);
+            $conflictPairs = array_slice($conflictPairs, 0, 50);
+        }
+
         foreach ($conflictPairs as [$g1, $g2]) {
             $allowed = $kelasAllowedSlots[$genes[$g2]['kelas_id']];
             foreach ($allowed as $s) {
@@ -840,7 +859,7 @@ class GenerateScheduleJob implements ShouldQueue
             if ($bestScore === 0) return $bestChromosome;
         }
 
-        // [DIPERBAIKI] Strategy 2: Swap mapel yang BERBEDA dalam KELAS YANG SAMA 
+        // Strategy 2: Swap mapel yang BERBEDA dalam KELAS YANG SAMA 
         // untuk memperbaiki distribusi (day priority/persebaran).
         $genesByKelas = [];
         for ($g = 0; $g < count($genes); $g++) {

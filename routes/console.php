@@ -48,39 +48,35 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         PHP_BINARY,
         'artisan',
         'queue:work',
-        '--once',
-        '--quiet',
+        '--stop-when-empty',
         '--timeout=' . $timeout,
         '--tries=1',
     ], base_path(), null, null, $timeout + 30);
 
     $process->start();
 
+    // Beri waktu sejenak agar job masuk antrian sebelum worker mengecek 'empty'
+    usleep(500000);
+
     $startedAt = time();
     $lastLineLength = 0;
 
-    while ($process->isRunning()) {
+    while (true) {
         $status = Cache::get('ga_status', 'starting');
         $generation = (int) Cache::get('ga_generation', 0);
         $maxGenerations = (int) Cache::get('ga_max_generations', 100);
         $fitness = (float) Cache::get('ga_fitness', 0);
-        $hardViolations = Cache::get('ga_violations', 0);
-        $distViolations = Cache::get('ga_dist_violations', 0);
-        $bestHard = Cache::get('ga_best_hard');
-        $bestDist = Cache::get('ga_best_dist');
+        $hardViolations = (int) Cache::get('ga_violations', 0);
+        $distViolations = (int) Cache::get('ga_dist_violations', 0);
         $elapsed = time() - $startedAt;
-
-        $bestHardLabel = is_numeric($bestHard) ? (int) $bestHard : '-';
-        $bestDistLabel = is_numeric($bestDist) ? (int) $bestDist : '-';
-
-        if ($generation > 0 && $status === 'starting') {
-            $status = 'running';
-        }
 
         $percent = $maxGenerations > 0 ? min(100, (int) floor(($generation / $maxGenerations) * 100)) : 0;
         $barWidth = 32;
         $filled = (int) floor(($percent / 100) * $barWidth);
         $bar = str_repeat('█', $filled) . str_repeat('░', $barWidth - $filled);
+
+        $bestHardLabel = is_numeric(Cache::get('ga_best_hard')) ? Cache::get('ga_best_hard') : '-';
+        $bestDistLabel = is_numeric(Cache::get('ga_best_dist')) ? Cache::get('ga_best_dist') : '-';
 
         $line = sprintf(
             ' %s %3d%% | gen %d/%d | fitness %.6f | hard %s (%s best) | dist %s (%s best) | %s | %ss',
@@ -89,9 +85,9 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
             $generation,
             $maxGenerations,
             $fitness,
-            is_numeric($hardViolations) ? $hardViolations : '-',
+            $hardViolations,
             $bestHardLabel,
-            is_numeric($distViolations) ? $distViolations : '-',
+            $distViolations,
             $bestDistLabel,
             strtoupper((string) $status),
             $elapsed
@@ -102,6 +98,12 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         $lastLineLength = strlen($line);
 
         if (in_array($status, ['done', 'error'], true)) {
+            break;
+        }
+
+        if (!$process->isRunning() && $status !== 'done') {
+            Cache::put('ga_status', 'error', 600);
+            Cache::put('ga_message', "Queue worker berhenti tidak wajar sebelum jadwal selesai.", 600);
             break;
         }
 

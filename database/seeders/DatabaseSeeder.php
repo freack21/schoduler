@@ -204,7 +204,10 @@ class DatabaseSeeder extends Seeder
     private function seedGuru(array $guruRows, array $mapelByName, array $kelasByJsonName): int
     {
         $count = 0;
+        $intents = [];
+        $hashedPassword = Hash::make(self::DEFAULT_PASSWORD);
 
+        // Pass 1: Create Guru and collect teaching intents
         foreach ($guruRows as $index => $row) {
             $nama = trim((string) ($row['nama'] ?? ''));
             if ($nama === '') {
@@ -214,7 +217,7 @@ class DatabaseSeeder extends Seeder
             $user = User::create([
                 'id' => $this->uniqueUserId($this->normalizeId((string) ($row['nip'] ?? '')), 'guru-' . ($index + 1)),
                 'nama_lengkap' => $nama,
-                'password' => Hash::make(self::DEFAULT_PASSWORD),
+                'password' => $hashedPassword,
                 'role' => 'guru',
             ]);
 
@@ -227,10 +230,25 @@ class DatabaseSeeder extends Seeder
                     continue;
                 }
 
-                foreach ($this->kelasForTingkat($assignment['tingkat'], $kelasByJsonName) as $kelas) {
+                foreach ($assignment['tingkat'] as $tingkat) {
+                    $intents[$mapel->id][$tingkat][] = $guru->id;
+                }
+            }
+        }
+
+        // Pass 2: Distribute classes round-robin to avoid impossible constraints
+        foreach ($intents as $mapelId => $tingkatIntents) {
+            foreach ($tingkatIntents as $tingkat => $guruIds) {
+                $kelasList = $this->kelasForTingkat([$tingkat], $kelasByJsonName);
+                if (empty($kelasList) || empty($guruIds)) continue;
+
+                $guruCount = count($guruIds);
+                foreach ($kelasList as $idx => $kelas) {
+                    // Round robin: class idx % guruCount
+                    $guruId = $guruIds[$idx % $guruCount];
                     GuruMapel::firstOrCreate([
-                        'guru_id' => $guru->id,
-                        'mapel_id' => $mapel->id,
+                        'guru_id' => $guruId,
+                        'mapel_id' => $mapelId,
                         'kelas_id' => $kelas->id,
                     ]);
                 }
@@ -243,6 +261,7 @@ class DatabaseSeeder extends Seeder
     private function seedSiswa(array $siswaRows, array $kelasByJsonName): int
     {
         $count = 0;
+        $hashedPassword = Hash::make(self::DEFAULT_PASSWORD);
 
         foreach ($siswaRows as $index => $row) {
             $nama = trim((string) ($row['nama'] ?? ''));
@@ -258,7 +277,7 @@ class DatabaseSeeder extends Seeder
             $user = User::create([
                 'id' => $this->uniqueUserId($rawNisn, $fallback),
                 'nama_lengkap' => $nama,
-                'password' => Hash::make(self::DEFAULT_PASSWORD),
+                'password' => $hashedPassword,
                 'role' => 'siswa',
             ]);
 
@@ -321,8 +340,9 @@ class DatabaseSeeder extends Seeder
 
     private function kelasForTingkat(array $tingkatList, array $kelasByJsonName): array
     {
+        $tingkatListStr = array_map('strval', $tingkatList);
         return collect($kelasByJsonName)
-            ->filter(fn ($kelas, $jsonName) => in_array(Str::before($jsonName, '-'), $tingkatList, true))
+            ->filter(fn ($kelas, $jsonName) => in_array((string) Str::before($jsonName, '-'), $tingkatListStr, true))
             ->values()
             ->all();
     }
