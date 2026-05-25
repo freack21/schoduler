@@ -19,6 +19,8 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
     $this->line('Mode: dispatch job + auto queue worker + live progress terminal');
     $this->newLine();
 
+    Artisan::call('queue:clear');
+    
     foreach ([
         'ga_status',
         'ga_generation',
