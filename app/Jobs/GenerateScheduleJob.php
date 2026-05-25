@@ -443,6 +443,7 @@ class GenerateScheduleJob implements ShouldQueue
         $kelasMapelHari = [];
 
         $guruConflicts = 0;
+        $conflictingBlocks = [];
         $kelasConflicts = 0;
         $distViolations = 0;
         $consecutiveViolations = 0;
@@ -464,11 +465,13 @@ class GenerateScheduleJob implements ShouldQueue
 
                 if (isset($guruSlots[$guruId][$slotIdx])) {
                     $guruConflicts++;
+                    $conflictingBlocks[$b] = true;
                 }
                 $guruSlots[$guruId][$slotIdx] = true;
 
                 if (isset($kelasSlots[$kelasId][$slotIdx])) {
                     $kelasConflicts++;
+                    $conflictingBlocks[$b] = true;
                 }
                 $kelasSlots[$kelasId][$slotIdx] = true;
 
@@ -521,10 +524,11 @@ class GenerateScheduleJob implements ShouldQueue
             'consecutive_violations' => $consecutiveViolations,
             'day_priority_penalty' => $dayPriorityPenalty,
             'total' => $total,
+            'conflicting_blocks' => array_keys($conflictingBlocks),
         ];
     }
 
-    private function smartMutate(array $chromosome, array $ctx, int $totalSlots): array
+        private function smartMutate(array $chromosome, array $ctx, int $totalSlots): array
     {
         if ($this->randFloat() > $this->mutationRate) {
             return $chromosome;
@@ -532,13 +536,21 @@ class GenerateScheduleJob implements ShouldQueue
 
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
-        
         $totalBlocks = count($blocks);
-        // Mutate up to 5 random blocks
+        
+        $eval = $this->evaluate($chromosome, $ctx);
+        $conflictingBlocks = $eval['conflicting_blocks'];
+        
         $numMutations = rand(1, 5);
 
         for ($m = 0; $m < $numMutations; $m++) {
-            $b1 = rand(0, $totalBlocks - 1);
+            // Target conflicting blocks preferentially
+            if (!empty($conflictingBlocks) && $this->randFloat() > 0.3) {
+                $b1 = $conflictingBlocks[array_rand($conflictingBlocks)];
+            } else {
+                $b1 = rand(0, $totalBlocks - 1);
+            }
+            
             $size1 = count($blocks[$b1]);
             
             if ($this->randFloat() > 0.5) {
