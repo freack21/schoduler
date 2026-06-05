@@ -93,7 +93,7 @@
                     </div>
                     
                     {{-- Floating Badge --}}
-                    <div class="absolute -bottom-6 -left-10 bg-white p-4 rounded-2xl shadow-xl shadow-black/10 flex items-center gap-4 animate-bounce hover:scale-105 transition-transform" style="animation-duration: 3s;">
+                    <!-- <div class="absolute -bottom-6 -left-10 bg-white p-4 rounded-2xl shadow-xl shadow-black/10 flex items-center gap-4 animate-bounce hover:scale-105 transition-transform" style="animation-duration: 3s;">
                         <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
                             <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
@@ -101,7 +101,7 @@
                             <p class="text-sm text-gray-500 font-medium">Status Jadwal</p>
                             <p class="font-bold text-gray-900">Aktif & Optimal</p>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
