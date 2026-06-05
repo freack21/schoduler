@@ -197,7 +197,7 @@ class DatabaseSeeder extends Seeder
                 'kode' => $kode,
                 'nama' => $nama,
                 'jam_per_minggu' => $this->defaultJamPerMinggu($nama),
-                'max_jam_per_hari' => $this->defaultMaxJamPerHari($nama),
+                'jam_per_hari' => $this->defaultJamPerHari($nama),
             ]);
         }
 
@@ -446,7 +446,7 @@ class DatabaseSeeder extends Seeder
         };
     }
 
-    private function defaultMaxJamPerHari(string $mapel): int
+    private function defaultJamPerHari(string $mapel): int
     {
         return str_contains(mb_strtolower($mapel), 'bk') ? 1 : 2;
     }

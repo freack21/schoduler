@@ -9,7 +9,7 @@ class Mapel extends Model
 {
     protected $table = 'mapel';
 
-    protected $fillable = ['kode', 'nama', 'jam_per_minggu', 'max_jam_per_hari'];
+    protected $fillable = ['kode', 'nama', 'jam_per_minggu', 'jam_per_hari'];
 
     public function guruMapel(): HasMany
     {

@@ -16,7 +16,7 @@
                         <th class="px-6 py-3">Kode</th>
                         <th class="px-6 py-3">Nama Mata Pelajaran</th>
                         <th class="px-6 py-3">Jam/Minggu</th>
-                        <th class="px-6 py-3">Max/Hari</th>
+                        <th class="px-6 py-3">Jam/Hari</th>
                         <th class="px-6 py-3 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -33,7 +33,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="badge bg-purple-50 text-purple-700">max {{ $mapel->max_jam_per_hari }}/hari</span>
+                                <span class="badge bg-purple-50 text-purple-700">{{ $mapel->jam_per_hari }} jam/hari</span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-end gap-2">
@@ -74,10 +74,10 @@
                         @error('jam_per_minggu') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                     <div>
-                        <label class="label-field">Max Jam/Hari</label>
-                        <input wire:model="max_jam_per_hari" type="number" min="1" max="10" class="input-field">
-                        <p class="text-xs text-gray-400 mt-1">Persebaran per hari</p>
-                        @error('max_jam_per_hari') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        <label class="label-field">Jam/Hari</label>
+                        <input wire:model="jam_per_hari" type="number" min="1" max="10" class="input-field">
+                        <p class="text-xs text-gray-400 mt-1">Ukuran blok jam per hari</p>
+                        @error('jam_per_hari') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
                 <div class="flex justify-end gap-3 pt-4">

@@ -47,18 +47,18 @@ class GenerateScheduleJob implements ShouldQueue
         // Build gene and block list
         $genes = [];
         $blocks = [];
-        $mapelMaxPerHari = [];
+        $mapelJamPerHari = [];
         $mapelJamPerMinggu = [];
         $geneIdx = 0;
         foreach ($guruMapels as $gm) {
-            $maxPerHari = $gm->mapel->max_jam_per_hari;
+            $jamPerHari = $gm->mapel->jam_per_hari;
             $jam = $gm->mapel->jam_per_minggu;
-            $mapelMaxPerHari[$gm->mapel_id] = $maxPerHari;
+            $mapelJamPerHari[$gm->mapel_id] = $jamPerHari;
             $mapelJamPerMinggu[$gm->mapel_id] = $jam;
             
             $blockSizes = [];
             while ($jam > 0) {
-                $size = min($jam, $maxPerHari);
+                $size = min($jam, $jamPerHari);
                 $blockSizes[] = $size;
                 $jam -= $size;
             }
@@ -81,35 +81,7 @@ class GenerateScheduleJob implements ShouldQueue
         // Only non-istirahat slots
         $jamAktif = $jamPelajaranList->where('is_istirahat', false);
         $jamIds = $jamAktif->pluck('id')->toArray();
-        $slotsPerDay = count($jamIds);
-        $totalHari = count($hariAktif);
 
-        // --- BLOCK BALANCING (Pigeonhole Fix) ---
-        $maxBlocksOfSize2PerClass = floor($slotsPerDay / 2) * $totalHari;
-        
-        $kelasBlockCounts = [];
-        foreach ($blocks as $idx => $blockGenes) {
-            $kelasId = $genes[$blockGenes[0]]['kelas_id'];
-            if (count($blockGenes) >= 2) {
-                $kelasBlockCounts[$kelasId] = ($kelasBlockCounts[$kelasId] ?? 0) + 1;
-            }
-        }
-        
-        foreach ($kelasBlockCounts as $kelasId => $count) {
-            if ($count > $maxBlocksOfSize2PerClass) {
-                $excess = $count - $maxBlocksOfSize2PerClass;
-                $splitCount = 0;
-                foreach ($blocks as $idx => $blockGenes) {
-                    if ($splitCount >= $excess) break;
-                    if ($genes[$blockGenes[0]]['kelas_id'] === $kelasId && count($blockGenes) === 2) {
-                        unset($blocks[$idx]);
-                        $blocks[] = [$blockGenes[0]];
-                        $blocks[] = [$blockGenes[1]];
-                        $splitCount++;
-                    }
-                }
-            }
-        }
         $blocks = array_values($blocks);
         $totalGenes = count($genes);
         $totalBlocks = count($blocks);
@@ -183,7 +155,7 @@ class GenerateScheduleJob implements ShouldQueue
             'genes' => $genes,
             'blocks' => $blocks,
             'slotMap' => $slotMap,
-            'mapelMaxPerHari' => $mapelMaxPerHari,
+            'mapelJamPerHari' => $mapelJamPerHari,
             'mapelJamPerMinggu' => $mapelJamPerMinggu,
             'kelasAllowedSlots' => $kelasAllowedSlots,
             'validBlockStarts' => $validBlockStarts,
@@ -435,7 +407,7 @@ class GenerateScheduleJob implements ShouldQueue
         $slotMap = $ctx['slotMap'];
         $blocks = $ctx['blocks'];
         $genes = $ctx['genes'];
-        $mapelMaxPerHari = $ctx['mapelMaxPerHari'];
+        $mapelJamPerHari = $ctx['mapelJamPerHari'];
         $mapelJamPerMinggu = $ctx['mapelJamPerMinggu'];
 
         $guruSlots = [];
@@ -486,10 +458,10 @@ class GenerateScheduleJob implements ShouldQueue
         // Soft constraints
         foreach ($kelasMapelHari as $key => $hariData) {
             $mapelId = (int) explode('-', $key)[1];
-            $maxPerHari = $mapelMaxPerHari[$mapelId] ?? 2;
+            $jamPerHari = $mapelJamPerHari[$mapelId] ?? 2;
             $jamMinggu = $mapelJamPerMinggu[$mapelId] ?? 2;
             
-            $idealDays = (int) ceil($jamMinggu / $maxPerHari);
+            $idealDays = (int) ceil($jamMinggu / $jamPerHari);
             $actualDays = count($hariData);
             
             if ($actualDays > $idealDays) {
@@ -498,8 +470,8 @@ class GenerateScheduleJob implements ShouldQueue
 
             foreach ($hariData as $hariIdx => $positions) {
                 $count = count($positions);
-                if ($count > $maxPerHari) {
-                    $distViolations += ($count - $maxPerHari) * 2;
+                if ($count > $jamPerHari) {
+                    $distViolations += ($count - $jamPerHari) * 2;
                 }
                 // Consecutive: already guaranteed within blocks, but check across blocks on same day
                 if ($count > 1) {
