@@ -15,28 +15,40 @@ class MultiLogin extends Component
     #[Validate('required|string')]
     public string $user_id = '';
 
-    #[Validate('required|string|min:6')]
     public string $password = '';
 
     public string $errorMessage = '';
 
     public function authenticate(): void
     {
-        $this->validate();
+        $this->validate([
+            'user_id' => 'required|string',
+        ]);
 
-        if (Auth::attempt(['id' => $this->user_id, 'password' => $this->password])) {
-            session()->regenerate();
+        $user = \App\Models\User::find($this->user_id);
 
-            $user = Auth::user();
-
-            match ($user->role) {
-                'admin' => $this->redirect(route('admin.dashboard'), navigate: true),
-                'guru' => $this->redirect(route('guru.dashboard'), navigate: true),
-                'siswa' => $this->redirect(route('siswa.dashboard'), navigate: true),
-            };
-        } else {
-            $this->dispatch('toast', type: 'error', message: 'ID atau password salah. Silakan coba lagi.');
+        if (!$user) {
+            $this->dispatch('toast', type: 'error', message: 'NIP/NISN atau Username tidak ditemukan.');
+            return;
         }
+
+        if ($user->role === 'admin') {
+            if (!Auth::attempt(['id' => $this->user_id, 'password' => $this->password])) {
+                $this->dispatch('toast', type: 'error', message: 'Password salah untuk Admin.');
+                return;
+            }
+        } else {
+            // Guru and Siswa login directly without password
+            Auth::login($user);
+        }
+
+        session()->regenerate();
+
+        match ($user->role) {
+            'admin' => $this->redirect(route('admin.dashboard'), navigate: true),
+            'guru' => $this->redirect(route('guru.dashboard'), navigate: true),
+            'siswa' => $this->redirect(route('siswa.dashboard'), navigate: true),
+        };
     }
 
     public function render()

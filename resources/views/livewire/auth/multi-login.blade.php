@@ -37,12 +37,14 @@
 
                 {{-- Password --}}
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-1.5">
+                        Password <span class="text-gray-500 font-normal">(Kosongkan untuk Siswa/Guru)</span>
+                    </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
                         </div>
-                        <input wire:model="password" type="password" id="password" placeholder="Masukkan password" class="w-full bg-white/10 border border-white/20 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-400 focus:ring-2 focus:ring-secondary/50 focus:border-secondary/50 outline-none transition-all duration-200">
+                        <input wire:model="password" type="password" id="password" placeholder="Hanya untuk Admin" class="w-full bg-white/10 border border-white/20 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-400 focus:ring-2 focus:ring-secondary/50 focus:border-secondary/50 outline-none transition-all duration-200">
                     </div>
                     @error('password') <p class="mt-1 text-xs text-red-300">{{ $message }}</p> @enderror
                 </div>
