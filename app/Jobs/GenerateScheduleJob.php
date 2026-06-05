@@ -479,8 +479,9 @@ class GenerateScheduleJob implements ShouldQueue
                 $key = "{$kelasId}-{$mapelId}";
                 $kelasMapelHari[$key][$hariIdx][] = $jamPos;
                 
-                // Day priority: slight penalty for later days
-                $dayPriorityPenalty += $hariIdx * 0.1;
+                // Day priority: heavy penalty for later days and later slots
+                // Ensures Senin fills before Selasa, and mornings fill before afternoons
+                $dayPriorityPenalty += ($hariIdx * 2) + ($jamPos * 0.1);
             }
         }
 
