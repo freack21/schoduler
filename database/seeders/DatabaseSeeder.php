@@ -188,10 +188,13 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        $generatedCodes = [];
         $result = [];
         foreach (array_keys($mapelNames) as $nama) {
+            $kode = $this->generateMapelCode($nama, $generatedCodes);
+            $generatedCodes[] = $kode;
             $result[$nama] = Mapel::create([
-                'kode' => $this->makeMapelCode($nama, array_keys($result)),
+                'kode' => $kode,
                 'nama' => $nama,
                 'jam_per_minggu' => $this->defaultJamPerMinggu($nama),
                 'max_jam_per_hari' => $this->defaultMaxJamPerHari($nama),
@@ -400,23 +403,28 @@ class DatabaseSeeder extends Seeder
         return $id;
     }
 
-    private function makeMapelCode(string $name, array $existingNames): string
+    private function generateMapelCode(string $name, array $existingCodes): string
     {
-        $base = Str::upper(Str::substr(preg_replace('/[^A-Za-z0-9]/', '', $name), 0, 6));
-        $base = $base !== '' ? $base : 'MAPEL';
-        $code = $base;
-        $counter = 2;
+        $words = explode(' ', trim(preg_replace('/[^A-Za-z0-9 ]/', ' ', $name)));
+        $words = array_filter($words);
+        $words = array_values($words);
 
-        $existingCodes = collect($existingNames)
-            ->map(fn ($existing) => Str::upper(Str::substr(preg_replace('/[^A-Za-z0-9]/', '', $existing), 0, 6)))
-            ->all();
-
-        while (in_array($code, $existingCodes, true)) {
-            $code = Str::substr($base, 0, 4) . str_pad((string) $counter, 2, '0', STR_PAD_LEFT);
-            $counter++;
+        if (count($words) === 0) {
+            $prefix = 'MPL';
+        } elseif (count($words) === 1) {
+            $prefix = Str::upper(Str::substr($words[0], 0, 3));
+        } else {
+            $prefix = Str::upper(Str::substr($words[0], 0, 1) . Str::substr($words[1], 0, 3));
         }
 
-        return $code;
+        $counter = 1;
+        while (true) {
+            $code = $prefix . str_pad((string)$counter, 2, '0', STR_PAD_LEFT);
+            if (!in_array($code, $existingCodes, true)) {
+                return $code;
+            }
+            $counter++;
+        }
     }
 
     private function defaultJamPerMinggu(string $mapel): int
