@@ -1,6 +1,6 @@
 <div wire:poll.2s.keep-alive="refreshStatus" class="space-y-6">
     {{-- Header --}}
-    <div class="card bg-gradient-to-br from-white to-gray-50/50 shadow-sm border border-gray-100/50 mb-6 relative overflow-hidden">
+    <div wire:key="header-card" class="card bg-gradient-to-br from-white to-gray-50/50 shadow-sm border border-gray-100/50 mb-6 relative overflow-hidden">
         <div class="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
         <div class="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -31,7 +31,7 @@
 
     {{-- Settings: Hari Aktif --}}
     @if($status === 'idle' || $status === 'done' || $status === 'error')
-    <div class="card bg-white/70 backdrop-blur-md border border-gray-200/50 mb-6">
+    <div wire:key="settings-card" class="card bg-white/70 backdrop-blur-md border border-gray-200/50 mb-6">
         <div class="flex items-center justify-between mb-5">
             <div>
                 <h4 class="font-semibold text-gray-800">Pengaturan Hari Aktif</h4>
@@ -54,7 +54,7 @@
 
     {{-- Progress Dashboard --}}
     @if($status === 'running' || $status === 'starting')
-    <div class="card relative overflow-hidden border border-primary/20 bg-gradient-to-b from-white to-primary/5 shadow-xl shadow-primary/5 mb-6">
+    <div wire:key="progress-card" class="card relative overflow-hidden border border-primary/20 bg-gradient-to-b from-white to-primary/5 shadow-xl shadow-primary/5 mb-6">
         {{-- Animated background --}}
         <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMzcsIDk5LCAyMzUsIDAuMSkiLz48L3N2Zz4=')] [background-size:20px_20px] opacity-50"></div>
         
@@ -117,7 +117,7 @@
 
     {{-- Result Message --}}
     @if($status === 'done' && $message)
-    <div class="mb-6 p-5 rounded-2xl shadow-lg border {{ $violations === 0 && $distViolations === 0 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200' : ($violations === 0 ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200' : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200') }} transform transition-all duration-500 hover:scale-[1.01]">
+    <div wire:key="result-card" class="mb-6 p-5 rounded-2xl shadow-lg border {{ $violations === 0 && $distViolations === 0 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200' : ($violations === 0 ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200' : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200') }} transform transition-all duration-500 hover:scale-[1.01]">
         <div class="flex items-center gap-4">
             @if($violations === 0 && $distViolations === 0)
                 <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
