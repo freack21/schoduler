@@ -152,7 +152,7 @@
                     </div>
                     <p class="text-gray-600 leading-loose text-xl font-medium relative z-10">
                         <span class="text-primary text-4xl leading-none absolute -top-4 -left-3 opacity-20">"</span>
-                        Terwujudnya SMA Negeri 1 Tapung Hulu sebagai sekolah yang unggul dalam prestasi, berkarakter, berwawasan lingkungan, dan berdaya saing global berdasarkan iman dan taqwa.
+                        Terwujudnya SMA Negeri 1 Tapung Hulu sebagai pelita pendidikan di pedesaan yang menghasilkan generasi berprestasi, mandiri, berakar pada kearifan lokal, dan berwawasan lingkungan global berdasarkan iman dan taqwa.
                         <span class="text-primary text-4xl leading-none absolute -bottom-6 opacity-20">"</span>
                     </p>
                 </div>
@@ -168,10 +168,10 @@
                     </div>
                     <ul class="space-y-5 relative z-10">
                         @foreach([
-                            'Meningkatkan kualitas pembelajaran yang inovatif dan berbasis teknologi',
-                            'Membentuk karakter siswa yang berakhlak mulia dan berbudaya',
-                            'Mengembangkan potensi siswa di bidang akademik dan non-akademik',
-                            'Menciptakan lingkungan sekolah yang bersih, sehat, dan nyaman'
+                            'Meningkatkan kualitas pembelajaran inovatif yang relevan dengan potensi sumber daya alam dan kearifan lokal desa.',
+                            'Membentuk karakter santun, bergotong-royong, dan berakhlak mulia sesuai nilai luhur masyarakat pedesaan.',
+                            'Membekali siswa dengan keterampilan terapan dan pemanfaatan teknologi digital untuk memajukan kesejahteraan lingkungan sekitar.',
+                            'Menciptakan lingkungan sekolah yang asri, menyatu dengan alam, dan berwawasan agrikultur.'
                         ] as $misi)
                         <li class="flex items-start gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors">
                             <div class="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -215,9 +215,9 @@
                     
                     <div class="space-y-6 text-gray-600 text-lg leading-relaxed mb-10">
                         <p class="font-medium text-gray-900">Assalamu'alaikum Warahmatullahi Wabarakatuh,</p>
-                        <p>Puji syukur kita panjatkan kehadirat Allah SWT atas segala rahmat dan karunia-Nya. Dengan bangga kami mempersembahkan Sistem Penjadwalan Digital SMA Negeri 1 Tapung Hulu.</p>
-                        <p>Melalui sistem penjadwalan cerdas berbasis kecerdasan buatan ini, kami berkomitmen untuk meningkatkan efisiensi tata kelola sekolah demi terciptanya proses belajar mengajar yang lebih terstruktur, optimal, dan tanpa bentrok.</p>
-                        <p>Kami mengajak seluruh civitas akademika untuk terus bersinergi dalam memajukan sekolah kita tercinta.</p>
+                        <p>Puji syukur kita panjatkan kehadirat Allah SWT atas segala rahmat dan karunia-Nya. Selamat datang di portal resmi SMA Negeri 1 Tapung Hulu, kawah candradimuka di tengah asrinya alam pedesaan Kabupaten Kampar.</p>
+                        <p>Meski berada di kawasan yang lekat dengan nuansa agrikultur, semangat kami menghadirkan pendidikan modern tak pernah surut. Hadirnya Sistem Penjadwalan Digital cerdas ini adalah bukti nyata bahwa jarak bukanlah halangan untuk berinovasi dan maju sejajar dengan sekolah-sekolah di perkotaan.</p>
+                        <p>Mari bersama-sama jadikan SMA Negeri 1 Tapung Hulu sebagai kebanggaan masyarakat desa—tempat lahirnya generasi emas yang tak hanya cakap teknologi, namun juga mencintai dan berbakti membangun tanah kelahirannya.</p>
                     </div>
                     
                     <div class="flex items-center gap-4">
