@@ -1,16 +1,6 @@
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
+    /* Custom additional styles if needed */
 </style>
 <div>
     {{-- Navbar --}}
@@ -58,8 +48,8 @@
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
                 {{-- Left Content --}}
-                <div class="text-center lg:text-left z-10">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-secondary text-sm font-semibold mb-8 animate-[fadeInDown_1s_ease-out]">
+                <div class="text-center lg:text-left z-10" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-secondary text-sm font-semibold mb-8">
                         <span class="relative flex h-2 w-2">
                           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
                           <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
@@ -67,18 +57,18 @@
                         Sistem Penjadwalan Digital 2.0
                     </div>
                     
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 animate-[fadeInUp_1s_ease-out]">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
                         Membangun Masa Depan di
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-200">
                             SMAN 1 Tapung Hulu
                         </span>
                     </h1>
                     
-                    <p class="text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-[fadeInUp_1.2s_ease-out]">
-                        Mewujudkan generasi unggul, berkarakter, dan berdaya saing tinggi melalui pendidikan berkualitas berbasis teknologi di Kabupaten Kampar.
+                    <p class="text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
+                        Berdiri sejak tahun 2003, SMA Negeri 1 Tapung Hulu berkomitmen untuk terus meningkatkan kualitas pendidikan dan melahirkan generasi muda yang unggul, berakhlak mulia, dan siap menghadapi tantangan masa depan.
                     </p>
                     
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-[fadeInUp_1.4s_ease-out]">
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
                         <a href="{{ route('login') }}" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-secondary text-primary font-bold text-lg hover:bg-yellow-400 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
                             Akses Portal
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -90,7 +80,7 @@
                 </div>
 
                 {{-- Right Hero Image/Mockup --}}
-                <div class="relative hidden lg:block z-10 animate-[fadeInRight_1.2s_ease-out]">
+                <div class="relative hidden lg:block z-10" data-aos="fade-left" data-aos-duration="1200" data-aos-delay="400">
                     <div class="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-transparent rounded-3xl blur-2xl transform rotate-3"></div>
                     <div class="relative rounded-3xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl">
                         <div class="h-10 bg-black/40 flex items-center px-4 border-b border-white/10 gap-2">
@@ -129,9 +119,9 @@
                     <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">40+</div>
                     <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Tenaga Pengajar</div>
                 </div>
-                <div class="text-center px-4 group">
-                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">18</div>
-                    <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Ruang Kelas</div>
+                <div class="text-center px-4 group" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">20Rb</div>
+                    <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">m² Luas Lahan</div>
                 </div>
                 <div class="text-center px-4 group">
                     <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300 text-secondary">A</div>
@@ -152,7 +142,7 @@
             
             <div class="grid lg:grid-cols-2 gap-10">
                 {{-- Visi Card --}}
-                <div class="bg-white rounded-3xl p-10 shadow-lg shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
+                <div data-aos="fade-up" class="bg-white rounded-3xl p-10 shadow-lg shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full transition-transform group-hover:scale-150 duration-500"></div>
                     <div class="flex items-center gap-4 mb-6 relative z-10">
                         <div class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
@@ -168,7 +158,7 @@
                 </div>
                 
                 {{-- Misi Card --}}
-                <div class="bg-white rounded-3xl p-10 shadow-lg shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-secondary/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
+                <div data-aos="fade-up" data-aos-delay="200" class="bg-white rounded-3xl p-10 shadow-lg shadow-gray-200/50 border border-gray-100 hover:shadow-2xl hover:shadow-secondary/10 hover:-translate-y-2 transition-all duration-500 group relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-full transition-transform group-hover:scale-150 duration-500"></div>
                     <div class="flex items-center gap-4 mb-8 relative z-10">
                         <div class="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center shadow-lg shadow-secondary/30">
@@ -200,7 +190,7 @@
     <section class="py-24 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="relative order-2 lg:order-1">
+                <div class="relative order-2 lg:order-1" data-aos="fade-right">
                     <div class="relative w-full max-w-md mx-auto aspect-[4/5] rounded-3xl bg-gray-100 overflow-hidden shadow-2xl">
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-80"></div>
@@ -219,7 +209,7 @@
                     </div>
                 </div>
                 
-                <div class="order-1 lg:order-2">
+                <div class="order-1 lg:order-2" data-aos="fade-left">
                     <span class="inline-block px-4 py-1.5 rounded-full bg-secondary/10 text-secondary text-sm font-bold tracking-wide mb-4">SAMBUTAN PIMPINAN</span>
                     <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 mb-8 leading-tight">Membangun Karakter Melalui Pendidikan Modern</h2>
                     
@@ -264,7 +254,7 @@
                 @endphp
 
                 @foreach($fasilitas as $item)
-                    <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg shadow-gray-200/40 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 hover:border-primary/20 transition-all duration-500 group relative overflow-hidden">
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}" class="bg-white rounded-3xl p-8 border border-gray-100 shadow-lg shadow-gray-200/40 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 hover:border-primary/20 transition-all duration-500 group relative overflow-hidden">
                         {{-- Hover Gradient Background --}}
                         <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         
@@ -290,7 +280,7 @@
         <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-transparent"></div>
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
-            <div class="max-w-3xl">
+            <div class="max-w-3xl" data-aos="zoom-in">
                 <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-6">Siap Mengeksplorasi Portal Akademik?</h2>
                 <p class="text-xl text-gray-300 mb-10 leading-relaxed">Kelola jadwal, pantau presensi, dan optimalkan proses belajar mengajar dengan satu platform terpusat.</p>
                 <a href="{{ route('login') }}" class="inline-flex items-center gap-3 bg-secondary hover:bg-yellow-400 text-primary font-extrabold py-5 px-12 rounded-full text-lg transition-all duration-300 shadow-xl shadow-secondary/20 hover:shadow-2xl hover:shadow-secondary/40 hover:-translate-y-1">
@@ -325,11 +315,15 @@
                     <ul class="space-y-4 text-gray-400">
                         <li class="flex items-start gap-3 hover:text-white transition-colors">
                             <svg class="w-6 h-6 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-                            <span>Jl. Pendidikan No.1, Kec. Tapung Hulu, Kabupaten Kampar, Riau 28464</span>
+                            <span>Jl. Kampung Lama No. 10, Kasikan, Kec. Tapung Hulu, Kab. Kampar, Riau 28464</span>
                         </li>
                         <li class="flex items-center gap-3 hover:text-white transition-colors">
                             <svg class="w-5 h-5 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.864-1.041l-3.286-.481c-.526-.076-1.033.2-1.248.712l-.744 1.745c-2.908-1.42-5.22-3.732-6.64-6.64l1.745-.744c.512-.215.788-.722.712-1.248l-.481-3.286c-.075-.512-.525-.864-1.041-.864H4.5A2.25 2.25 0 002.25 6.75z"/></svg>
                             <span>(0762) 1234567</span>
+                        </li>
+                        <li class="flex items-center gap-3 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.909A2.25 2.25 0 012.25 6.993V6.75m19.5 0v.243m0 0l-7.5 4.615m7.5-4.615v10.5" /></svg>
+                            <span>sma.negeri1.tapunghulu@gmail.com</span>
                         </li>
                     </ul>
                 </div>
@@ -353,4 +347,23 @@
             </div>
         </div>
     </footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            AOS.init({
+                once: true,
+                offset: 50,
+                duration: 800,
+                easing: 'ease-out-cubic',
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({
+                once: true,
+                offset: 50,
+                duration: 800,
+                easing: 'ease-out-cubic',
+            });
+        });
+    </script>
 </div>
