@@ -1,4 +1,4 @@
-<div wire:poll.2s="refreshStatus" class="space-y-6">
+<div wire:poll.2s.keep-alive="refreshStatus" class="space-y-6">
     {{-- Header --}}
     <div class="card bg-gradient-to-br from-white to-gray-50/50 shadow-sm border border-gray-100/50 mb-6 relative overflow-hidden">
         <div class="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
