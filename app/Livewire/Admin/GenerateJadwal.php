@@ -95,10 +95,13 @@ class GenerateJadwal extends Component
 
         // Start a background queue worker just in case one isn't running
         // This ensures the job is processed even if the user clicks via UI on local env
+        $phpBinary = PHP_BINARY;
+        $artisan = base_path('artisan');
+        
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            pclose(popen("start /B php artisan queue:work --stop-when-empty --timeout=600 --tries=1 > NUL 2>&1", "r"));
+            pclose(popen("start /B \"\" \"{$phpBinary}\" \"{$artisan}\" queue:work --stop-when-empty --timeout=600 --tries=1 > NUL 2>&1", "r"));
         } else {
-            exec("php artisan queue:work --stop-when-empty --timeout=600 --tries=1 > /dev/null 2>&1 &");
+            exec("\"{$phpBinary}\" \"{$artisan}\" queue:work --stop-when-empty --timeout=600 --tries=1 > /dev/null 2>&1 &");
         }
     }
 
