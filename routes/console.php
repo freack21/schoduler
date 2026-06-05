@@ -1,9 +1,9 @@
 <?php
 
 use App\Jobs\GenerateScheduleJob;
+use App\Models\ScheduleGeneration;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
 use Symfony\Component\Process\Process;
 
 Artisan::command('inspire', function () {
@@ -20,31 +20,18 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
     $this->newLine();
 
     Artisan::call('queue:clear');
-    
-    foreach ([
-        'ga_status',
-        'ga_generation',
-        'ga_fitness',
-        'ga_violations',
-        'ga_dist_violations',
-        'ga_max_generations',
-        'ga_best_generation',
-        'ga_best_hard',
-        'ga_best_dist',
-        'ga_best_fitness',
-        'ga_message',
-    ] as $key) {
-        Cache::forget($key);
-    }
 
-    Cache::put('ga_status', 'starting', $timeout + 120);
-    Cache::put('ga_generation', 0, $timeout + 120);
-    Cache::put('ga_fitness', 0, $timeout + 120);
-    Cache::put('ga_violations', 0, $timeout + 120);
-    Cache::put('ga_dist_violations', 0, $timeout + 120);
-    Cache::put('ga_message', '', $timeout + 120);
+    $genState = ScheduleGeneration::create([
+        'status' => 'starting',
+        'generation' => 0,
+        'fitness' => 0,
+        'violations' => 0,
+        'dist_violations' => 0,
+        'max_generations' => 300,
+        'started_at' => now(),
+    ]);
 
-    GenerateScheduleJob::dispatch();
+    GenerateScheduleJob::dispatch($genState->id);
 
     $process = new Process([
         PHP_BINARY,
@@ -64,12 +51,14 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
     $lastLineLength = 0;
 
     while (true) {
-        $status = Cache::get('ga_status', 'starting');
-        $generation = (int) Cache::get('ga_generation', 0);
-        $maxGenerations = (int) Cache::get('ga_max_generations', 100);
-        $fitness = (float) Cache::get('ga_fitness', 0);
-        $hardViolations = (int) Cache::get('ga_violations', 0);
-        $distViolations = (int) Cache::get('ga_dist_violations', 0);
+        $genState->refresh();
+        
+        $status = $genState->status;
+        $generation = $genState->generation;
+        $maxGenerations = $genState->max_generations;
+        $fitness = $genState->fitness;
+        $hardViolations = $genState->violations;
+        $distViolations = $genState->dist_violations;
         $elapsed = time() - $startedAt;
 
         $percent = $maxGenerations > 0 ? min(100, (int) floor(($generation / $maxGenerations) * 100)) : 0;
@@ -77,20 +66,15 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         $filled = (int) floor(($percent / 100) * $barWidth);
         $bar = str_repeat('█', $filled) . str_repeat('░', $barWidth - $filled);
 
-        $bestHardLabel = is_numeric(Cache::get('ga_best_hard')) ? Cache::get('ga_best_hard') : '-';
-        $bestDistLabel = is_numeric(Cache::get('ga_best_dist')) ? Cache::get('ga_best_dist') : '-';
-
         $line = sprintf(
-            ' %s %3d%% | gen %d/%d | fitness %.6f | hard %s (%s best) | dist %s (%s best) | %s | %ss',
+            ' %s %3d%% | gen %d/%d | fitness %.6f | hard %s | dist %s | %s | %ss',
             $bar,
             $percent,
             $generation,
             $maxGenerations,
             $fitness,
             $hardViolations,
-            $bestHardLabel,
             $distViolations,
-            $bestDistLabel,
             strtoupper((string) $status),
             $elapsed
         );
@@ -104,15 +88,21 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         }
 
         if (!$process->isRunning() && $status !== 'done') {
-            Cache::put('ga_status', 'error', 600);
-            Cache::put('ga_message', "Queue worker berhenti tidak wajar sebelum jadwal selesai.", 600);
+            $genState->update([
+                'status' => 'error',
+                'message' => 'Queue worker berhenti tidak wajar sebelum jadwal selesai.',
+                'completed_at' => now(),
+            ]);
             break;
         }
 
         if ($elapsed > $timeout) {
             $process->stop(3);
-            Cache::put('ga_status', 'error', 600);
-            Cache::put('ga_message', "Generate jadwal timeout setelah {$timeout} detik.", 600);
+            $genState->update([
+                'status' => 'error',
+                'message' => "Generate jadwal timeout setelah {$timeout} detik.",
+                'completed_at' => now(),
+            ]);
             break;
         }
 
@@ -125,8 +115,9 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
 
     $this->newLine(2);
 
-    $status = Cache::get('ga_status', 'idle');
-    $message = Cache::get('ga_message', 'Tidak ada pesan dari generator.');
+    $genState->refresh();
+    $status = $genState->status;
+    $message = $genState->message ?? 'Tidak ada pesan dari generator.';
     $exitCode = $process->getExitCode();
 
     if ($status === 'done' && $exitCode === 0) {

@@ -11,8 +11,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Models\ScheduleGeneration;
 
 class GenerateScheduleJob implements ShouldQueue
 {
@@ -26,21 +26,39 @@ class GenerateScheduleJob implements ShouldQueue
     private float $crossoverRate = 0.85; 
     private float $mutationRate = 0.15;  
     private int $eliteCount = 5;         
+    
+    private int $scheduleGenerationId;
+
+    public function __construct(int $scheduleGenerationId)
+    {
+        $this->scheduleGenerationId = $scheduleGenerationId;
+    }
 
     public function handle(): void
     {
-        Cache::put('ga_status', 'running', 600);
-        Cache::put('ga_generation', 0, 600);
-        Cache::put('ga_fitness', 0, 600);
-        Cache::put('ga_violations', 0, 600);
+        $genState = ScheduleGeneration::find($this->scheduleGenerationId);
+        if (!$genState) {
+            return;
+        }
+
+        $genState->update([
+            'status' => 'running',
+            'generation' => 0,
+            'fitness' => 0,
+            'violations' => 0,
+            'max_generations' => $this->maxGenerations,
+        ]);
 
         $guruMapels = GuruMapel::with(['mapel', 'guru', 'kelas'])->get();
         $jamPelajaranList = JamPelajaran::orderBy('jam_ke')->get();
         $hariAktif = Pengaturan::getHariAktif();
 
         if ($guruMapels->isEmpty() || $jamPelajaranList->isEmpty()) {
-            Cache::put('ga_status', 'error', 600);
-            Cache::put('ga_message', 'Data guru_mapel atau jam pelajaran kosong.', 600);
+            $genState->update([
+                'status' => 'error',
+                'message' => 'Data guru_mapel atau jam pelajaran kosong.',
+                'completed_at' => now(),
+            ]);
             return;
         }
 
@@ -110,21 +128,21 @@ class GenerateScheduleJob implements ShouldQueue
         $totalSlots = count($slotMap);
 
         if ($totalSlots === 0) {
-            Cache::put('ga_status', 'error', 600);
-            Cache::put('ga_message', 'Tidak ada slot waktu tersedia.', 600);
+            $genState->update([
+                'status' => 'error',
+                'message' => 'Tidak ada slot waktu tersedia.',
+                'completed_at' => now(),
+            ]);
             return;
         }
 
         $slotsPerDay = count($jamIds);
         $totalHari = count($hariAktif);
 
-        Cache::put('ga_max_generations', $this->maxGenerations, 600);
-
         $bestOverallScore = null;
         $bestOverallHard = null;
         $bestOverallDist = null;
         $bestOverallFitness = null;
-        Cache::put('ga_best_generation', 0, 600);
 
         // ── STRUCTURAL: compute allowed slots per kelas and block valid starts ──
         $kelasLessonCount = [];
@@ -209,21 +227,25 @@ class GenerateScheduleJob implements ShouldQueue
                 $bestOverallHard = $scores[$bestIdx]['guru_conflicts'] + $scores[$bestIdx]['kelas_conflicts'];
                 $bestOverallDist = $scores[$bestIdx]['dist_violations'];
                 $bestOverallFitness = 1.0 / (1.0 + $bestScore);
-                
-                Cache::put('ga_best_generation', $gen, 600);
-                Cache::put('ga_best_hard', $bestOverallHard, 600);
-                Cache::put('ga_best_dist', $bestOverallDist, 600);
-                Cache::put('ga_violations', $bestOverallHard, 600);
-                Cache::put('ga_dist_violations', $bestOverallDist, 600);
-                Cache::put('ga_fitness', round($bestOverallFitness, 6), 600);
             }
 
-            Cache::put('ga_generation', $gen + 1, 600);
-            Cache::put('ga_fitness', round(1.0 / (1.0 + $currentBestScore), 6), 600);
+            $currentFitness = round(1.0 / (1.0 + $currentBestScore), 6);
+            
+            // Limit DB writes to every 10 generations or on finish
+            if ($gen % 10 === 0 || $bestScore === 0) {
+                $genState->update([
+                    'generation' => $gen + 1,
+                    'fitness' => $currentFitness,
+                    'violations' => $bestOverallHard ?? 0,
+                    'dist_violations' => $bestOverallDist ?? 0,
+                ]);
+            }
 
             if ($bestScore === 0) {
-                Cache::put('ga_generation', $gen + 1, 600);
-                Cache::put('ga_fitness', 1.0, 600);
+                $genState->update([
+                    'generation' => $gen + 1,
+                    'fitness' => 1.0,
+                ]);
                 break;
             }
 
@@ -328,20 +350,27 @@ class GenerateScheduleJob implements ShouldQueue
 
         $hard = $final['guru_conflicts'] + $final['kelas_conflicts'];
 
-        Cache::put('ga_status', 'done', 600);
-        Cache::put('ga_fitness', round(1.0 / (1.0 + $final['total']), 6), 600);
-        Cache::put('ga_violations', $hard, 600);
-        Cache::put('ga_dist_violations', $final['dist_violations'], 600);
-
-        Log::info("GA DONE: Score={$final['total']}, Hard={$hard}, Dist={$final['dist_violations']}, Cons={$final['consecutive_violations']}");
+        $finalFitness = round(1.0 / (1.0 + $final['total']), 6);
+        $finalMessage = '';
 
         if ($hard === 0 && $final['dist_violations'] === 0 && $final['consecutive_violations'] === 0) {
-            Cache::put('ga_message', 'Jadwal berhasil digenerate tanpa bentrok, blok rapi! 🎯', 600);
+            $finalMessage = 'Jadwal berhasil digenerate tanpa bentrok, blok rapi! 🎯';
         } elseif ($hard === 0) {
-            Cache::put('ga_message', "Jadwal tanpa bentrok! Soft: {$final['dist_violations']} distribusi, {$final['consecutive_violations']} urutan.", 600);
+            $finalMessage = "Jadwal tanpa bentrok! Soft: {$final['dist_violations']} distribusi, {$final['consecutive_violations']} urutan.";
         } else {
-            Cache::put('ga_message', "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang.", 600);
+            $finalMessage = "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang.";
         }
+
+        $genState->update([
+            'status' => 'done',
+            'fitness' => $finalFitness,
+            'violations' => $hard,
+            'dist_violations' => $final['dist_violations'],
+            'message' => $finalMessage,
+            'completed_at' => now(),
+        ]);
+
+        Log::info("GA DONE: Score={$final['total']}, Hard={$hard}, Dist={$final['dist_violations']}, Cons={$final['consecutive_violations']}");
     }
 
     private function createSmartChromosome(array $ctx): array

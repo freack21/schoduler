@@ -7,6 +7,7 @@ use App\Models\Jadwal;
 use App\Models\JamPelajaran;
 use App\Models\Kelas;
 use App\Models\Pengaturan;
+use App\Models\ScheduleGeneration;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -37,13 +38,24 @@ class GenerateJadwal extends Component
 
     public function refreshStatus(): void
     {
-        $this->status = Cache::get('ga_status', 'idle');
-        $this->generation = Cache::get('ga_generation', 0);
-        $this->fitness = Cache::get('ga_fitness', 0);
-        $this->violations = Cache::get('ga_violations', 0);
-        $this->distViolations = Cache::get('ga_dist_violations', 0);
-        $this->message = Cache::get('ga_message', '');
-        $this->maxGenerations = Cache::get('ga_max_generations', 1000);
+        $latest = ScheduleGeneration::latest()->first();
+        
+        if ($latest) {
+            $this->status = $latest->status;
+            $this->generation = $latest->generation;
+            $this->fitness = $latest->fitness;
+            $this->violations = $latest->violations;
+            $this->distViolations = $latest->dist_violations;
+            $this->message = $latest->message ?? '';
+            $this->maxGenerations = $latest->max_generations;
+        } else {
+            $this->status = 'idle';
+            $this->generation = 0;
+            $this->fitness = 0;
+            $this->violations = 0;
+            $this->distViolations = 0;
+            $this->message = '';
+        }
 
         if ($this->status === 'done') {
             $this->showResult = true;
@@ -66,28 +78,27 @@ class GenerateJadwal extends Component
 
     public function generate(): void
     {
-        Cache::put('ga_status', 'starting', 600);
-        Cache::put('ga_generation', 0, 600);
-        Cache::put('ga_fitness', 0, 600);
-        Cache::put('ga_violations', 0, 600);
-        Cache::put('ga_dist_violations', 0, 600);
-        Cache::put('ga_message', '', 600);
+        $genState = ScheduleGeneration::create([
+            'status' => 'starting',
+            'generation' => 0,
+            'fitness' => 0,
+            'violations' => 0,
+            'dist_violations' => 0,
+            'max_generations' => 300, // Matching job default
+            'started_at' => now(),
+        ]);
 
-        $this->status = 'starting';
+        $this->refreshStatus();
         $this->showResult = false;
 
-        GenerateScheduleJob::dispatch();
+        GenerateScheduleJob::dispatch($genState->id);
     }
 
     public function resetGenerate(): void
     {
-        Cache::forget('ga_status');
-        Cache::forget('ga_generation');
-        Cache::forget('ga_fitness');
-        Cache::forget('ga_violations');
-        Cache::forget('ga_dist_violations');
-        Cache::forget('ga_message');
-
+        // We can just clear the latest record or mark it as idle, but since we keep history,
+        // we can just delete all or let the user start a new one. 
+        // For 'reset' behavior, we can just set local state to idle.
         $this->status = 'idle';
         $this->generation = 0;
         $this->fitness = 0;
