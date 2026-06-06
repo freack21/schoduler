@@ -29,28 +29,7 @@
         </div>
     </div>
 
-    {{-- Settings: Hari Aktif --}}
-    @if($status === 'idle' || $status === 'done' || $status === 'error')
-    <div wire:key="settings-card" class="card bg-white/70 backdrop-blur-md border border-gray-200/50 mb-6">
-        <div class="flex items-center justify-between mb-5">
-            <div>
-                <h4 class="font-semibold text-gray-800">Pengaturan Hari Aktif</h4>
-                <p class="text-sm text-gray-500 mt-0.5">Pilih hari yang digunakan untuk penjadwalan. Default: Senin - Jumat</p>
-            </div>
-            <button wire:click="saveHariAktif" class="btn-primary text-sm px-6">Simpan</button>
-        </div>
-        <div class="flex flex-wrap gap-3">
-            @foreach($allHariOptions as $hariOption)
-                <label class="flex items-center gap-2 px-5 py-3 rounded-xl border cursor-pointer transition-all duration-300
-                    {{ in_array($hariOption, $selectedHari) ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-105' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300' }}">
-                    <input type="checkbox" wire:model.live="selectedHari" value="{{ $hariOption }}" class="sr-only">
-                    <svg class="w-4 h-4 transition-opacity duration-300 {{ in_array($hariOption, $selectedHari) ? 'opacity-100' : 'opacity-0 hidden' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                    <span class="text-sm font-semibold tracking-wide">{{ $hariOption }}</span>
-                </label>
-            @endforeach
-        </div>
-    </div>
-    @endif
+
 
     {{-- Progress Dashboard --}}
     @if($status === 'running' || $status === 'starting')
