@@ -173,42 +173,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($jamList as $jam)
-                                @if($jam->is_istirahat)
-                                    <tr class="bg-amber-50">
-                                        <td class="px-3 py-2 text-center font-medium bg-amber-100 text-amber-700">
-                                            <div class="text-[10px] uppercase tracking-wider font-bold">Istirahat</div>
-                                            <div class="text-[10px]">{{ substr($jam->jam_mulai,0,5) }}-{{ substr($jam->jam_selesai,0,5) }}</div>
-                                        </td>
-                                        <td colspan="{{ count($hari) }}" class="px-3 py-2 text-center text-amber-600 text-xs font-medium">
-                                            ☕ Istirahat
-                                        </td>
-                                    </tr>
-                                @else
-                                    <tr class="table-row">
-                                        <td class="px-3 py-2 text-center font-medium bg-gray-50">
-                                            <div>{{ $jam->jam_ke }}</div>
-                                            <div class="text-[10px] text-gray-400">{{ substr($jam->jam_mulai,0,5) }}</div>
-                                        </td>
-                                        @foreach($hari as $h)
-                                            <td class="px-2 py-1.5 text-center">
-                                                @if(isset($data['matrix'][$h][$jam->id]) && $data['matrix'][$h][$jam->id])
-                                                    @php $cell = $data['matrix'][$h][$jam->id]; @endphp
-                                                    <div class="bg-blue-50 rounded-lg px-2 py-1.5">
-                                                        <div class="font-bold text-blue-700">
-                                                            {{ $cell['mapel'] }}
-                                                            <span class="text-[10px] font-normal text-blue-400">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
-                                                        </div>
-                                                        <div class="text-[10px] text-gray-500 truncate max-w-[80px]">{{ $cell['guru'] }}</div>
-                                                    </div>
-                                                @else
-                                                    <span class="text-gray-300">-</span>
-                                                @endif
+                            @for($i = 1; $i <= $maxJamKe; $i++)
+                                <tr class="table-row">
+                                    <td class="px-3 py-2 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-100">{{ $i }}</td>
+                                    @foreach($hari as $h)
+                                        @php $cell = $data['matrix'][$i][$h] ?? null; @endphp
+                                        
+                                        @if(!$cell)
+                                            <td class="px-2 py-1.5 text-center"><span class="text-gray-300">-</span></td>
+                                        @elseif($cell['is_istirahat'])
+                                            <td class="px-3 py-2 text-center font-medium bg-amber-50 border border-amber-100/50">
+                                                <div class="text-[10px] uppercase tracking-wider font-bold text-amber-700">Istirahat</div>
+                                                <div class="text-[10px] text-amber-600/70">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
                                             </td>
-                                        @endforeach
-                                    </tr>
-                                @endif
-                            @endforeach
+                                        @elseif($cell['is_empty'])
+                                            <td class="px-3 py-2 text-center bg-gray-50/50 border border-gray-100">
+                                                <div class="text-[10px] text-gray-400">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                <span class="text-gray-300">-</span>
+                                            </td>
+                                        @else
+                                            <td class="px-2 py-1.5 text-center border border-gray-100">
+                                                <div class="bg-blue-50/80 rounded-lg px-2 py-1.5 border border-blue-100/50 hover:bg-blue-100 transition-colors">
+                                                    <div class="text-[9px] font-mono text-gray-500 mb-0.5">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                    <div class="font-bold text-blue-800 text-[11px] leading-tight">
+                                                        {{ $cell['mapel'] }}
+                                                        <span class="font-normal text-blue-500">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
+                                                    </div>
+                                                    <div class="text-[10px] text-gray-600 truncate max-w-[90px] mx-auto mt-0.5" title="{{ $cell['guru'] }}">{{ $cell['guru'] }}</div>
+                                                </div>
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>

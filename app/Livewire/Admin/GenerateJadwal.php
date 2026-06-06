@@ -26,14 +26,9 @@ class GenerateJadwal extends Component
     public bool $showResult = false;
     public int $maxGenerations = 1000;
 
-    // Hari aktif settings
-    public array $allHariOptions = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    public array $selectedHari = [];
-
     public function mount(): void
     {
         $this->refreshStatus();
-        $this->selectedHari = Pengaturan::getHariAktif();
     }
 
     public function refreshStatus(): void
@@ -62,18 +57,9 @@ class GenerateJadwal extends Component
         }
     }
 
-    public function saveHariAktif(): void
+    public function updateHariAktif(): void
     {
-        if (empty($this->selectedHari)) {
-            $this->dispatch('toast', type: 'error', message: 'Pilih minimal 1 hari aktif!');
-            return;
-        }
-
-        // Sort by correct day order
-        $ordered = array_intersect($this->allHariOptions, $this->selectedHari);
-        Pengaturan::setValue('hari_aktif', implode(',', $ordered), 'Hari aktif penjadwalan');
-        $this->selectedHari = array_values($ordered);
-        $this->dispatch('toast', type: 'success', message: 'Hari aktif berhasil disimpan!');
+        // Removed as hari_aktif is now determined dynamically
     }
 
     public function generate(): void
@@ -96,9 +82,6 @@ class GenerateJadwal extends Component
 
     public function resetGenerate(): void
     {
-        // We can just clear the latest record or mark it as idle, but since we keep history,
-        // we can just delete all or let the user start a new one. 
-        // For 'reset' behavior, we can just set local state to idle.
         $this->status = 'idle';
         $this->generation = 0;
         $this->fitness = 0;
@@ -111,52 +94,82 @@ class GenerateJadwal extends Component
     public function render()
     {
         $jadwalData = [];
-        $hariAktif = Pengaturan::getHariAktif();
+        $allDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $dbDays = JamPelajaran::select('hari')->distinct()->pluck('hari')->toArray();
+        $hariAktif = array_values(array_intersect($allDays, $dbDays));
+        $maxJamKe = JamPelajaran::max('jam_ke') ?? 0;
 
         if ($this->showResult && $this->status === 'done') {
             $kelasList = Kelas::orderBy('tingkat_id')->orderBy('nama')->get();
-            $jamList = JamPelajaran::orderBy('jam_ke')->get();
+            
+            $jams = JamPelajaran::all();
+            $jamMap = [];
+            foreach($jams as $jam) {
+                $jamMap[$jam->hari][$jam->jam_ke] = $jam;
+            }
 
             foreach ($kelasList as $kelas) {
                 $jadwal = Jadwal::with(['guruMapel.mapel', 'guruMapel.guru.user', 'jamPelajaran'])
                     ->whereHas('guruMapel', fn($q) => $q->where('kelas_id', $kelas->id))
                     ->get();
 
-                // Count total occurrences of each mapel across ALL days (for this kelas)
-                $mapelTotalCount = []; // mapel_kode => total across week
-                $mapelJamPerMinggu = []; // mapel_kode => jam_per_minggu from DB
+                $mapelTotalCount = [];
                 foreach ($jadwal as $entry) {
                     $kode = $entry->guruMapel->mapel->kode;
                     $mapelTotalCount[$kode] = ($mapelTotalCount[$kode] ?? 0) + 1;
-                    $mapelJamPerMinggu[$kode] = $entry->guruMapel->mapel->jam_per_minggu;
                 }
 
-                // Build matrix with GLOBAL sequence number (across all days)
                 $matrix = [];
-                $mapelGlobalSeq = []; // mapel_kode => running counter across all days
-                foreach ($hariAktif as $h) {
-                    foreach ($jamList as $jam) {
-                        if ($jam->is_istirahat) continue;
+                for ($i = 1; $i <= $maxJamKe; $i++) {
+                    foreach ($hariAktif as $h) {
+                        $matrix[$i][$h] = null;
+                    }
+                }
 
-                        $entry = $jadwal->first(fn($j) => $j->hari === $h && $j->jam_pelajaran_id === $jam->id);
-                        if ($entry) {
-                            $kode = $entry->guruMapel->mapel->kode;
-                            $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
-                            $totalJam = $mapelJamPerMinggu[$kode] ?? $mapelTotalCount[$kode];
-                            $matrix[$h][$jam->id] = [
-                                'mapel' => $kode,
-                                'guru'  => $entry->guruMapel->guru->user->nama_lengkap,
-                                'seq'   => $mapelGlobalSeq[$kode], // global: 1, 2, 3, 4
-                                'total' => $totalJam,               // jam_per_minggu
-                            ];
-                        } else {
-                            $matrix[$h][$jam->id] = null;
+                $mapelGlobalSeq = [];
+                foreach ($jadwal as $entry) {
+                    $jam = $entry->jamPelajaran;
+                    $kode = $entry->guruMapel->mapel->kode;
+                    $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
+                    
+                    $matrix[$jam->jam_ke][$jam->hari] = [
+                        'mapel' => $kode,
+                        'guru' => explode(',', $entry->guruMapel->guru->user->nama_lengkap)[0],
+                        'seq' => $mapelGlobalSeq[$kode],
+                        'total' => $mapelTotalCount[$kode],
+                        'jam_mulai' => $jam->jam_mulai,
+                        'jam_selesai' => $jam->jam_selesai,
+                        'is_istirahat' => false,
+                        'is_empty' => false,
+                    ];
+                }
+
+                // Fill blanks and breaks
+                for ($i = 1; $i <= $maxJamKe; $i++) {
+                    foreach ($hariAktif as $h) {
+                        $jam = $jamMap[$h][$i] ?? null;
+                        if ($jam) {
+                            if ($jam->is_istirahat) {
+                                $matrix[$i][$h] = [
+                                    'is_istirahat' => true,
+                                    'is_empty' => false,
+                                    'jam_mulai' => $jam->jam_mulai,
+                                    'jam_selesai' => $jam->jam_selesai,
+                                ];
+                            } else if (!isset($matrix[$i][$h])) {
+                                $matrix[$i][$h] = [
+                                    'is_istirahat' => false,
+                                    'is_empty' => true,
+                                    'jam_mulai' => $jam->jam_mulai,
+                                    'jam_selesai' => $jam->jam_selesai,
+                                ];
+                            }
                         }
                     }
                 }
 
                 $jadwalData[] = [
-                    'kelas'  => $kelas->nama,
+                    'kelas' => $kelas->nama,
                     'matrix' => $matrix,
                 ];
             }
@@ -165,7 +178,7 @@ class GenerateJadwal extends Component
         return view('livewire.admin.generate-jadwal', [
             'jadwalData' => $jadwalData,
             'hari' => $hariAktif,
-            'jamList' => JamPelajaran::orderBy('jam_ke')->get(),
+            'maxJamKe' => $maxJamKe,
         ]);
     }
 }

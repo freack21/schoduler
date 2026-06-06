@@ -51,7 +51,9 @@ class GenerateScheduleJob implements ShouldQueue
 
         $guruMapels = GuruMapel::with(['mapel', 'guru', 'kelas'])->get();
         $jamPelajaranList = JamPelajaran::orderBy('jam_ke')->get();
-        $hariAktif = Pengaturan::getHariAktif();
+        $allDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $dbDays = JamPelajaran::select('hari')->distinct()->pluck('hari')->toArray();
+        $hariAktif = array_values(array_intersect($allDays, $dbDays));
 
         if ($guruMapels->isEmpty() || $jamPelajaranList->isEmpty()) {
             $genState->update([
