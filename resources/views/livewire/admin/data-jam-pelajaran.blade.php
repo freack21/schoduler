@@ -1,83 +1,157 @@
 <div>
-    <div class="flex items-center justify-between mb-6">
-        <p class="text-sm text-gray-500">Atur jam pelajaran sesuai kebutuhan sekolah</p>
-        <button wire:click="openCreateModal" class="btn-primary flex items-center gap-2 text-sm">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            Tambah Jam
-        </button>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        @forelse($jamList as $jam)
-            <div class="card hover:shadow-md transition-shadow duration-200 text-center {{ $jam->is_istirahat ? '!bg-amber-50 !border-amber-200' : '' }}" wire:key="jam-{{ $jam->id }}">
-                @if($jam->is_istirahat)
-                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-lg mx-auto mb-3">
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75l-1.5.75a3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0 3.354 3.354 0 00-3 0 3.354 3.354 0 01-3 0L3 16.5m15-3.379a48.474 48.474 0 00-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 016 13.12M12.265 3.11a.375.375 0 11-.53 0L12 2.845l.265.265z"/></svg>
-                    </div>
-                    <span class="inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-200 text-amber-700 rounded-full mb-2">Istirahat</span>
-                @else
-                    <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-lg font-bold mx-auto mb-3">
-                        {{ $jam->jam_ke }}
-                    </div>
-                    <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Jam ke-{{ $jam->jam_ke }}</p>
-                @endif
-                <p class="text-lg font-semibold {{ $jam->is_istirahat ? 'text-amber-800' : 'text-gray-900' }}">
-                    {{ substr($jam->jam_mulai, 0, 5) }} - {{ substr($jam->jam_selesai, 0, 5) }}
-                </p>
-                <div class="flex items-center justify-center gap-3 mt-4 pt-3 border-t {{ $jam->is_istirahat ? 'border-amber-200' : 'border-gray-100' }}">
-                    <button wire:click="openEditModal({{ $jam->id }})" class="text-xs text-blue-600 hover:underline cursor-pointer">Edit</button>
-                    <span class="text-gray-300">•</span>
-                    <button wire:click="confirmDelete({{ $jam->id }})" class="text-xs text-red-500 hover:underline cursor-pointer">Hapus</button>
-                </div>
-            </div>
-        @empty
-            <div class="col-span-full text-center py-12 text-gray-400">Belum ada jam pelajaran. Tambahkan terlebih dahulu.</div>
-        @endforelse
-    </div>
-
-    @if($showModal)
-    <div class="modal-overlay" wire:click.self="$set('showModal', false)">
-        <div class="modal-content max-w-sm" @click.stop>
-            <div class="px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-900">{{ $editingId ? 'Edit Jam Pelajaran' : 'Tambah Jam Pelajaran' }}</h3>
-            </div>
-            <form wire:submit="save" class="p-6 space-y-4">
-                <div>
-                    <label class="label-field">Jam Ke</label>
-                    <input wire:model="jam_ke" type="number" min="1" class="input-field">
-                    @error('jam_ke') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="label-field">Mulai</label>
-                        <input wire:model="jam_mulai" type="time" class="input-field">
-                        @error('jam_mulai') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
-                    </div>
-                    <div>
-                        <label class="label-field">Selesai</label>
-                        <input wire:model="jam_selesai" type="time" class="input-field">
-                        @error('jam_selesai') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-
-                {{-- Istirahat Toggle --}}
-                <div class="flex items-center justify-between p-3 rounded-xl {{ $is_istirahat ? 'bg-amber-50 border border-amber-200' : 'bg-gray-50 border border-gray-200' }}">
-                    <div>
-                        <p class="text-sm font-medium {{ $is_istirahat ? 'text-amber-800' : 'text-gray-700' }}">Jam Istirahat</p>
-                        <p class="text-xs {{ $is_istirahat ? 'text-amber-600' : 'text-gray-400' }}">Slot ini tidak akan diisi mapel oleh GA</p>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" wire:model.live="is_istirahat" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-                    </label>
-                </div>
-
-                <div class="flex justify-end gap-3 pt-4">
-                    <button type="button" wire:click="$set('showModal', false)" class="btn-outline text-sm">Batal</button>
-                    <button type="submit" class="btn-primary text-sm">{{ $editingId ? 'Update' : 'Simpan' }}</button>
-                </div>
-            </form>
+    {{-- Header --}}
+    <div class="card bg-gradient-to-br from-white to-gray-50/50 shadow-sm border border-gray-100/50 mb-6 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+        <div class="relative z-10">
+            <h2 class="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-3">
+                <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Jam Pelajaran & Waktu
+            </h2>
+            <p class="text-sm font-medium text-gray-500 mt-1">Atur urutan jam pelajaran dan istirahat per hari secara fleksibel.</p>
         </div>
     </div>
-    @endif
+
+    {{-- Tabs --}}
+    <div class="flex flex-wrap gap-2 mb-6">
+        @foreach($hariList as $h)
+            <button wire:click="$set('hariFilter', '{{ $h }}')" 
+                class="px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 {{ $hariFilter === $h ? 'bg-primary text-white shadow-md shadow-primary/20 scale-105' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200' }}">
+                {{ $h }}
+            </button>
+        @endforeach
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {{-- Main Kanban Area --}}
+        <div class="lg:col-span-2 space-y-4">
+            
+            @if($jamList->isEmpty())
+                <div class="card bg-white/50 border-dashed border-2 flex flex-col items-center justify-center py-12 text-center">
+                    <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <p class="text-gray-500 font-medium">Belum ada jam di hari {{ $hariFilter }}.</p>
+                    <p class="text-sm text-gray-400 mt-1">Mulai tambahkan jam pelajaran atau salin dari hari lain.</p>
+                </div>
+            @endif
+
+            <div class="space-y-3">
+                @foreach($jamList as $index => $jam)
+                    <div class="card p-0 flex items-stretch overflow-hidden group transition-all duration-300 hover:shadow-md border {{ $jam->is_istirahat ? 'border-amber-200 bg-amber-50/30' : 'border-blue-100 bg-white' }}" wire:key="jam-{{ $jam->id }}">
+                        
+                        {{-- Controls --}}
+                        <div class="flex flex-col border-r {{ $jam->is_istirahat ? 'border-amber-200 bg-amber-100/50' : 'border-blue-100 bg-blue-50/50' }} w-12 items-center justify-center py-2 gap-1">
+                            @if(!$loop->first)
+                                <button wire:click="moveBlock({{ $jam->id }}, 'up')" class="p-1 rounded text-gray-400 hover:text-primary hover:bg-white transition-colors" title="Geser ke atas">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" /></svg>
+                                </button>
+                            @else
+                                <div class="w-6 h-6"></div>
+                            @endif
+                            
+                            <span class="text-xs font-black text-gray-500">{{ $jam->jam_ke }}</span>
+                            
+                            @if(!$loop->last)
+                                <button wire:click="moveBlock({{ $jam->id }}, 'down')" class="p-1 rounded text-gray-400 hover:text-primary hover:bg-white transition-colors" title="Geser ke bawah">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                            @else
+                                <div class="w-6 h-6"></div>
+                            @endif
+                        </div>
+
+                        {{-- Content --}}
+                        <div class="p-4 flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                @if($jam->is_istirahat)
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-amber-800 text-base">Istirahat</h3>
+                                        <p class="text-xs font-semibold text-amber-600 font-mono mt-0.5">{{ substr($jam->jam_mulai, 0, 5) }} – {{ substr($jam->jam_selesai, 0, 5) }}</p>
+                                    </div>
+                                @else
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                                        <span class="font-black text-sm">J{{ $jam->jam_ke }}</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800 text-base">Jam Pelajaran</h3>
+                                        <p class="text-xs font-semibold text-primary font-mono mt-0.5">{{ substr($jam->jam_mulai, 0, 5) }} – {{ substr($jam->jam_selesai, 0, 5) }}</p>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2 bg-gray-50/80 px-3 py-1.5 rounded-lg border border-gray-200/50">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <input type="number" 
+                                           wire:change="updateDuration({{ $jam->id }}, $event.target.value)" 
+                                           value="{{ $jam->durasi_menit }}" 
+                                           class="w-14 bg-transparent border-none text-sm font-bold text-gray-700 p-0 focus:ring-0 text-center">
+                                    <span class="text-xs font-bold text-gray-500">Mnt</span>
+                                </div>
+                                <button wire:click="removeBlock({{ $jam->id }})" class="p-2 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Hapus">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Actions --}}
+            <div class="flex items-center gap-3 mt-4">
+                <button wire:click="addBlock(false)" class="btn-primary py-2.5 flex-1 flex items-center justify-center gap-2 text-sm">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Tambah Jam
+                </button>
+                <button wire:click="addBlock(true)" class="btn-outline py-2.5 flex-1 flex items-center justify-center gap-2 text-sm border-amber-200 text-amber-700 hover:bg-amber-50">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                    Tambah Istirahat
+                </button>
+            </div>
+        </div>
+
+        {{-- Sidebar Settings --}}
+        <div class="space-y-6">
+            <div class="card bg-white border border-gray-100 shadow-sm">
+                <h3 class="text-sm font-black text-gray-800 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    Pengaturan Harian
+                </h3>
+                
+                <div class="mb-4">
+                    <label class="label-field text-xs">Waktu Mulai Sekolah ({{ $hariFilter }})</label>
+                    <div class="flex gap-2">
+                        <input type="time" wire:model="jamMulaiHari" class="input-field py-2" required>
+                        <button wire:click="updateWaktu" class="btn-primary py-2 px-4 whitespace-nowrap">Terapkan</button>
+                    </div>
+                    @error('jamMulaiHari') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+
+            <div class="card bg-gray-50/50 border border-gray-100 shadow-sm">
+                <h3 class="text-sm font-black text-gray-800 mb-4 flex items-center gap-2 uppercase tracking-wide">
+                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    Salin Jadwal
+                </h3>
+                <p class="text-xs text-gray-500 mb-3 leading-relaxed">Salin semua susunan jam pelajaran dari <strong>{{ $hariFilter }}</strong> ke hari lain secara instan.</p>
+                
+                <div class="space-y-2">
+                    @foreach($hariList as $h)
+                        @if($h !== $hariFilter)
+                            <button wire:click="copyTo('{{ $h }}')" 
+                                onclick="confirm('Yakin ingin menyalin ke hari {{ $h }}? Jadwal {{ $h }} yang lama akan tertimpa.') || event.stopImmediatePropagation()"
+                                class="w-full py-2 px-3 text-sm font-bold text-gray-600 bg-white border border-gray-200 rounded-lg hover:border-primary hover:text-primary transition-colors text-left flex justify-between items-center group">
+                                Ke {{ $h }}
+                                <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            </button>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

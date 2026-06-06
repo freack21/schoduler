@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\JamPelajaran;
+use Carbon\Carbon;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -11,79 +12,138 @@ use Livewire\Component;
 #[Title('Jam Pelajaran')]
 class DataJamPelajaran extends Component
 {
-    public bool $showModal = false;
-    public ?int $editingId = null;
-    public int $jam_ke = 1;
-    public string $jam_mulai = '07:00';
-    public string $jam_selesai = '07:45';
-    public bool $is_istirahat = false;
+    public string $hariFilter = 'Senin';
+    public array $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    
+    // Setting global jam mulai per hari
+    public string $jamMulaiHari = '07:00';
 
-    public function openCreateModal(): void
+    public function mount()
     {
-        $lastJam = JamPelajaran::orderBy('jam_ke', 'desc')->first();
-        $this->editingId = null;
-        $this->jam_ke = $lastJam ? $lastJam->jam_ke + 1 : 1;
-        $this->jam_mulai = $lastJam ? $lastJam->jam_selesai : '07:00';
-        $this->jam_selesai = '';
-        $this->is_istirahat = false;
-        $this->showModal = true;
+        $this->loadJamMulai();
     }
 
-    public function openEditModal(int $id): void
+    public function updatedHariFilter()
     {
-        $jam = JamPelajaran::findOrFail($id);
-        $this->editingId = $id;
-        $this->jam_ke = $jam->jam_ke;
-        $this->jam_mulai = substr($jam->jam_mulai, 0, 5);
-        $this->jam_selesai = substr($jam->jam_selesai, 0, 5);
-        $this->is_istirahat = $jam->is_istirahat;
-        $this->showModal = true;
+        $this->loadJamMulai();
     }
 
-    public function save(): void
+    public function loadJamMulai()
     {
-        $this->validate([
-            'jam_ke' => 'required|integer|min:1',
-            'jam_mulai' => 'required|string',
-            'jam_selesai' => 'required|string',
+        $firstJam = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->first();
+        if ($firstJam) {
+            $this->jamMulaiHari = substr($firstJam->jam_mulai, 0, 5);
+        } else {
+            $this->jamMulaiHari = '07:00';
+        }
+    }
+
+    public function updateWaktu()
+    {
+        $this->validate(['jamMulaiHari' => 'required|date_format:H:i']);
+        $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
+        $this->dispatch('toast', type: 'success', message: 'Waktu mulai diperbarui.');
+    }
+
+    public function addBlock(bool $isIstirahat)
+    {
+        $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
+        $nextJamKe = $jams->max('jam_ke') + 1;
+        
+        $durasi = $isIstirahat ? 15 : 45;
+        
+        JamPelajaran::create([
+            'hari' => $this->hariFilter,
+            'jam_ke' => $nextJamKe,
+            'is_istirahat' => $isIstirahat,
+            'durasi_menit' => $durasi,
+            'jam_mulai' => '00:00:00',
+            'jam_selesai' => '00:00:00',
         ]);
-
-        JamPelajaran::updateOrCreate(
-            ['id' => $this->editingId],
-            [
-                'jam_ke' => $this->jam_ke,
-                'jam_mulai' => $this->jam_mulai,
-                'jam_selesai' => $this->jam_selesai,
-                'is_istirahat' => $this->is_istirahat,
-            ]
-        );
-
-        $this->showModal = false;
-        $this->dispatch('toast', type: 'success', message: 'Jam pelajaran berhasil disimpan!');
+        
+        $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
     }
 
-    public function confirmDelete(int $id): void
-    {
-        $this->dispatch('swal-confirm',
-            title: 'Hapus Jam Pelajaran?',
-            text: 'Jam pelajaran ini akan dihapus.',
-            confirmText: 'Ya, Hapus!',
-            method: 'doDelete',
-            payload: ['id' => $id]
-        );
-    }
-
-    #[\Livewire\Attributes\On('doDelete')]
-    public function doDelete(int $id): void
+    public function removeBlock(int $id)
     {
         JamPelajaran::findOrFail($id)->delete();
-        $this->dispatch('toast', type: 'success', message: 'Jam pelajaran berhasil dihapus!');
+        $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
+        foreach ($jams as $index => $jam) {
+            $jam->update(['jam_ke' => $index + 1]);
+        }
+        $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
+    }
+    
+    public function updateDuration(int $id, int $durasi)
+    {
+        if ($durasi < 5) return;
+        JamPelajaran::findOrFail($id)->update(['durasi_menit' => $durasi]);
+        $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
+    }
+
+    public function moveBlock(int $id, string $direction)
+    {
+        $jam = JamPelajaran::findOrFail($id);
+        $swapJam = null;
+
+        if ($direction === 'up') {
+            $swapJam = JamPelajaran::where('hari', $this->hariFilter)->where('jam_ke', '<', $jam->jam_ke)->orderBy('jam_ke', 'desc')->first();
+        } else {
+            $swapJam = JamPelajaran::where('hari', $this->hariFilter)->where('jam_ke', '>', $jam->jam_ke)->orderBy('jam_ke', 'asc')->first();
+        }
+
+        if ($swapJam) {
+            $temp = $jam->jam_ke;
+            $jam->update(['jam_ke' => $swapJam->jam_ke]);
+            $swapJam->update(['jam_ke' => $temp]);
+            $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
+        }
+    }
+
+    public function copyTo(string $targetHari)
+    {
+        if ($this->hariFilter === $targetHari) return;
+
+        JamPelajaran::where('hari', $targetHari)->delete();
+
+        $sourceJams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
+        foreach ($sourceJams as $jam) {
+            JamPelajaran::create([
+                'hari' => $targetHari,
+                'jam_ke' => $jam->jam_ke,
+                'jam_mulai' => $jam->jam_mulai,
+                'jam_selesai' => $jam->jam_selesai,
+                'is_istirahat' => $jam->is_istirahat,
+                'durasi_menit' => $jam->durasi_menit,
+            ]);
+        }
+
+        $this->dispatch('toast', type: 'success', message: "Berhasil disalin ke $targetHari");
+    }
+
+    private function recalculateTimes(string $hari, string $startAt)
+    {
+        $jams = JamPelajaran::where('hari', $hari)->orderBy('jam_ke')->get();
+        if ($jams->isEmpty()) return;
+
+        $currentTime = Carbon::createFromFormat('H:i', $startAt);
+
+        foreach ($jams as $jam) {
+            $mulai = $currentTime->format('H:i:s');
+            $currentTime->addMinutes($jam->durasi_menit);
+            $selesai = $currentTime->format('H:i:s');
+            
+            $jam->update([
+                'jam_mulai' => $mulai,
+                'jam_selesai' => $selesai,
+            ]);
+        }
     }
 
     public function render()
     {
         return view('livewire.admin.data-jam-pelajaran', [
-            'jamList' => JamPelajaran::orderBy('jam_ke')->get(),
+            'jamList' => JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get(),
         ]);
     }
 }

@@ -97,32 +97,29 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         // Only non-istirahat slots
-        $jamAktif = $jamPelajaranList->where('is_istirahat', false);
-        $jamIds = $jamAktif->pluck('id')->toArray();
+        $jamPelajaranAll = JamPelajaran::orderBy('jam_ke')->get();
 
         $blocks = array_values($blocks);
         $totalGenes = count($genes);
         $totalBlocks = count($blocks);
 
-        // Build consecutive position map (skipping istirahat)
-        $jamPositionMap = [];
-        $pos = 0;
-        foreach ($jamPelajaranList as $jp) {
-            if (!$jp->is_istirahat) {
-                $jamPositionMap[$jp->id] = $pos++;
-            }
-        }
-
         // Build slot map
         $slotMap = [];
+        $totalHari = count($hariAktif);
+
         foreach ($hariAktif as $hariIdx => $hari) {
-            foreach ($jamIds as $jamId) {
-                $slotMap[] = [
-                    'hari' => $hari,
-                    'jam_pelajaran_id' => $jamId,
-                    'hari_idx' => $hariIdx,
-                    'jam_pos' => $jamPositionMap[$jamId],
-                ];
+            $jamsForDay = $jamPelajaranAll->where('hari', $hari);
+            
+            $pos = 1;
+            foreach ($jamsForDay as $jp) {
+                if (!$jp->is_istirahat) {
+                    $slotMap[] = [
+                        'hari' => $hari,
+                        'jam_pelajaran_id' => $jp->id,
+                        'hari_idx' => $hariIdx,
+                        'jam_pos' => $pos++,
+                    ];
+                }
             }
         }
         $totalSlots = count($slotMap);
@@ -130,14 +127,11 @@ class GenerateScheduleJob implements ShouldQueue
         if ($totalSlots === 0) {
             $genState->update([
                 'status' => 'error',
-                'message' => 'Tidak ada slot waktu tersedia.',
+                'message' => 'Tidak ada slot waktu tersedia. Pastikan Jam Pelajaran sudah diatur.',
                 'completed_at' => now(),
             ]);
             return;
         }
-
-        $slotsPerDay = count($jamIds);
-        $totalHari = count($hariAktif);
 
         $bestOverallScore = null;
         $bestOverallHard = null;
