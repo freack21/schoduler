@@ -119,9 +119,9 @@ class DataSiswa extends Component
     public function render()
     {
         $query = Siswa::query()
-            ->select('siswas.*')
-            ->join('users', 'siswas.user_id', '=', 'users.id')
-            ->leftJoin('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+            ->select('siswa.*')
+            ->join('users', 'siswa.user_id', '=', 'users.id')
+            ->leftJoin('kelas', 'siswa.kelas_id', '=', 'kelas.id')
             ->with(['user', 'kelas']);
 
         if ($this->search) {

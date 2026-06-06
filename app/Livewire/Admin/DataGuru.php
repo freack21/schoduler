@@ -183,12 +183,12 @@ class DataGuru extends Component
     public function render()
     {
         $query = Guru::query()
-            ->select('gurus.*')
-            ->join('users', 'gurus.user_id', '=', 'users.id')
+            ->select('guru.*')
+            ->join('users', 'guru.user_id', '=', 'users.id')
             ->addSelect([
                 'total_jam' => GuruMapel::selectRaw('COALESCE(SUM(mapels.jam_per_minggu), 0)')
                     ->join('mapels', 'mapels.id', '=', 'guru_mapels.mapel_id')
-                    ->whereColumn('guru_mapels.guru_id', 'gurus.id')
+                    ->whereColumn('guru_mapels.guru_id', 'guru.id')
             ])
             ->with(['user', 'guruMapel.mapel']);
 
