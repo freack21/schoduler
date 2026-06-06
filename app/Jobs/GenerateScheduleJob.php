@@ -491,13 +491,15 @@ class GenerateScheduleJob implements ShouldQueue
             $actualDays = count($hariData);
             
             if ($actualDays > $idealDays) {
-                $distViolations += ($actualDays - $idealDays) * 5; // heavy penalty for spread
+                $distViolations += ($actualDays - $idealDays) * 50; // heavy penalty for spread
+            } elseif ($actualDays < $idealDays) {
+                $distViolations += ($idealDays - $actualDays) * 50; // heavily penalize stacking on same day
             }
 
             foreach ($hariData as $hariIdx => $positions) {
                 $count = count($positions);
                 if ($count > $jamPerHari) {
-                    $distViolations += ($count - $jamPerHari) * 2;
+                    $distViolations += ($count - $jamPerHari) * 100; // practically forbidden to exceed jam per hari
                 }
                 // Consecutive: already guaranteed within blocks, but check across blocks on same day
                 if ($count > 1) {

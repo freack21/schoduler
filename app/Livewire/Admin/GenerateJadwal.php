@@ -111,7 +111,12 @@ class GenerateJadwal extends Component
             foreach ($kelasList as $kelas) {
                 $jadwal = Jadwal::with(['guruMapel.mapel', 'guruMapel.guru.user', 'jamPelajaran'])
                     ->whereHas('guruMapel', fn($q) => $q->where('kelas_id', $kelas->id))
-                    ->get();
+                    ->get()
+                    ->sortBy(function ($entry) use ($hariAktif) {
+                        $dayIndex = array_search($entry->hari, $hariAktif);
+                        if ($dayIndex === false) $dayIndex = 99;
+                        return $dayIndex * 100 + $entry->jamPelajaran->jam_ke;
+                    });
 
                 $mapelTotalCount = [];
                 foreach ($jadwal as $entry) {
