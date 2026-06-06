@@ -99,10 +99,16 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // Only non-istirahat slots
         $jamPelajaranAll = JamPelajaran::orderBy('jam_ke')->get();
 
         $blocks = array_values($blocks);
+        
+        // SORT BLOCKS DESCENDING BY SIZE (Largest Enumerable First Heuristic)
+        // This prevents small blocks from creating "holes" that block large blocks later.
+        usort($blocks, function($a, $b) {
+            return count($b) <=> count($a);
+        });
+
         $totalGenes = count($genes);
         $totalBlocks = count($blocks);
 
@@ -178,8 +184,6 @@ class GenerateScheduleJob implements ShouldQueue
             'mapelJamPerMinggu' => $mapelJamPerMinggu,
             'kelasAllowedSlots' => $kelasAllowedSlots,
             'validBlockStarts' => $validBlockStarts,
-            'totalHari' => $totalHari,
-            'slotsPerDay' => $slotsPerDay,
         ];
 
         // ── INITIAL POPULATION (Block Based) ──
@@ -398,33 +402,34 @@ class GenerateScheduleJob implements ShouldQueue
             $validStarts = $validBlockStarts[$blockSize];
             
             $bestSlot = -1;
-            $bestScore = -PHP_INT_MAX;
-
+            $minConflicts = PHP_INT_MAX;
+            $bestCandidates = [];
+            
             foreach ($validStarts as $s) {
-                // Check if all slots in the block are free
-                $conflict = false;
+                $conflicts = 0;
                 for ($offset = 0; $offset < $blockSize; $offset++) {
-                    if (isset($usedGuruSlots[$guruId][$s + $offset]) || isset($usedKelasSlots[$kelasId][$s + $offset])) {
-                        $conflict = true;
-                        break;
-                    }
+                    if (isset($usedGuruSlots[$guruId][$s + $offset])) $conflicts++;
+                    if (isset($usedKelasSlots[$kelasId][$s + $offset])) $conflicts++;
                 }
                 
-                if ($conflict) continue;
-
-                $score = count($validStarts) - $s; // prefer earlier
-                if ($score > $bestScore) {
-                    $bestScore = $score;
-                    $bestSlot = $s;
+                if ($conflicts === 0) {
+                    $bestCandidates = [$s];
+                    $minConflicts = 0;
+                    break; // Perfect slot
+                }
+                
+                if ($conflicts < $minConflicts) {
+                    $minConflicts = $conflicts;
+                    $bestCandidates = [$s];
+                } elseif ($conflicts === $minConflicts) {
+                    $bestCandidates[] = $s;
                 }
             }
 
-            if ($bestSlot === -1) {
-                if (!empty($validStarts)) {
-                    $bestSlot = $validStarts[array_rand($validStarts)];
-                } else {
-                    $bestSlot = 0; // Absolute fallback
-                }
+            if (!empty($bestCandidates)) {
+                $bestSlot = $bestCandidates[array_rand($bestCandidates)];
+            } else {
+                $bestSlot = 0; // Absolute fallback
             }
 
             $chromosome[$b] = $bestSlot;
@@ -589,13 +594,28 @@ class GenerateScheduleJob implements ShouldQueue
             
             if ($this->randFloat() > 0.5) {
                 $validStarts = $validBlockStarts[$size1];
-                $chromosome[$b1] = $validStarts[array_rand($validStarts)];
+                if (!empty($validStarts)) {
+                    $chromosome[$b1] = $validStarts[array_rand($validStarts)];
+                }
             } else {
-                $b2 = rand(0, $totalBlocks - 1);
-                if ($b1 !== $b2 && count($blocks[$b2]) === $size1) {
+                $sameSizeBlocks = [];
+                foreach ($blocks as $idx => $block) {
+                    if (count($block) === $size1 && $idx !== $b1) {
+                        $sameSizeBlocks[] = $idx;
+                    }
+                }
+                
+                if (!empty($sameSizeBlocks)) {
+                    $b2 = $sameSizeBlocks[array_rand($sameSizeBlocks)];
                     $tmp = $chromosome[$b1];
                     $chromosome[$b1] = $chromosome[$b2];
                     $chromosome[$b2] = $tmp;
+                } else {
+                    // Fallback to random move if no block of same size
+                    $validStarts = $validBlockStarts[$size1];
+                    if (!empty($validStarts)) {
+                        $chromosome[$b1] = $validStarts[array_rand($validStarts)];
+                    }
                 }
             }
         }
