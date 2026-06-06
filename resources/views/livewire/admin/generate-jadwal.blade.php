@@ -155,44 +155,43 @@
                             @for($i = 1; $i <= $maxJamKe; $i++)
                                 <tr class="table-row">
                                     <td class="px-3 py-2 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-100">{{ $i }}</td>
-                                    @foreach($hari as $h)
-                                        @php $cell = $data['matrix'][$i][$h] ?? null; @endphp
+                                        @php $cellItems = $data['matrix'][$i][$h] ?? []; @endphp
                                         
-                                        @if(!$cell)
+                                        @if(empty($cellItems))
                                             <td class="px-2 py-1.5 text-center"><span class="text-gray-300">-</span></td>
-                                        @elseif($cell['is_istirahat'])
-                                            <td class="px-3 py-2 text-center font-medium bg-amber-50 border border-amber-100/50">
-                                                <div class="text-[10px] uppercase tracking-wider font-bold text-amber-700">Istirahat</div>
-                                                <div class="text-[10px] text-amber-600/70">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
-                                            </td>
-                                        @elseif($cell['is_empty'])
-                                            <td class="px-3 py-2 text-center bg-gray-50/50 border border-gray-100">
-                                                <div class="text-[10px] text-gray-400">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
-                                                <span class="text-gray-300">-</span>
-                                            </td>
                                         @else
-                                            <td class="px-2 py-1.5 text-center border border-gray-100">
-                                                <div class="bg-blue-50/80 rounded-lg px-2 py-1.5 border border-blue-100/50 hover:bg-blue-100 transition-colors">
-                                                    <div class="text-[9px] font-mono text-gray-500 mb-0.5">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
-                                                    <div class="font-bold text-blue-800 text-[11px] leading-tight">
-                                                        {{ $cell['mapel'] }}
-                                                        <span class="font-normal text-blue-500">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
-                                                    </div>
-                                                    <div class="text-[10px] text-gray-600 truncate max-w-[90px] mx-auto mt-0.5" title="{{ $cell['guru'] }}">{{ $cell['guru'] }}</div>
+                                            <td class="px-2 py-1.5 text-center border border-gray-100 align-top">
+                                                <div class="flex flex-col gap-2">
+                                                    @foreach($cellItems as $cell)
+                                                        @if(isset($cell['is_istirahat']) && $cell['is_istirahat'])
+                                                            <div class="bg-amber-50 border border-amber-100/50 rounded-lg px-2 py-1.5 w-full">
+                                                                <div class="text-[10px] uppercase tracking-wider font-bold text-amber-700">Istirahat</div>
+                                                                <div class="text-[10px] text-amber-600/70">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                            </div>
+                                                        @elseif(isset($cell['is_empty']) && $cell['is_empty'])
+                                                            <div class="bg-gray-50/50 border border-gray-100 rounded-lg px-2 py-1.5 w-full">
+                                                                <div class="text-[10px] text-gray-400">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                                <span class="text-gray-300">-</span>
+                                                            </div>
+                                                        @else
+                                                            <div class="rounded-lg px-2 py-1.5 border hover:opacity-90 transition-colors {{ count($cellItems) > 1 ? 'bg-red-50 border-red-500 shadow-sm shadow-red-100' : 'bg-blue-50/80 border-blue-100/50' }}">
+                                                                <div class="text-[9px] font-mono text-gray-500 mb-0.5">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                                <div class="font-bold text-[11px] leading-tight {{ count($cellItems) > 1 ? 'text-red-700' : 'text-blue-800' }}">
+                                                                    {{ $cell['mapel'] }}
+                                                                    <span class="font-normal {{ count($cellItems) > 1 ? 'text-red-500' : 'text-blue-500' }}">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
+                                                                </div>
+                                                                <div class="text-[10px] text-gray-600 truncate max-w-[90px] mx-auto mt-0.5" title="{{ $cell['guru'] }}">{{ $cell['guru'] }}</div>
+                                                                @if(count($cellItems) > 1)
+                                                                    <div class="text-[9px] text-red-500 font-bold mt-1 bg-white/50 rounded">OVERLAP</div>
+                                                                @endif
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
                                                 </div>
                                             </td>
                                         @endif
                                     @endforeach
                                 </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        @endforeach
-    </div>
-    @endif
-</div>
                             @endfor
                         </tbody>
                     </table>
