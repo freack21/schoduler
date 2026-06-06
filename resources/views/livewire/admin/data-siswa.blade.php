@@ -16,9 +16,23 @@
                 <thead class="table-header">
                     <tr>
                         <th class="px-6 py-3">No</th>
-                        <th class="px-6 py-3">Nama</th>
+                        <th class="px-6 py-3 cursor-pointer hover:bg-gray-100/50 select-none" wire:click="sort('nama_lengkap')">
+                            <div class="flex items-center gap-2">
+                                Nama
+                                @if($sortBy === 'nama_lengkap')
+                                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $sortDir === 'asc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7' }}"/></svg>
+                                @endif
+                            </div>
+                        </th>
                         <th class="px-6 py-3">NISN</th>
-                        <th class="px-6 py-3">Kelas</th>
+                        <th class="px-6 py-3 cursor-pointer hover:bg-gray-100/50 select-none" wire:click="sort('kelas')">
+                            <div class="flex items-center gap-2">
+                                Kelas
+                                @if($sortBy === 'kelas')
+                                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $sortDir === 'asc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7' }}"/></svg>
+                                @endif
+                            </div>
+                        </th>
                         <th class="px-6 py-3 text-right">Aksi</th>
                     </tr>
                 </thead>

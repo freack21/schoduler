@@ -17,6 +17,8 @@ class DataSiswa extends Component
     use WithPagination;
 
     public string $search = '';
+    public string $sortBy = 'nama_lengkap';
+    public string $sortDir = 'asc';
     public bool $showModal = false;
     public ?int $editingId = null;
     public string $nisn = '';
@@ -27,6 +29,16 @@ class DataSiswa extends Component
     public function updatingSearch(): void
     {
         $this->resetPage();
+    }
+
+    public function sort(string $column): void
+    {
+        if ($this->sortBy === $column) {
+            $this->sortDir = $this->sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortBy = $column;
+            $this->sortDir = 'asc';
+        }
     }
 
     public function openCreateModal(): void
@@ -106,12 +118,27 @@ class DataSiswa extends Component
 
     public function render()
     {
-        $siswa = Siswa::with(['user', 'kelas'])
-            ->whereHas('user', fn($q) => $q->where('nama_lengkap', 'like', "%{$this->search}%")->orWhere('id', 'like', "%{$this->search}%"))
-            ->paginate(10);
+        $query = Siswa::query()
+            ->select('siswas.*')
+            ->join('users', 'siswas.user_id', '=', 'users.id')
+            ->leftJoin('kelas', 'siswas.kelas_id', '=', 'kelas.id')
+            ->with(['user', 'kelas']);
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('users.nama_lengkap', 'like', "%{$this->search}%")
+                  ->orWhere('users.id', 'like', "%{$this->search}%");
+            });
+        }
+
+        if ($this->sortBy === 'nama_lengkap') {
+            $query->orderBy('users.nama_lengkap', $this->sortDir);
+        } elseif ($this->sortBy === 'kelas') {
+            $query->orderBy('kelas.nama', $this->sortDir);
+        }
 
         return view('livewire.admin.data-siswa', [
-            'siswaList' => $siswa,
+            'siswaList' => $query->paginate(10),
             'kelasList' => Kelas::with('tingkat')->orderBy('tingkat_id')->orderBy('nama')->get(),
         ]);
     }

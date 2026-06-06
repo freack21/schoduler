@@ -19,6 +19,8 @@ class DataGuru extends Component
     use WithPagination;
 
     public string $search = '';
+    public string $sortBy = 'nama_lengkap';
+    public string $sortDir = 'asc';
 
     // Form fields
     public bool $showModal = false;
@@ -38,6 +40,16 @@ class DataGuru extends Component
     public function updatingSearch(): void
     {
         $this->resetPage();
+    }
+
+    public function sort(string $column): void
+    {
+        if ($this->sortBy === $column) {
+            $this->sortDir = $this->sortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortBy = $column;
+            $this->sortDir = 'asc';
+        }
     }
 
     public function openCreateModal(): void
@@ -170,15 +182,31 @@ class DataGuru extends Component
 
     public function render()
     {
-        $guru = Guru::with(['user', 'guruMapel.mapel'])
-            ->whereHas('user', function ($q) {
-                $q->where('nama_lengkap', 'like', "%{$this->search}%")
-                  ->orWhere('id', 'like', "%{$this->search}%");
-            })
-            ->paginate(10);
+        $query = Guru::query()
+            ->select('gurus.*')
+            ->join('users', 'gurus.user_id', '=', 'users.id')
+            ->addSelect([
+                'total_jam' => GuruMapel::selectRaw('COALESCE(SUM(mapels.jam_per_minggu), 0)')
+                    ->join('mapels', 'mapels.id', '=', 'guru_mapels.mapel_id')
+                    ->whereColumn('guru_mapels.guru_id', 'gurus.id')
+            ])
+            ->with(['user', 'guruMapel.mapel']);
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('users.nama_lengkap', 'like', "%{$this->search}%")
+                  ->orWhere('users.id', 'like', "%{$this->search}%");
+            });
+        }
+
+        if ($this->sortBy === 'nama_lengkap') {
+            $query->orderBy('users.nama_lengkap', $this->sortDir);
+        } elseif ($this->sortBy === 'beban_mengajar') {
+            $query->orderBy('total_jam', $this->sortDir);
+        }
 
         return view('livewire.admin.data-guru', [
-            'guruList' => $guru,
+            'guruList' => $query->paginate(10),
             'mapelList' => Mapel::orderBy('nama')->get(),
             'kelasList' => Kelas::with('tingkat')->orderBy('tingkat_id')->orderBy('nama')->get(),
         ]);
