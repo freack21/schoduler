@@ -71,7 +71,7 @@ class GenerateScheduleJob implements ShouldQueue
         $mapelJamPerMinggu = [];
         $geneIdx = 0;
         foreach ($guruMapels as $gm) {
-            $jamPerHari = $gm->mapel->jam_per_hari;
+            $jamPerHari = max(1, (int) $gm->mapel->jam_per_hari); // Failsafe
             $jam = $gm->mapel->jam_per_minggu;
             $mapelJamPerHari[$gm->mapel_id] = $jamPerHari;
             $mapelJamPerMinggu[$gm->mapel_id] = $jam;
@@ -79,6 +79,7 @@ class GenerateScheduleJob implements ShouldQueue
             $blockSizes = [];
             while ($jam > 0) {
                 $size = min($jam, $jamPerHari);
+                if ($size < 1) $size = 1; // Failsafe against infinite loops
                 $blockSizes[] = $size;
                 $jam -= $size;
             }
@@ -162,6 +163,10 @@ class GenerateScheduleJob implements ShouldQueue
                 if ($startHari === $endHari) {
                     $validBlockStarts[$size][] = $s;
                 }
+            }
+            // Fallback if no contiguous slots are available for this size
+            if (empty($validBlockStarts[$size])) {
+                $validBlockStarts[$size] = $validBlockStarts[1];
             }
         }
 
@@ -415,7 +420,11 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             if ($bestSlot === -1) {
-                $bestSlot = $validStarts[array_rand($validStarts)];
+                if (!empty($validStarts)) {
+                    $bestSlot = $validStarts[array_rand($validStarts)];
+                } else {
+                    $bestSlot = 0; // Absolute fallback
+                }
             }
 
             $chromosome[$b] = $bestSlot;
