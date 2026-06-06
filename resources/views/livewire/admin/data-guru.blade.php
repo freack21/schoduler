@@ -21,6 +21,7 @@
                         <th class="px-6 py-3">Nama</th>
                         <th class="px-6 py-3">NIP</th>
                         <th class="px-6 py-3">Mapel yang Diajar</th>
+                        <th class="px-6 py-3">Beban Mengajar</th>
                         <th class="px-6 py-3 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -44,6 +45,18 @@
                                     @endforeach
                                     @if($guru->guruMapel->isEmpty())
                                         <span class="text-gray-400 text-xs italic">Belum ada</span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                @php
+                                    $totalJam = $guru->guruMapel->sum('mapel.jam_per_minggu');
+                                    $isOverload = $totalJam > 40;
+                                @endphp
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold {{ $isOverload ? 'text-red-600' : 'text-gray-700' }}">{{ $totalJam }} Jam</span>
+                                    @if($isOverload)
+                                        <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" title="Melebihi batas ideal (40 jam)"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                                     @endif
                                 </div>
                             </td>
