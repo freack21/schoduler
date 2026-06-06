@@ -113,8 +113,7 @@ class GenerateJadwal extends Component
                     ->whereHas('guruMapel', fn($q) => $q->where('kelas_id', $kelas->id))
                     ->get()
                     ->sortBy(function ($entry) use ($hariAktif) {
-                        $cleanHari = ucfirst(trim($entry->hari));
-                        $dayIndex = array_search($cleanHari, $hariAktif);
+                        $dayIndex = array_search($entry->hari, $hariAktif);
                         if ($dayIndex === false) $dayIndex = 99;
                         return $dayIndex * 100 + $entry->jamPelajaran->jam_ke;
                     })->values();
@@ -128,18 +127,17 @@ class GenerateJadwal extends Component
                 $matrix = [];
                 for ($i = 1; $i <= $maxJamKe; $i++) {
                     foreach ($hariAktif as $h) {
-                        $matrix[$i][$h] = [];
+                        $matrix[$i][$h] = null;
                     }
                 }
 
                 $mapelGlobalSeq = [];
                 foreach ($jadwal as $entry) {
                     $jam = $entry->jamPelajaran;
-                    $cleanHari = ucfirst(trim($jam->hari));
                     $kode = $entry->guruMapel->mapel->kode;
                     $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
                     
-                    $matrix[$jam->jam_ke][$cleanHari][] = [
+                    $matrix[$jam->jam_ke][$jam->hari] = [
                         'mapel' => $kode,
                         'guru' => explode(',', $entry->guruMapel->guru->user->nama_lengkap)[0],
                         'seq' => $mapelGlobalSeq[$kode],
@@ -157,14 +155,14 @@ class GenerateJadwal extends Component
                         $jam = $jamMap[$h][$i] ?? null;
                         if ($jam) {
                             if ($jam->is_istirahat) {
-                                $matrix[$i][$h][] = [
+                                $matrix[$i][$h] = [
                                     'is_istirahat' => true,
                                     'is_empty' => false,
                                     'jam_mulai' => $jam->jam_mulai,
                                     'jam_selesai' => $jam->jam_selesai,
                                 ];
-                            } else if (empty($matrix[$i][$h])) {
-                                $matrix[$i][$h][] = [
+                            } else if (!isset($matrix[$i][$h])) {
+                                $matrix[$i][$h] = [
                                     'is_istirahat' => false,
                                     'is_empty' => true,
                                     'jam_mulai' => $jam->jam_mulai,
