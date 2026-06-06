@@ -127,10 +127,10 @@ class GenerateScheduleJob implements ShouldQueue
         }
         $totalSlots = count($slotMap);
 
-        if ($totalSlots === 0) {
+        if ($totalSlots === 0 || $totalBlocks === 0) {
             $genState->update([
                 'status' => 'error',
-                'message' => 'Tidak ada slot waktu tersedia. Pastikan Jam Pelajaran sudah diatur.',
+                'message' => 'Tidak ada slot waktu tersedia atau tidak ada mapel dengan jam_per_minggu > 0.',
                 'completed_at' => now(),
             ]);
             return;
