@@ -127,17 +127,18 @@ class GenerateJadwal extends Component
                 $matrix = [];
                 for ($i = 1; $i <= $maxJamKe; $i++) {
                     foreach ($hariAktif as $h) {
-                        $matrix[$i][$h] = null;
+                        $matrix[$i][$h] = [];
                     }
                 }
 
                 $mapelGlobalSeq = [];
                 foreach ($jadwal as $entry) {
                     $jam = $entry->jamPelajaran;
+                    $cleanHari = ucfirst(trim($jam->hari));
                     $kode = $entry->guruMapel->mapel->kode;
                     $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
                     
-                    $matrix[$jam->jam_ke][$jam->hari] = [
+                    $matrix[$jam->jam_ke][$cleanHari][] = [
                         'mapel' => $kode,
                         'guru' => explode(',', $entry->guruMapel->guru->user->nama_lengkap)[0],
                         'seq' => $mapelGlobalSeq[$kode],
@@ -155,14 +156,14 @@ class GenerateJadwal extends Component
                         $jam = $jamMap[$h][$i] ?? null;
                         if ($jam) {
                             if ($jam->is_istirahat) {
-                                $matrix[$i][$h] = [
+                                $matrix[$i][$h][] = [
                                     'is_istirahat' => true,
                                     'is_empty' => false,
                                     'jam_mulai' => $jam->jam_mulai,
                                     'jam_selesai' => $jam->jam_selesai,
                                 ];
-                            } else if (!isset($matrix[$i][$h])) {
-                                $matrix[$i][$h] = [
+                            } else if (empty($matrix[$i][$h])) {
+                                $matrix[$i][$h][] = [
                                     'is_istirahat' => false,
                                     'is_empty' => true,
                                     'jam_mulai' => $jam->jam_mulai,
