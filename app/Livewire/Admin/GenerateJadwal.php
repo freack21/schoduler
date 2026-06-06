@@ -116,7 +116,7 @@ class GenerateJadwal extends Component
                         $dayIndex = array_search($entry->hari, $hariAktif);
                         if ($dayIndex === false) $dayIndex = 99;
                         return $dayIndex * 100 + $entry->jamPelajaran->jam_ke;
-                    });
+                    })->values();
 
                 $mapelTotalCount = [];
                 foreach ($jadwal as $entry) {

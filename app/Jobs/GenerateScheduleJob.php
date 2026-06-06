@@ -342,7 +342,7 @@ class GenerateScheduleJob implements ShouldQueue
 
         $final = $bestChromosome
             ? $this->evaluate($bestChromosome, $evalContext)
-            : ['guru_conflicts' => -1, 'kelas_conflicts' => -1, 'dist_violations' => -1, 'consecutive_violations' => -1, 'total' => -1, 'day_priority_penalty' => -1];
+            : ['guru_conflicts' => -1, 'kelas_conflicts' => -1, 'dist_violations' => -1, 'consecutive_violations' => -1, 'gap_violations' => -1, 'total' => -1, 'day_priority_penalty' => -1];
 
         $hard = $final['guru_conflicts'] + $final['kelas_conflicts'];
 
@@ -481,6 +481,30 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
+        // Penalize daily gaps (jam bolong) for each class
+        $gapPenalty = 0;
+        foreach ($kelasSlots as $kelasId => $occupiedSlots) {
+            $slotsByDay = [];
+            foreach (array_keys($occupiedSlots) as $slotIdx) {
+                $hariIdx = $slotMap[$slotIdx]['hari_idx'];
+                $jamPos = $slotMap[$slotIdx]['jam_pos'];
+                $slotsByDay[$hariIdx][] = $jamPos;
+            }
+
+            foreach ($slotsByDay as $hariIdx => $jamPositions) {
+                if (count($jamPositions) > 1) {
+                    sort($jamPositions);
+                    $min = $jamPositions[0];
+                    $max = $jamPositions[count($jamPositions) - 1];
+                    $expectedCount = $max - $min + 1;
+                    $gaps = $expectedCount - count($jamPositions);
+                    if ($gaps > 0) {
+                        $gapPenalty += $gaps * 50; 
+                    }
+                }
+            }
+        }
+
         // Soft constraints
         foreach ($kelasMapelHari as $key => $hariData) {
             $mapelId = (int) explode('-', $key)[1];
@@ -506,7 +530,7 @@ class GenerateScheduleJob implements ShouldQueue
                     sort($positions);
                     for ($i = 1; $i < $count; $i++) {
                         if ($positions[$i] !== $positions[$i - 1] + 1) {
-                            $consecutiveViolations += 5; // heavy penalty for non-consecutive
+                            $consecutiveViolations += 50; // heavy penalty for non-consecutive
                         }
                     }
                 }
@@ -514,7 +538,7 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         $hardScore = ($guruConflicts * 1000) + ($kelasConflicts * 1000);
-        $softScore = ($distViolations * 10) + ($consecutiveViolations * 5) + $dayPriorityPenalty;
+        $softScore = ($distViolations * 10) + ($consecutiveViolations * 5) + $gapPenalty + $dayPriorityPenalty;
         $total = $hardScore + $softScore;
 
         return [
@@ -522,13 +546,14 @@ class GenerateScheduleJob implements ShouldQueue
             'kelas_conflicts' => $kelasConflicts,
             'dist_violations' => $distViolations,
             'consecutive_violations' => $consecutiveViolations,
-            'day_priority_penalty' => $dayPriorityPenalty,
+            'gap_violations' => $gapPenalty,
             'total' => $total,
+            'day_priority_penalty' => $dayPriorityPenalty,
             'conflicting_blocks' => array_keys($conflictingBlocks),
         ];
     }
 
-        private function smartMutate(array $chromosome, array $ctx, int $totalSlots): array
+    private function smartMutate(array $chromosome, array $ctx, int $totalSlots): array
     {
         if ($this->randFloat() > $this->mutationRate) {
             return $chromosome;
