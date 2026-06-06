@@ -155,6 +155,7 @@
                             @for($i = 1; $i <= $maxJamKe; $i++)
                                 <tr class="table-row">
                                     <td class="px-3 py-2 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-100">{{ $i }}</td>
+                                    @foreach($hari as $h)
                                         @php $cellItems = $data['matrix'][$i][$h] ?? []; @endphp
                                         
                                         @if(empty($cellItems))
