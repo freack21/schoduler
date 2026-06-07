@@ -77,15 +77,46 @@ class DataKurikulum extends Component
 
     public function render()
     {
+        $kurikulumRaw = Kurikulum::with(['tingkat', 'jurusan', 'mapel'])
+            ->join('tingkat', 'kurikulum.tingkat_id', '=', 'tingkat.id')
+            ->leftJoin('jurusan', 'kurikulum.jurusan_id', '=', 'jurusan.id')
+            ->join('mapel', 'kurikulum.mapel_id', '=', 'mapel.id')
+            ->orderBy('tingkat.kode')
+            ->orderBy('jurusan.kode')
+            ->orderBy('mapel.nama')
+            ->select('kurikulum.*')
+            ->get();
+
+        $guruMapelRaw = \App\Models\GuruMapel::with('guru.user')->get();
+        $guruMapelGrouped = $guruMapelRaw->groupBy('mapel_id');
+
+        $groupedKurikulum = [];
+        foreach ($kurikulumRaw as $k) {
+            $tingkat = $k->tingkat->nama;
+            $jurusan = $k->jurusan ? $k->jurusan->nama : 'Umum (Semua Jurusan)';
+            $jurusanKode = $k->jurusan ? $k->jurusan->kode : 'UMUM';
+            
+            $key = $tingkat . ' - ' . $jurusan;
+            if (!isset($groupedKurikulum[$key])) {
+                $groupedKurikulum[$key] = [
+                    'tingkat_nama' => $tingkat,
+                    'jurusan_nama' => $jurusan,
+                    'jurusan_kode' => $jurusanKode,
+                    'items' => []
+                ];
+            }
+            
+            $gurus = isset($guruMapelGrouped[$k->mapel_id]) ? $guruMapelGrouped[$k->mapel_id] : collect();
+            
+            $groupedKurikulum[$key]['items'][] = [
+                'id' => $k->id,
+                'mapel' => $k->mapel,
+                'gurus' => $gurus
+            ];
+        }
+
         return view('livewire.admin.data-kurikulum', [
-            'kurikulumList' => Kurikulum::with(['tingkat', 'jurusan', 'mapel'])
-                ->join('tingkat', 'kurikulum.tingkat_id', '=', 'tingkat.id')
-                ->join('mapel', 'kurikulum.mapel_id', '=', 'mapel.id')
-                ->orderBy('tingkat.kode')
-                ->orderBy('kurikulum.jurusan_id')
-                ->orderBy('mapel.nama')
-                ->select('kurikulum.*')
-                ->get(),
+            'groupedKurikulum' => $groupedKurikulum,
             'tingkatList' => Tingkat::orderBy('kode')->get(),
             'jurusanList' => Jurusan::orderBy('kode')->get(),
             'mapelList' => Mapel::orderBy('nama')->get(),
