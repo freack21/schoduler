@@ -186,8 +186,14 @@ class DatabaseSeeder extends Seeder
             ['jam_ke' => 11, 'jam_mulai' => '14:15', 'jam_selesai' => '15:00', 'is_istirahat' => false],
         ];
 
-        foreach ($jamData as $item) {
-            JamPelajaran::create($item);
+        $hariAktif = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+
+        foreach ($hariAktif as $hari) {
+            foreach ($jamData as $item) {
+                $item['hari'] = $hari;
+                $item['durasi_menit'] = 45;
+                JamPelajaran::create($item);
+            }
         }
     }
 

@@ -43,15 +43,15 @@ class GenerateScheduleJob implements ShouldQueue
         $genState->update(['status' => 'running', 'message' => 'Memulai inisialisasi data...']);
 
         // ── LOAD DATA ──
-        $jamList = JamPelajaran::orderBy('jam_ke')->get();
-        $totalJamPerHari = $jamList->count();
+        $jamList = JamPelajaran::all();
         $hariAktif = explode(',', \App\Models\Pengaturan::where('key', 'hari_aktif')->value('value') ?? 'Senin,Selasa,Rabu,Kamis,Jumat');
-        $totalSlots = count($hariAktif) * $totalJamPerHari;
 
         $slotMap = [];
         $s = 0;
         foreach ($hariAktif as $hIdx => $hari) {
-            foreach ($jamList as $jIdx => $jam) {
+            $jamsForHari = $jamList->where('hari', trim($hari))->sortBy('jam_ke');
+            $jIdx = 0;
+            foreach ($jamsForHari as $jam) {
                 $slotMap[$s] = [
                     'hari' => trim($hari),
                     'hari_idx' => $hIdx,
@@ -61,8 +61,10 @@ class GenerateScheduleJob implements ShouldQueue
                     'is_istirahat' => $jam->is_istirahat,
                 ];
                 $s++;
+                $jIdx++;
             }
         }
+        $totalSlots = count($slotMap);
 
         // PRECOMPUTE VALID BLOCK STARTS
         $validBlockStarts = [];
