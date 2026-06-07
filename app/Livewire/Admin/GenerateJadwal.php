@@ -109,8 +109,8 @@ class GenerateJadwal extends Component
             }
 
             foreach ($kelasList as $kelas) {
-                $jadwal = Jadwal::with(['guruMapel.mapel', 'guruMapel.guru.user', 'jamPelajaran'])
-                    ->whereHas('guruMapel', fn($q) => $q->where('kelas_id', $kelas->id))
+                $jadwal = Jadwal::with(['mapel', 'guru.user', 'jamPelajaran'])
+                    ->where('kelas_id', $kelas->id)
                     ->get()
                     ->sortBy(function ($entry) use ($hariAktif) {
                         $dayIndex = array_search($entry->hari, $hariAktif);
@@ -120,7 +120,7 @@ class GenerateJadwal extends Component
 
                 $mapelTotalCount = [];
                 foreach ($jadwal as $entry) {
-                    $kode = $entry->guruMapel->mapel->kode;
+                    $kode = $entry->mapel->kode;
                     $mapelTotalCount[$kode] = ($mapelTotalCount[$kode] ?? 0) + 1;
                 }
 
@@ -135,12 +135,12 @@ class GenerateJadwal extends Component
                 foreach ($jadwal as $entry) {
                     $jam = $entry->jamPelajaran;
                     $cleanHari = ucfirst(trim($jam->hari));
-                    $kode = $entry->guruMapel->mapel->kode;
+                    $kode = $entry->mapel->kode;
                     $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
                     
                     $matrix[$jam->jam_ke][$cleanHari][] = [
                         'mapel' => $kode,
-                        'guru' => explode(',', $entry->guruMapel->guru->user->nama_lengkap)[0],
+                        'guru' => explode(',', $entry->guru->user->nama_lengkap)[0],
                         'seq' => $mapelGlobalSeq[$kode],
                         'total' => $mapelTotalCount[$kode],
                         'jam_mulai' => $jam->jam_mulai,
