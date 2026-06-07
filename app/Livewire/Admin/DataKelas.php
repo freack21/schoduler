@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Jurusan;
+use App\Models\Kelas;
 use App\Models\Tingkat;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
