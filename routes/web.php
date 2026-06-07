@@ -23,7 +23,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/mapel', Admin\DataMapel::class)->name('admin.mapel');
     Route::get('/jurusan', Admin\DataJurusan::class)->name('admin.jurusan');
     Route::get('/kurikulum', Admin\DataKurikulum::class)->name('admin.kurikulum');
-    Route::get('/distribusi', Admin\DistribusiMapel::class)->name('admin.distribusi');
+
     Route::get('/jam-pelajaran', Admin\DataJamPelajaran::class)->name('admin.jam-pelajaran');
     Route::get('/generate', Admin\GenerateJadwal::class)->name('admin.generate');
 });
