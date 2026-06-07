@@ -26,6 +26,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
     Route::get('/jam-pelajaran', Admin\DataJamPelajaran::class)->name('admin.jam-pelajaran');
     Route::get('/generate', Admin\GenerateJadwal::class)->name('admin.generate');
+    Route::get('/edit-jadwal', Admin\EditJadwal::class)->name('admin.edit-jadwal');
 });
 
 // Guru

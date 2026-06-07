@@ -272,27 +272,46 @@ class GenerateScheduleJob implements ShouldQueue
                     $validStarts = $evalContext['validBlockStarts'][$blockSize];
                     $currentScore = $eval['total'];
                     
-                    $bestNewSlot = $bestChromosome['slots'][$b];
+                    $bestTrial = null;
                     $bestNewScore = $currentScore;
                     
                     // Shuffle starts for randomness in repair
                     shuffle($validStarts);
+                    $sampledStarts = array_slice($validStarts, 0, 50);
                     
-                    foreach ($validStarts as $s) {
+                    foreach ($sampledStarts as $s) {
                         if ($s === $bestChromosome['slots'][$b]) continue;
                         $trial = $bestChromosome;
                         $trial['slots'][$b] = $s;
                         $trialEval = $this->evaluate($trial, $evalContext);
-                        
                         if ($trialEval['total'] < $bestNewScore) {
                             $bestNewScore = $trialEval['total'];
-                            $bestNewSlot = $s;
+                            $bestTrial = $trial;
                             $improved = true;
                         }
                     }
                     
-                    if ($bestNewSlot !== $bestChromosome['slots'][$b]) {
-                        $bestChromosome['slots'][$b] = $bestNewSlot;
+                    // Add Swap Logic
+                    $sameSizeBlocks = array_keys(array_filter($evalContext['blocks'], fn($x) => $x['size'] === $blockSize));
+                    shuffle($sameSizeBlocks);
+                    $sampledBlocks = array_slice($sameSizeBlocks, 0, 50);
+                    
+                    foreach ($sampledBlocks as $otherBIdx) {
+                        if ($b === $otherBIdx) continue;
+                        $trial = $bestChromosome;
+                        $temp = $trial['slots'][$b];
+                        $trial['slots'][$b] = $trial['slots'][$otherBIdx];
+                        $trial['slots'][$otherBIdx] = $temp;
+                        $trialEval = $this->evaluate($trial, $evalContext);
+                        if ($trialEval['total'] < $bestNewScore) {
+                            $bestNewScore = $trialEval['total'];
+                            $bestTrial = $trial;
+                            $improved = true;
+                        }
+                    }
+                    
+                    if ($bestTrial) {
+                        $bestChromosome = $bestTrial;
                         $bestScore = $bestNewScore;
                     }
                 }
@@ -674,19 +693,40 @@ class GenerateScheduleJob implements ShouldQueue
                     $bestChromosome = $trial;
                 }
             }
+            
+            // Try Swap Mutation
+            $sameSizeBlocks = array_keys(array_filter($blocks, fn($x) => $x['size'] === $size));
+            shuffle($sameSizeBlocks);
+            $sampledBlocks = array_slice($sameSizeBlocks, 0, 20);
+            foreach ($sampledBlocks as $otherBIdx) {
+                if ($bIdx === $otherBIdx) continue;
+                $trial = $bestChromosome;
+                $temp = $trial['slots'][$bIdx];
+                $trial['slots'][$bIdx] = $trial['slots'][$otherBIdx];
+                $trial['slots'][$otherBIdx] = $temp;
+                $trialScore = $this->evaluate($trial, $ctx)['total'];
+                if ($trialScore < $bestScore) {
+                    $bestScore = $trialScore;
+                    $bestChromosome = $trial;
+                }
+            }
         }
         
-        for ($i = 0; $i < 100; $i++) {
+        
+        // Random swaps
+        for ($i = 0; $i < 50; $i++) {
             $trial = $bestChromosome;
-            $bIdx = array_rand($blocks);
-            $size = $blocks[$bIdx]['size'];
-            $validStarts = $validBlockStarts[$size];
-            $trial['slots'][$bIdx] = $validStarts[array_rand($validStarts)];
-            
-            $trialScore = $this->evaluate($trial, $ctx)['total'];
-            if ($trialScore < $bestScore) {
-                $bestScore = $trialScore;
-                $bestChromosome = $trial;
+            $bIdx1 = array_rand($blocks);
+            $bIdx2 = array_rand($blocks);
+            if ($blocks[$bIdx1]['size'] === $blocks[$bIdx2]['size']) {
+                $temp = $trial['slots'][$bIdx1];
+                $trial['slots'][$bIdx1] = $trial['slots'][$bIdx2];
+                $trial['slots'][$bIdx2] = $temp;
+                $trialScore = $this->evaluate($trial, $ctx)['total'];
+                if ($trialScore < $bestScore) {
+                    $bestScore = $trialScore;
+                    $bestChromosome = $trial;
+                }
             }
         }
         
