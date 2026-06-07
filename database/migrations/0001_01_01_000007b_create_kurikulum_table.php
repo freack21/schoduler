@@ -8,17 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('guru_mapel', function (Blueprint $table) {
+        Schema::create('kurikulum', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('guru_id')->constrained('guru')->onDelete('cascade');
+            $table->foreignId('tingkat_id')->constrained('tingkat')->onDelete('cascade');
+            $table->foreignId('jurusan_id')->nullable()->constrained('jurusan')->onDelete('cascade');
             $table->foreignId('mapel_id')->constrained('mapel')->onDelete('cascade');
-            $table->unique(['guru_id', 'mapel_id']);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('guru_mapel');
+        Schema::dropIfExists('kurikulum');
     }
 };

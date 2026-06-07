@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Guru;
 use App\Models\GuruMapel;
+use App\Models\Jurusan;
+use App\Models\Kurikulum;
 use App\Models\Jadwal;
 use App\Models\JamPelajaran;
 use App\Models\Kelas;
@@ -32,12 +34,13 @@ class DatabaseSeeder extends Seeder
 
             $this->seedAdmin();
             $tingkatByKode = $this->seedTingkat();
-            $kelasByJsonName = $this->seedKelas($data['siswa'] ?? [], $tingkatByKode);
+            $jurusanByKode = $this->seedJurusan();
+            $kelasByJsonName = $this->seedKelas($data['siswa'] ?? [], $tingkatByKode, $jurusanByKode);
             $this->seedJamPelajaran();
             $this->seedPengaturan();
 
             $mapelByName = $this->seedMapelFromGuruData($data['guru'] ?? []);
-            $guruCount = $this->seedGuru($data['guru'] ?? [], $mapelByName, $kelasByJsonName);
+            $guruCount = $this->seedGuru($data['guru'] ?? [], $mapelByName, $tingkatByKode, $jurusanByKode);
             $siswaCount = $this->seedSiswa($data['siswa'] ?? [], $kelasByJsonName);
 
             $this->command?->info('✅ Seeder selesai! Database sudah di-sweep dan diisi dari database/seeders/data/all.json.');
@@ -52,6 +55,8 @@ class DatabaseSeeder extends Seeder
         foreach ([
             'jadwal',
             'guru_mapel',
+            'kurikulum',
+            'jurusan',
             'siswa',
             'guru',
             'mapel',
@@ -97,6 +102,21 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 
+    private function seedJurusan(): array
+    {
+        $items = [
+            'MIPA' => ['kode' => 'MIPA', 'nama' => 'Matematika dan Ilmu Pengetahuan Alam'],
+            'IPS' => ['kode' => 'IPS', 'nama' => 'Ilmu Pengetahuan Sosial'],
+        ];
+
+        $result = [];
+        foreach ($items as $kode => $item) {
+            $result[$kode] = Jurusan::create($item);
+        }
+
+        return $result;
+    }
+
     private function seedTingkat(): array
     {
         $items = [
@@ -113,7 +133,7 @@ class DatabaseSeeder extends Seeder
         return $result;
     }
 
-    private function seedKelas(array $siswaRows, array $tingkatByKode): array
+    private function seedKelas(array $siswaRows, array $tingkatByKode, array $jurusanByKode): array
     {
         $kelasNames = collect($siswaRows)
             ->pluck('kelas')
@@ -126,16 +146,24 @@ class DatabaseSeeder extends Seeder
         $result = [];
 
         foreach ($kelasNames as $jsonName) {
-            $tingkatKode = Str::before($jsonName, '-');
+            $parts = explode('-', $jsonName);
+            $tingkatKode = $parts[0];
+            $jurusanKode = $parts[1] ?? null;
 
             if (! isset($tingkatByKode[$tingkatKode])) {
                 $this->command?->warn("⚠️ Kelas {$jsonName} dilewati karena tingkat {$tingkatKode} tidak dikenal.");
                 continue;
             }
 
+            $jurusanId = null;
+            if ($jurusanKode && isset($jurusanByKode[$jurusanKode])) {
+                $jurusanId = $jurusanByKode[$jurusanKode]->id;
+            }
+
             $result[$jsonName] = Kelas::create([
                 'nama' => $this->formatKelasName($jsonName),
                 'tingkat_id' => $tingkatByKode[$tingkatKode]->id,
+                'jurusan_id' => $jurusanId,
             ]);
         }
 
@@ -204,13 +232,11 @@ class DatabaseSeeder extends Seeder
         return $result;
     }
 
-    private function seedGuru(array $guruRows, array $mapelByName, array $kelasByJsonName): int
+        private function seedGuru(array $guruRows, array $mapelByName, array $tingkatByKode, array $jurusanByKode): int
     {
         $count = 0;
-        $intents = [];
         $hashedPassword = Hash::make(self::DEFAULT_PASSWORD);
 
-        // Pass 1: Create Guru and collect teaching intents
         foreach ($guruRows as $index => $row) {
             $nama = trim((string) ($row['nama'] ?? ''));
             if ($nama === '') {
@@ -233,26 +259,30 @@ class DatabaseSeeder extends Seeder
                     continue;
                 }
 
-                foreach ($assignment['tingkat'] as $tingkat) {
-                    $intents[$mapel->id][$tingkat][] = $guru->id;
-                }
-            }
-        }
+                // Assign guru to mapel generally
+                GuruMapel::firstOrCreate([
+                    'guru_id' => $guru->id,
+                    'mapel_id' => $mapel->id,
+                ]);
 
-        // Pass 2: Distribute classes round-robin to avoid impossible constraints
-        foreach ($intents as $mapelId => $tingkatIntents) {
-            foreach ($tingkatIntents as $tingkat => $guruIds) {
-                $kelasList = $this->kelasForTingkat([$tingkat], $kelasByJsonName);
-                if (empty($kelasList) || empty($guruIds)) continue;
+                // Register mapel into kurikulum based on intents
+                foreach ($assignment['tingkat'] as $tingkatString) {
+                    $parts = explode('-', $tingkatString);
+                    $tKode = $parts[0];
+                    $jKode = $parts[1] ?? null;
 
-                $guruCount = count($guruIds);
-                foreach ($kelasList as $idx => $kelas) {
-                    // Round robin: class idx % guruCount
-                    $guruId = $guruIds[$idx % $guruCount];
-                    GuruMapel::firstOrCreate([
-                        'guru_id' => $guruId,
-                        'mapel_id' => $mapelId,
-                        'kelas_id' => $kelas->id,
+                    $tingkatId = $tingkatByKode[$tKode]->id ?? null;
+                    if (! $tingkatId) continue;
+
+                    $jurusanId = null;
+                    if ($jKode && isset($jurusanByKode[$jKode])) {
+                        $jurusanId = $jurusanByKode[$jKode]->id;
+                    }
+
+                    Kurikulum::firstOrCreate([
+                        'tingkat_id' => $tingkatId,
+                        'jurusan_id' => $jurusanId,
+                        'mapel_id' => $mapel->id,
                     ]);
                 }
             }

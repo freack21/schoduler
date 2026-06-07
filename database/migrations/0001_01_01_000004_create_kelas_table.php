@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama'); // X-1, X-2, XI-IPA-1
             $table->foreignId('tingkat_id')->constrained('tingkat')->onDelete('restrict');
+            $table->foreignId('jurusan_id')->nullable()->constrained('jurusan')->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -9,11 +9,21 @@ class Jadwal extends Model
 {
     protected $table = 'jadwal';
 
-    protected $fillable = ['guru_mapel_id', 'hari', 'jam_pelajaran_id'];
+    protected $fillable = ['guru_id', 'mapel_id', 'kelas_id', 'hari', 'jam_pelajaran_id'];
 
-    public function guruMapel(): BelongsTo
+    public function guru(): BelongsTo
     {
-        return $this->belongsTo(GuruMapel::class);
+        return $this->belongsTo(Guru::class);
+    }
+
+    public function mapel(): BelongsTo
+    {
+        return $this->belongsTo(Mapel::class);
+    }
+
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(Kelas::class);
     }
 
     public function jamPelajaran(): BelongsTo

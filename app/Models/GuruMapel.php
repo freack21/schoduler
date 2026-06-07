@@ -10,7 +10,7 @@ class GuruMapel extends Model
 {
     protected $table = 'guru_mapel';
 
-    protected $fillable = ['guru_id', 'mapel_id', 'kelas_id'];
+    protected $fillable = ['guru_id', 'mapel_id'];
 
     public function guru(): BelongsTo
     {
@@ -20,15 +20,5 @@ class GuruMapel extends Model
     public function mapel(): BelongsTo
     {
         return $this->belongsTo(Mapel::class);
-    }
-
-    public function kelas(): BelongsTo
-    {
-        return $this->belongsTo(Kelas::class);
-    }
-
-    public function jadwal(): HasMany
-    {
-        return $this->hasMany(Jadwal::class);
     }
 }
