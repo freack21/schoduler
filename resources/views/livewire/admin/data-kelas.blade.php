@@ -13,6 +13,9 @@
                 <div class="flex items-center justify-between mb-3">
                     <h3 class="text-lg font-bold text-gray-900">{{ $kelas->nama }}</h3>
                     <span class="badge bg-primary/10 text-primary">{{ $kelas->tingkat->nama }}</span>
+                    @if($kelas->jurusan)
+                        <span class="badge bg-purple-50 text-purple-700">{{ $kelas->jurusan->kode }}</span>
+                    @endif
                 </div>
                 <p class="text-sm text-gray-500 mb-4">{{ $kelas->siswa->count() }} siswa</p>
                 <div class="flex items-center gap-2">
@@ -47,6 +50,16 @@
                         @endforeach
                     </select>
                     @error('tingkat_id') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label-field">Jurusan (Opsional)</label>
+                    <select wire:model="jurusan_id" class="input-field">
+                        <option value="">Tidak ada jurusan</option>
+                        @foreach($jurusanList as $jurusan)
+                            <option value="{{ $jurusan->id }}">{{ $jurusan->kode }} - {{ $jurusan->nama }}</option>
+                        @endforeach
+                    </select>
+                    @error('jurusan_id') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" wire:click="$set('showModal', false)" class="btn-outline text-sm">Batal</button>

@@ -150,12 +150,6 @@
                             <option value="{{ $mapel->id }}">{{ $mapel->nama }} ({{ $mapel->kode }})</option>
                         @endforeach
                     </select>
-                    <select wire:model="selectedKelasId" class="input-field flex-1">
-                        <option value="0">Pilih Kelas</option>
-                        @foreach($kelasList as $kelas)
-                            <option value="{{ $kelas->id }}">{{ $kelas->nama }}</option>
-                        @endforeach
-                    </select>
                     <button wire:click="addAssignment" class="btn-primary text-sm whitespace-nowrap">+ Tambah</button>
                 </div>
                 @error('selectedMapelId') <p class="text-xs text-red-500 mb-3">{{ $message }}</p> @enderror
@@ -166,8 +160,6 @@
                         <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2.5">
                             <div class="flex items-center gap-3">
                                 <span class="badge bg-blue-50 text-blue-700">{{ $assignment['mapel'] }}</span>
-                                <span class="text-gray-400">→</span>
-                                <span class="badge bg-purple-50 text-purple-700">{{ $assignment['kelas'] }}</span>
                             </div>
                             <button wire:click="removeAssignment({{ $assignment['id'] }})" class="text-red-400 hover:text-red-600 transition-colors cursor-pointer">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>

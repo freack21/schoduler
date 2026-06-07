@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Kelas;
+use App\Models\Jurusan;
 use App\Models\Tingkat;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -16,10 +16,11 @@ class DataKelas extends Component
     public ?int $editingId = null;
     public string $nama = '';
     public int $tingkat_id = 0;
+    public ?int $jurusan_id = null;
 
     public function openCreateModal(): void
     {
-        $this->reset(['editingId', 'nama', 'tingkat_id']);
+        $this->reset(['editingId', 'nama', 'tingkat_id', 'jurusan_id']);
         $this->showModal = true;
     }
 
@@ -29,6 +30,7 @@ class DataKelas extends Component
         $this->editingId = $id;
         $this->nama = $kelas->nama;
         $this->tingkat_id = $kelas->tingkat_id;
+        $this->jurusan_id = $kelas->jurusan_id;
         $this->showModal = true;
     }
 
@@ -37,15 +39,16 @@ class DataKelas extends Component
         $this->validate([
             'nama' => 'required|string|max:255',
             'tingkat_id' => 'required|integer|min:1',
+            'jurusan_id' => 'nullable|integer|exists:jurusan,id',
         ]);
 
         Kelas::updateOrCreate(
             ['id' => $this->editingId],
-            ['nama' => $this->nama, 'tingkat_id' => $this->tingkat_id]
+            ['nama' => $this->nama, 'tingkat_id' => $this->tingkat_id, 'jurusan_id' => $this->jurusan_id ?: null]
         );
 
         $this->showModal = false;
-        $this->reset(['editingId', 'nama', 'tingkat_id']);
+        $this->reset(['editingId', 'nama', 'tingkat_id', 'jurusan_id']);
         $this->dispatch('toast', type: 'success', message: 'Data kelas berhasil disimpan!');
     }
 
@@ -70,8 +73,9 @@ class DataKelas extends Component
     public function render()
     {
         return view('livewire.admin.data-kelas', [
-            'kelasList' => Kelas::with(['tingkat', 'siswa'])->orderBy('tingkat_id')->orderBy('nama')->get(),
+            'kelasList' => Kelas::with(['tingkat', 'jurusan', 'siswa'])->orderBy('tingkat_id')->orderBy('nama')->get(),
             'tingkatList' => Tingkat::orderBy('kode')->get(),
+            'jurusanList' => Jurusan::orderBy('kode')->get(),
         ]);
     }
 }

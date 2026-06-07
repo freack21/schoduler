@@ -34,7 +34,6 @@ class DataGuru extends Component
     public ?int $assignGuruId = null;
     public string $assignGuruName = '';
     public int $selectedMapelId = 0;
-    public int $selectedKelasId = 0;
     public array $assignments = [];
 
     public function updatingSearch(): void
@@ -127,7 +126,7 @@ class DataGuru extends Component
     // ── Assign Mapel ──
     public function openAssignModal(int $guruId): void
     {
-        $guru = Guru::with(['user', 'guruMapel.mapel', 'guruMapel.kelas'])->findOrFail($guruId);
+        $guru = Guru::with(['user', 'guruMapel.mapel'])->findOrFail($guruId);
         $this->assignGuruId = $guruId;
         $this->assignGuruName = $guru->user->nama_lengkap;
         $this->loadAssignments();
@@ -137,12 +136,11 @@ class DataGuru extends Component
     public function loadAssignments(): void
     {
         $this->assignments = GuruMapel::where('guru_id', $this->assignGuruId)
-            ->with(['mapel', 'kelas'])
+            ->with(['mapel'])
             ->get()
             ->map(fn($gm) => [
                 'id' => $gm->id,
                 'mapel' => $gm->mapel->nama,
-                'kelas' => $gm->kelas->nama,
             ])->toArray();
     }
 
@@ -150,27 +148,23 @@ class DataGuru extends Component
     {
         $this->validate([
             'selectedMapelId' => 'required|integer|min:1',
-            'selectedKelasId' => 'required|integer|min:1',
         ]);
 
         $exists = GuruMapel::where('guru_id', $this->assignGuruId)
             ->where('mapel_id', $this->selectedMapelId)
-            ->where('kelas_id', $this->selectedKelasId)
             ->exists();
 
         if ($exists) {
-            $this->addError('selectedMapelId', 'Kombinasi mapel dan kelas sudah ada.');
+            $this->addError('selectedMapelId', 'Kombinasi mapel sudah ada.');
             return;
         }
 
         GuruMapel::create([
             'guru_id' => $this->assignGuruId,
             'mapel_id' => $this->selectedMapelId,
-            'kelas_id' => $this->selectedKelasId,
         ]);
 
         $this->selectedMapelId = 0;
-        $this->selectedKelasId = 0;
         $this->loadAssignments();
     }
 
@@ -208,7 +202,6 @@ class DataGuru extends Component
         return view('livewire.admin.data-guru', [
             'guruList' => $query->paginate(10),
             'mapelList' => Mapel::orderBy('nama')->get(),
-            'kelasList' => Kelas::with('tingkat')->orderBy('tingkat_id')->orderBy('nama')->get(),
         ]);
     }
 }
