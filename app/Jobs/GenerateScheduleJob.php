@@ -87,7 +87,7 @@ class GenerateScheduleJob implements ShouldQueue
         $demands = [];
         $kelasList = Kelas::with(['jurusan', 'tingkat'])->get();
         $kurikulumList = Kurikulum::with('mapel')->get();
-        $guruMapelGrouped = GuruMapel::all()->groupBy('mapel_id');
+        $guruMapelAll = GuruMapel::all();
 
         foreach ($kelasList as $k) {
             $kuriList = $kurikulumList->where('tingkat_id', $k->tingkat_id);
@@ -100,9 +100,14 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             foreach ($kuriList as $kuri) {
-                $eligibleGurus = isset($guruMapelGrouped[$kuri->mapel_id]) 
-                    ? $guruMapelGrouped[$kuri->mapel_id]->pluck('guru_id')->toArray() 
-                    : [];
+                $eligibleGurus = $guruMapelAll->where('mapel_id', $kuri->mapel_id)
+                    ->where('tingkat_id', $k->tingkat_id)
+                    ->filter(function($gm) use ($k) {
+                        return is_null($gm->jurusan_id) || $gm->jurusan_id == $k->jurusan_id;
+                    })
+                    ->pluck('guru_id')
+                    ->values()
+                    ->toArray();
 
                 if (empty($eligibleGurus)) continue;
 

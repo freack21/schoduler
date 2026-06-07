@@ -265,13 +265,7 @@ class DatabaseSeeder extends Seeder
                     continue;
                 }
 
-                // Assign guru to mapel generally
-                GuruMapel::firstOrCreate([
-                    'guru_id' => $guru->id,
-                    'mapel_id' => $mapel->id,
-                ]);
-
-                // Register mapel into kurikulum based on intents
+                // Register mapel into kurikulum and guru_mapel based on intents
                 foreach ($assignment['tingkat'] as $tingkatString) {
                     $parts = explode('-', $tingkatString);
                     $tKode = $parts[0];
@@ -284,6 +278,13 @@ class DatabaseSeeder extends Seeder
                     if ($jKode && isset($jurusanByKode[$jKode])) {
                         $jurusanId = $jurusanByKode[$jKode]->id;
                     }
+
+                    GuruMapel::firstOrCreate([
+                        'guru_id' => $guru->id,
+                        'mapel_id' => $mapel->id,
+                        'tingkat_id' => $tingkatId,
+                        'jurusan_id' => $jurusanId,
+                    ]);
 
                     Kurikulum::firstOrCreate([
                         'tingkat_id' => $tingkatId,

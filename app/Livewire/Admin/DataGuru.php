@@ -34,6 +34,8 @@ class DataGuru extends Component
     public ?int $assignGuruId = null;
     public string $assignGuruName = '';
     public int $selectedMapelId = 0;
+    public ?int $selectedTingkatId = null;
+    public ?int $selectedJurusanId = null;
     public array $assignments = [];
 
     public function updatingSearch(): void
@@ -129,6 +131,7 @@ class DataGuru extends Component
         $guru = Guru::with(['user', 'guruMapel.mapel'])->findOrFail($guruId);
         $this->assignGuruId = $guruId;
         $this->assignGuruName = $guru->user->nama_lengkap;
+        $this->reset(['selectedMapelId', 'selectedTingkatId', 'selectedJurusanId']);
         $this->loadAssignments();
         $this->showAssignModal = true;
     }
@@ -136,11 +139,13 @@ class DataGuru extends Component
     public function loadAssignments(): void
     {
         $this->assignments = GuruMapel::where('guru_id', $this->assignGuruId)
-            ->with(['mapel'])
+            ->with(['mapel', 'tingkat', 'jurusan'])
             ->get()
             ->map(fn($gm) => [
                 'id' => $gm->id,
                 'mapel' => $gm->mapel->nama,
+                'tingkat' => $gm->tingkat ? $gm->tingkat->nama : 'Semua Tingkat',
+                'jurusan' => $gm->jurusan ? $gm->jurusan->nama : 'Umum',
             ])->toArray();
     }
 
@@ -148,23 +153,29 @@ class DataGuru extends Component
     {
         $this->validate([
             'selectedMapelId' => 'required|integer|min:1',
+            'selectedTingkatId' => 'nullable|integer',
+            'selectedJurusanId' => 'nullable|integer',
         ]);
 
         $exists = GuruMapel::where('guru_id', $this->assignGuruId)
             ->where('mapel_id', $this->selectedMapelId)
+            ->where('tingkat_id', $this->selectedTingkatId ?: null)
+            ->where('jurusan_id', $this->selectedJurusanId ?: null)
             ->exists();
 
         if ($exists) {
-            $this->addError('selectedMapelId', 'Kombinasi mapel sudah ada.');
+            $this->addError('selectedMapelId', 'Kombinasi mapel, tingkat, dan jurusan sudah ada.');
             return;
         }
 
         GuruMapel::create([
             'guru_id' => $this->assignGuruId,
             'mapel_id' => $this->selectedMapelId,
+            'tingkat_id' => $this->selectedTingkatId ?: null,
+            'jurusan_id' => $this->selectedJurusanId ?: null,
         ]);
 
-        $this->selectedMapelId = 0;
+        $this->reset(['selectedMapelId', 'selectedTingkatId', 'selectedJurusanId']);
         $this->loadAssignments();
     }
 
@@ -202,6 +213,8 @@ class DataGuru extends Component
         return view('livewire.admin.data-guru', [
             'guruList' => $query->paginate(10),
             'mapelList' => Mapel::orderBy('nama')->get(),
+            'tingkatList' => \App\Models\Tingkat::orderBy('kode')->get(),
+            'jurusanList' => \App\Models\Jurusan::orderBy('kode')->get(),
         ]);
     }
 }

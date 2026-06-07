@@ -143,25 +143,42 @@
             </div>
             <div class="p-6">
                 {{-- Add Assignment Form --}}
-                <div class="flex flex-col sm:flex-row gap-3 mb-6">
-                    <select wire:model="selectedMapelId" class="input-field flex-1">
-                        <option value="0">Pilih Mapel</option>
-                        @foreach($mapelList as $mapel)
-                            <option value="{{ $mapel->id }}">{{ $mapel->nama }} ({{ $mapel->kode }})</option>
-                        @endforeach
-                    </select>
-                    <button wire:click="addAssignment" class="btn-primary text-sm whitespace-nowrap">+ Tambah</button>
+                <div class="flex flex-col gap-3 mb-6">
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <select wire:model="selectedMapelId" class="input-field flex-1">
+                            <option value="0">Pilih Mapel</option>
+                            @foreach($mapelList as $mapel)
+                                <option value="{{ $mapel->id }}">{{ $mapel->nama }} ({{ $mapel->kode }})</option>
+                            @endforeach
+                        </select>
+                        <select wire:model="selectedTingkatId" class="input-field flex-1">
+                            <option value="">Semua Tingkat</option>
+                            @foreach($tingkatList as $tingkat)
+                                <option value="{{ $tingkat->id }}">Kelas {{ $tingkat->nama }}</option>
+                            @endforeach
+                        </select>
+                        <select wire:model="selectedJurusanId" class="input-field flex-1">
+                            <option value="">Umum (Semua Jurusan)</option>
+                            @foreach($jurusanList as $jurusan)
+                                <option value="{{ $jurusan->id }}">{{ $jurusan->nama }}</option>
+                            @endforeach
+                        </select>
+                        <button wire:click="addAssignment" class="btn-primary text-sm whitespace-nowrap">+ Tambah</button>
+                    </div>
+                    @error('selectedMapelId') <p class="text-xs text-red-500">{{ $message }}</p> @enderror
                 </div>
-                @error('selectedMapelId') <p class="text-xs text-red-500 mb-3">{{ $message }}</p> @enderror
 
                 {{-- Assignments List --}}
                 <div class="space-y-2 max-h-64 overflow-y-auto">
                     @forelse($assignments as $assignment)
-                        <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2.5">
-                            <div class="flex items-center gap-3">
-                                <span class="badge bg-blue-50 text-blue-700">{{ $assignment['mapel'] }}</span>
+                        <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-2.5 border border-gray-100">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                <span class="badge bg-blue-50 text-blue-700 w-fit">{{ $assignment['mapel'] }}</span>
+                                <span class="text-xs text-gray-500 font-medium">
+                                    {{ $assignment['tingkat'] }} • {{ $assignment['jurusan'] }}
+                                </span>
                             </div>
-                            <button wire:click="removeAssignment({{ $assignment['id'] }})" class="text-red-400 hover:text-red-600 transition-colors cursor-pointer">
+                            <button wire:click="removeAssignment({{ $assignment['id'] }})" class="text-red-400 hover:text-red-600 transition-colors cursor-pointer p-1">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
                         </div>

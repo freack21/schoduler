@@ -106,8 +106,11 @@ class DataKurikulum extends Component
                 ];
             }
             
-            $gurus = isset($guruMapelGrouped[$k->mapel_id]) ? $guruMapelGrouped[$k->mapel_id] : collect();
-            
+            $gurus = $guruMapelRaw->where('mapel_id', $k->mapel_id)
+                ->where('tingkat_id', $k->tingkat_id)
+                ->filter(function($gm) use ($k) {
+                    return is_null($gm->jurusan_id) || $gm->jurusan_id == $k->jurusan_id;
+                });
             $groupedKurikulum[$key]['items'][] = [
                 'id' => $k->id,
                 'mapel' => $k->mapel,
