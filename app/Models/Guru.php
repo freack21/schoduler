@@ -33,4 +33,9 @@ class Guru extends Model
     {
         return $this->user->nama_lengkap ?? '-';
     }
+
+    public function getNipAttribute(): string
+    {
+        return $this->user_id;
+    }
 }
