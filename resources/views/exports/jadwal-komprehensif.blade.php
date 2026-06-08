@@ -232,13 +232,13 @@
                                         @if(count($jdwList) > 0)
                                             @foreach($jdwList as $jdw)
                                                 @php
-                                                    // Ambil NIP guru (bisa pakai kode guru jika punya, di sini format: ID Guru spasi Nama Mapel)
                                                     $guruId = $jdw->guru_id;
                                                     $mapelNama = $jdw->mapel->nama;
-                                                    // Format: "5 Ekonomi Lanjutan" - we use Guru ID as the shorthand code since we don't have a specific "kode guru" yet
                                                 @endphp
                                                 <div>{{ $guruId }} {{ $mapelNama }}</div>
                                             @endforeach
+                                        @else
+                                            &nbsp;
                                         @endif
                                     </td>
                                 @endforeach
