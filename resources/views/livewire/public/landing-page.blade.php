@@ -283,7 +283,7 @@
                     </div>
                     
                     <div class="md:w-[45%] w-full bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10">
-                        <form wire:submit="loginSiswaGuru" class="space-y-5">
+                        <form wire:submit.prevent="loginSiswaGuru" class="space-y-5">
                             <div>
                                 <label for="userId" class="block text-sm font-semibold text-gray-300 mb-2">NISN (Siswa) / NIP (Guru)</label>
                                 <div class="relative">
