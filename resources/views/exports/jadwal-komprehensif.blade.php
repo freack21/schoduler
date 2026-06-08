@@ -192,8 +192,8 @@
                     @endforeach
                 </tr>
             </thead>
-            <tbody>
-                @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'] as $hari)
+            @foreach(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'] as $hari)
+                <tbody style="page-break-inside: avoid;">
                     @php
                         $jams = $jamPelajaran->get($hari);
                         if (!$jams || $jams->isEmpty()) continue;
@@ -250,8 +250,8 @@
                     <tr>
                         <td colspan="{{ 3 + count($kelasTingkat) }}" class="day-separator"></td>
                     </tr>
-                @endforeach
-            </tbody>
+                </tbody>
+            @endforeach
         </table>
 
         @if(!$loop->last)
