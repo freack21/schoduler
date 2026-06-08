@@ -1,8 +1,8 @@
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<style>
-    /* Custom additional styles if needed */
-</style>
 <div>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        /* Custom additional styles if needed */
+    </style>
     {{-- Navbar --}}
     <nav x-data="{ scrolled: false }" 
          @scroll.window="scrolled = (window.pageYOffset > 20)" 
