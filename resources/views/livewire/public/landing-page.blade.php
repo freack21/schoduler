@@ -124,6 +124,29 @@
         </div>
     </section>
 
+    {{-- Tentang Kami Section --}}
+    <section id="tentang-kami" class="py-20 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide mb-4">PROFIL SEKOLAH</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">SMA Negeri 1 Tapung Hulu</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-10 items-center">
+                <div data-aos="fade-right" class="space-y-6 text-gray-600 leading-relaxed text-lg text-justify">
+                    <p>SMA Negeri 1 Tapung Hulu, yang terletak di Jl. Kampung Lama No. 10, KASIKAN, KEC. TAPUNG HULU, KAB. KAMPAR, PROV. RIAU, merupakan sekolah menengah atas negeri yang memiliki reputasi baik di wilayahnya. Dengan NPSN 10494916, sekolah ini telah berdiri sejak tahun 2003 berdasarkan SK Pendirian No. 010/SK/KACAB/2002 yang dikeluarkan pada tanggal 07-01-2003.</p>
+                    <p>Sekolah ini memiliki luas tanah yang cukup luas, mencapai 20.000 meter persegi. Hal ini memungkinkan sekolah untuk memiliki berbagai fasilitas yang mendukung proses belajar mengajar, seperti ruang kelas yang nyaman, laboratorium, perpustakaan yang lengkap, serta lapangan olahraga yang memadai. Sekolah juga dilengkapi dengan akses internet dan listrik dari PLN yang menjamin kelancaran kegiatan belajar mengajar.</p>
+                    <p>Dalam hal prestasi, SMA Negeri 1 Tapung Hulu telah menorehkan berbagai prestasi baik di tingkat regional maupun nasional. Hal ini ditunjukkan dengan raihan akreditasi A yang diperoleh sekolah berdasarkan SK No. 1449/BAN-SM/SK/2019. Kami berkomitmen untuk terus meningkatkan kualitas pendidikan dan melahirkan generasi muda yang unggul, berakhlak mulia, dan siap menghadapi tantangan masa depan.</p>
+                </div>
+                <div data-aos="fade-left" class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-transparent rounded-3xl blur-2xl transform -rotate-3"></div>
+                    <div class="relative rounded-3xl overflow-hidden border border-gray-100 shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop" alt="Kegiatan Sekolah" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- Visi Misi Section --}}
     <section id="visi-misi" class="py-20 bg-bg-light relative overflow-hidden">
         <div class="absolute top-0 left-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl"></div>
@@ -237,12 +260,12 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @php
                     $fasilitas = [
-                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/>', 'title' => 'Ruang Kelas Pintar', 'desc' => '18 ruang kelas ber-AC dilengkapi proyektor digital dan konektivitas WiFi.'],
-                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>', 'title' => 'Laboratorium Terpadu', 'desc' => 'Laboratorium Fisika, Kimia, dan Biologi berstandar nasional untuk praktikum.'],
-                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/>', 'title' => 'Lab Komputer Modern', 'desc' => 'Ruang TIK dengan spesifikasi komputer terbaru untuk literasi digital.'],
-                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>', 'title' => 'Perpustakaan Digital', 'desc' => 'Koleksi puluhan ribu buku fisik dan e-book dengan sistem peminjaman modern.'],
-                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"/>', 'title' => 'Kompleks Olahraga', 'desc' => 'Area olahraga komprehensif mencakup basket, voli, futsal, dan atletik.'],
-                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>', 'title' => 'Masjid Sekolah', 'desc' => 'Pusat kegiatan kerohanian yang nyaman dan representatif.'],
+                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/>', 'title' => 'Ruang Kelas', 'desc' => 'Total 27 ruang kelas yang nyaman dan representatif untuk mendukung proses belajar mengajar secara optimal.'],
+                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>', 'title' => 'Laboratorium Terpadu', 'desc' => 'Memiliki 7 fasilitas laboratorium termasuk Lab IPA, Fisika, dan Kimia untuk kegiatan praktikum siswa.'],
+                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/>', 'title' => 'Lab Komputer', 'desc' => 'Fasilitas Laboratorium Komputer untuk mendukung peningkatan literasi digital dan penguasaan teknologi informasi.'],
+                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>', 'title' => 'Perpustakaan', 'desc' => 'Perpustakaan sekolah yang menyediakan berbagai literatur dan referensi buku pelajaran untuk seluruh siswa.'],
+                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 8.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v8.25A2.25 2.25 0 006 16.5h2.25m8.25-8.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-7.5A2.25 2.25 0 018.25 18v-1.5m8.25-8.25h-6a2.25 2.25 0 00-2.25 2.25v6"/>', 'title' => 'Konektivitas Internet', 'desc' => 'Akses jaringan internet broadband yang mendukung kelancaran kegiatan belajar mengajar berbasis teknologi.'],
+                        ['icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>', 'title' => 'Listrik PLN', 'desc' => 'Dukungan daya listrik 6.600 VA yang memastikan kelancaran seluruh infrastruktur pembelajaran di sekolah.'],
                     ];
                 @endphp
 
@@ -263,6 +286,53 @@
                         <div class="absolute bottom-0 left-0 h-1 w-0 bg-primary group-hover:w-full transition-all duration-500"></div>
                     </div>
                 @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- Contact Section --}}
+    <section id="kontak" class="py-24 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide mb-4">LOKASI & KONTAK</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 mb-6">Kunjungi Kami</h2>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="bg-gray-50 rounded-3xl p-10 border border-gray-100 shadow-lg shadow-gray-200/50" data-aos="fade-right">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-8">Informasi Kontak</h3>
+                    <ul class="space-y-8">
+                        <li class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
+                                <svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg">Alamat</h4>
+                                <p class="text-gray-600 mt-1 leading-relaxed">Jl. Kampung Lama No. 10, Kec. Tapung Hulu, Kab. Kampar, Prov. Riau<br/>Lintang: 0.5787, Bujur: 100.9534</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
+                                <svg class="w-7 h-7 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg">Telepon</h4>
+                                <p class="text-gray-600 mt-1 leading-relaxed">085271991329</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 shadow-inner">
+                                <svg class="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg">Email</h4>
+                                <p class="text-gray-600 mt-1 leading-relaxed">sma.negeri1.tapunghulu@gmail.com</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="rounded-3xl overflow-hidden shadow-2xl border border-gray-100 h-[500px]" data-aos="fade-left">
+                    <iframe width="100%" height="100%" frameborder="0" src="https://maps.google.com/maps?q=0.5787,100.9534&output=embed" allowfullscreen loading="lazy" class="filter contrast-125 saturate-150"></iframe>
+                </div>
             </div>
         </div>
     </section>
@@ -314,7 +384,7 @@
     <footer class="bg-primary-dark text-white border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8">
-                <div class="md:col-span-5">
+                <div class="md:col-span-7">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                             <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
@@ -329,29 +399,13 @@
                     </p>
                 </div>
                 
-                <div class="md:col-span-4">
-                    <h4 class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Hubungi Kami</h4>
-                    <ul class="space-y-4 text-gray-400">
-                        <li class="flex items-start gap-3 hover:text-white transition-colors">
-                            <svg class="w-6 h-6 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-                            <span>Jl. Kampung Lama No. 10, Kec. Tapung Hulu, Kab. Kampar, Prov. Riau</span>
-                        </li>
-                        <li class="flex items-center gap-3 hover:text-white transition-colors">
-                            <svg class="w-5 h-5 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.864-1.041l-3.286-.481c-.526-.076-1.033.2-1.248.712l-.744 1.745c-2.908-1.42-5.22-3.732-6.64-6.64l1.745-.744c.512-.215.788-.722.712-1.248l-.481-3.286c-.075-.512-.525-.864-1.041-.864H4.5A2.25 2.25 0 002.25 6.75z"/></svg>
-                            <span>085271991329</span>
-                        </li>
-                        <li class="flex items-center gap-3 hover:text-white transition-colors">
-                            <svg class="w-5 h-5 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.909A2.25 2.25 0 012.25 6.993V6.75m19.5 0v.243m0 0l-7.5 4.615m7.5-4.615v10.5" /></svg>
-                            <span>sma.negeri1.tapunghulu@gmail.com</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="md:col-span-3">
+                <div class="md:col-span-5">
                     <h4 class="text-lg font-bold text-white mb-6 uppercase tracking-wider">Navigasi</h4>
                     <ul class="space-y-3">
+                        <li><a href="#tentang-kami" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Profil Sekolah</a></li>
                         <li><a href="#visi-misi" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Visi & Misi</a></li>
                         <li><a href="#fasilitas" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Fasilitas</a></li>
+                        <li><a href="#kontak" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Lokasi & Kontak</a></li>
                         <li><a href="#portal-login" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Portal Internal</a></li>
                     </ul>
                 </div>
