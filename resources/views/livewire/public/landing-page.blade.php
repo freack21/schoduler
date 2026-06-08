@@ -21,13 +21,6 @@
                         <a href="#visi-misi" class="hover:text-secondary transition-colors">Visi & Misi</a>
                         <a href="#fasilitas" class="hover:text-secondary transition-colors">Fasilitas</a>
                     </div>
-                    <a href="{{ route('login') }}" class="group relative px-6 py-2.5 font-bold text-primary bg-secondary rounded-full overflow-hidden shadow-lg shadow-secondary/40 hover:shadow-secondary/60 hover:-translate-y-0.5 transition-all duration-300">
-                        <div class="absolute inset-0 w-full h-full bg-white/20 transform -translate-x-full group-hover:translate-x-full transition-transform duration-500 ease-out"></div>
-                        <span class="relative flex items-center gap-2 text-sm">
-                            Portal Login
-                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
-                        </span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -69,7 +62,7 @@
                     </p>
                     
                     <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
-                        <a href="{{ route('login') }}" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-secondary text-primary font-bold text-lg hover:bg-yellow-400 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
+                        <a href="#portal-login" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-secondary text-primary font-bold text-lg hover:bg-yellow-400 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
                             Akses Portal
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                         </a>
@@ -274,19 +267,45 @@
         </div>
     </section>
 
-    {{-- CTA Full Banner --}}
-    <section class="relative bg-primary overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
-            <div class="max-w-3xl" data-aos="zoom-in">
-                <h2 class="text-4xl sm:text-5xl font-extrabold text-white mb-6">Siap Mengeksplorasi Portal Akademik?</h2>
-                <p class="text-xl text-gray-300 mb-10 leading-relaxed">Kelola jadwal, pantau presensi, dan optimalkan proses belajar mengajar dengan satu platform terpusat.</p>
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-3 bg-secondary hover:bg-yellow-400 text-primary font-extrabold py-5 px-12 rounded-full text-lg transition-all duration-300 shadow-xl shadow-secondary/20 hover:shadow-2xl hover:shadow-secondary/40 hover:-translate-y-1">
-                    Masuk Sekarang
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
+    {{-- Portal Guru & Siswa Login Section --}}
+    <section id="portal-login" class="relative py-24 bg-gradient-to-b from-gray-50 to-primary-dark/5 border-t border-gray-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-primary rounded-3xl p-8 sm:p-12 shadow-2xl shadow-primary/30 relative overflow-hidden" data-aos="zoom-in">
+                <!-- Decorative background elements -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/20 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row gap-10 items-center justify-between">
+                    <div class="md:w-1/2 text-center md:text-left">
+                        <span class="inline-block px-4 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-bold tracking-wide mb-4">AKSES INTERNAL</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">Portal Guru & Siswa</h2>
+                        <p class="text-gray-300 leading-relaxed text-lg mb-0">Silakan masukkan Nomor Induk Anda untuk mengakses dashboard akademik, memantau jadwal, dan mengelola kelas.</p>
+                    </div>
+                    
+                    <div class="md:w-[45%] w-full bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10">
+                        <form wire:submit="loginSiswaGuru" class="space-y-5">
+                            <div>
+                                <label for="userId" class="block text-sm font-semibold text-gray-300 mb-2">NISN (Siswa) / NIP (Guru)</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="userId" wire:model="userId" class="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-secondary focus:border-transparent transition-all sm:text-sm" placeholder="Ketik nomor induk Anda..." autocomplete="off">
+                                </div>
+                                @error('userId') <span class="text-red-400 text-xs mt-1.5 block font-medium">{{ $message }}</span> @enderror
+                            </div>
+                            
+                            <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary hover:bg-yellow-400 text-primary font-bold rounded-xl transition-all duration-300 shadow-lg shadow-secondary/20 group">
+                                Masuk Dashboard
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -333,7 +352,7 @@
                     <ul class="space-y-3">
                         <li><a href="#visi-misi" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Visi & Misi</a></li>
                         <li><a href="#fasilitas" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Fasilitas</a></li>
-                        <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Portal Akademik</a></li>
+                        <li><a href="#portal-login" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Portal Internal</a></li>
                     </ul>
                 </div>
             </div>

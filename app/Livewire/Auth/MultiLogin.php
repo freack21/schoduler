@@ -32,23 +32,18 @@ class MultiLogin extends Component
             return;
         }
 
-        if ($user->role === 'admin') {
-            if (!Auth::attempt(['id' => $this->user_id, 'password' => $this->password])) {
-                $this->dispatch('toast', type: 'error', message: 'Password salah untuk Admin.');
-                return;
-            }
-        } else {
-            // Guru and Siswa login directly without password
-            Auth::login($user);
+        if ($user->role !== 'admin') {
+            $this->dispatch('toast', type: 'error', message: 'Halaman ini khusus Admin. Silakan login dari halaman utama.');
+            return;
+        }
+
+        if (!Auth::attempt(['id' => $this->user_id, 'password' => $this->password])) {
+            $this->dispatch('toast', type: 'error', message: 'Password salah untuk Admin.');
+            return;
         }
 
         session()->regenerate();
-
-        match ($user->role) {
-            'admin' => $this->redirect(route('admin.dashboard'), navigate: true),
-            'guru' => $this->redirect(route('guru.dashboard'), navigate: true),
-            'siswa' => $this->redirect(route('siswa.dashboard'), navigate: true),
-        };
+        $this->redirect(route('admin.dashboard'), navigate: true);
     }
 
     public function render()
