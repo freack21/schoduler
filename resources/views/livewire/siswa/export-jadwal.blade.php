@@ -96,7 +96,8 @@
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('open-new-tab', (data) => {
-                window.open(data[0].url, '_blank');
+                const d = Array.isArray(data) ? data[0] : data;
+                window.open(d.url, '_blank');
             });
         });
     </script>
