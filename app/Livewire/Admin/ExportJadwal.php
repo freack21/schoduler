@@ -46,7 +46,7 @@ class ExportJadwal extends Component
         if ($this->exportType === 'kelas') {
             $list = Kelas::orderBy('nama')->get();
         } elseif ($this->exportType === 'guru') {
-            $list = Guru::orderBy('nama')->get();
+            $list = Guru::with('user')->get()->sortBy('nama');
         } elseif ($this->exportType === 'mapel') {
             $list = Mapel::orderBy('nama')->get();
         }

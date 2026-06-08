@@ -28,4 +28,9 @@ class Guru extends Model
                     ->withPivot('kelas_id')
                     ->withTimestamps();
     }
+
+    public function getNamaAttribute(): string
+    {
+        return $this->user->nama_lengkap ?? '-';
+    }
 }
