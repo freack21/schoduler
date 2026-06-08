@@ -95,7 +95,7 @@
                                     </td>
                                     @foreach($allHari as $h)
                                         @php
-                                            $entry = $jadwalMingguan->get($h, collect())->first(fn($j) => $j->jam_pelajaran_id === $jam->id);
+                                            $entry = $jadwalMingguan->get($h, collect())->first(fn($j) => $j->jamPelajaran->jam_ke === $jam->jam_ke);
                                         @endphp
                                         <td class="px-2 py-1.5 text-center">
                                             @if($entry)

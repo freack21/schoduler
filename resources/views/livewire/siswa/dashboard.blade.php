@@ -93,7 +93,7 @@
                                     <div class="text-[10px] text-gray-400">{{ substr($jam->jam_mulai,0,5) }}</div>
                                 </td>
                                 @foreach($allHari as $h)
-                                    @php $entry = $jadwal->first(fn($j) => $j->hari === $h && $j->jam_pelajaran_id === $jam->id); @endphp
+                                    @php $entry = $jadwal->first(fn($j) => $j->hari === $h && $j->jamPelajaran->jam_ke === $jam->jam_ke); @endphp
                                     <td class="px-2 py-1.5 text-center">
                                         @if($entry)
                                             <div class="bg-green-50 rounded px-2 py-1.5">
