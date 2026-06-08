@@ -80,4 +80,39 @@ class ExportJadwalController extends Controller
 
         return $pdf->stream('Jadwal_Mapel.pdf');
     }
+
+    public function exportKomprehensif(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) return back()->with('error', 'Pilih minimal 1 tingkat.');
+
+        $tingkatList = \App\Models\Tingkat::whereIn('id', $ids)->get();
+        $kelasList = Kelas::whereIn('tingkat_id', $ids)->with(['jurusan', 'tingkat'])->orderBy('nama')->get();
+        $kelasIds = $kelasList->pluck('id')->toArray();
+
+        $jadwalList = Jadwal::with(['mapel', 'guru', 'jamPelajaran', 'kelas'])
+            ->whereIn('kelas_id', $kelasIds)
+            ->get();
+        
+        $jamPelajaran = JamPelajaran::orderBy('jam_ke')->get()->groupBy('hari');
+
+        $jadwalGrouped = [];
+        foreach ($jadwalList as $j) {
+            $jadwalGrouped[$j->kelas->tingkat_id][$j->hari][$j->jam_pelajaran_id][$j->kelas_id] = $j;
+        }
+
+        $kelasByTingkat = [];
+        foreach ($kelasList as $k) {
+            $kelasByTingkat[$k->tingkat_id][] = $k;
+        }
+
+        $pdf = Pdf::loadView('exports.jadwal-komprehensif', [
+            'tingkatList' => $tingkatList,
+            'kelasByTingkat' => $kelasByTingkat,
+            'jadwalGrouped' => $jadwalGrouped,
+            'jamPelajaran' => $jamPelajaran,
+        ])->setPaper('folio', 'landscape');
+
+        return $pdf->stream('Jadwal_Komprehensif.pdf');
+    }
 }

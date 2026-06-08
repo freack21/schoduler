@@ -19,6 +19,7 @@ Route::middleware(['auth'])->prefix('export/jadwal')->group(function () {
     Route::get('/kelas', [\App\Http\Controllers\ExportJadwalController::class, 'exportKelas'])->name('export.kelas');
     Route::get('/guru', [\App\Http\Controllers\ExportJadwalController::class, 'exportGuru'])->name('export.guru');
     Route::get('/mapel', [\App\Http\Controllers\ExportJadwalController::class, 'exportMapel'])->name('export.mapel');
+    Route::get('/komprehensif', [\App\Http\Controllers\ExportJadwalController::class, 'exportKomprehensif'])->name('export.komprehensif');
 });
 
 // Admin

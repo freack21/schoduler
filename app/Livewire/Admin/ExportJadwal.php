@@ -39,6 +39,8 @@ class ExportJadwal extends Component
             $list = Guru::pluck('id')->toArray();
         } elseif ($this->exportType === 'mapel') {
             $list = Mapel::pluck('id')->toArray();
+        } elseif ($this->exportType === 'komprehensif') {
+            $list = \App\Models\Tingkat::pluck('id')->toArray();
         }
 
         if (count($this->selectedIds) === count($list)) {
@@ -62,6 +64,8 @@ class ExportJadwal extends Component
             $list = Guru::with('user')->get()->sortBy('nama');
         } elseif ($this->exportType === 'mapel') {
             $list = Mapel::orderBy('nama')->get();
+        } elseif ($this->exportType === 'komprehensif') {
+            $list = \App\Models\Tingkat::orderBy('id')->get();
         }
 
         return view('livewire.admin.export-jadwal', [

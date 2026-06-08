@@ -81,6 +81,11 @@ class DataJamPelajaran extends Component
         $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
     }
 
+    public function updateNamaKegiatan(int $id, string $namaKegiatan)
+    {
+        JamPelajaran::findOrFail($id)->update(['nama_kegiatan' => empty(trim($namaKegiatan)) ? null : trim($namaKegiatan)]);
+    }
+
     public function moveBlock(int $id, string $direction)
     {
         $jam = JamPelajaran::findOrFail($id);
@@ -115,6 +120,7 @@ class DataJamPelajaran extends Component
                 'jam_selesai' => $jam->jam_selesai,
                 'is_istirahat' => $jam->is_istirahat,
                 'durasi_menit' => $jam->durasi_menit,
+                'nama_kegiatan' => $jam->nama_kegiatan,
             ]);
         }
 

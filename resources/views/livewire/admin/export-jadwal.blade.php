@@ -34,6 +34,14 @@
                             <span class="block text-xs text-gray-500">Jadwal spesifik suatu mapel</span>
                         </div>
                     </label>
+
+                    <label class="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors {{ $exportType === 'komprehensif' ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-200' }}">
+                        <input type="radio" wire:model.live="exportType" value="komprehensif" class="w-4 h-4 text-primary focus:ring-primary">
+                        <div>
+                            <span class="block text-sm font-semibold text-gray-900">Komprehensif</span>
+                            <span class="block text-xs text-gray-500">Seluruh kelas dalam satu angkatan</span>
+                        </div>
+                    </label>
                 </div>
             </div>
 
@@ -66,6 +74,8 @@
                                         <span class="block text-xs text-gray-500">NIP: {{ $item->nip ?? '-' }}</span>
                                     @elseif($exportType === 'mapel')
                                         <span class="block text-xs text-gray-500">Kode: {{ $item->kode }}</span>
+                                    @elseif($exportType === 'komprehensif')
+                                        <span class="block text-xs text-gray-500">Tingkat {{ $item->nama }}</span>
                                     @endif
                                 </div>
                             </label>

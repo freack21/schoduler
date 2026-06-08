@@ -68,8 +68,13 @@
                                     <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                     </div>
-                                    <div>
-                                        <h3 class="font-bold text-amber-800 text-base">Istirahat</h3>
+                                    <div class="flex-1">
+                                        <input type="text" 
+                                               wire:change="updateNamaKegiatan({{ $jam->id }}, $event.target.value)" 
+                                               value="{{ $jam->nama_kegiatan }}" 
+                                               placeholder="Kegiatan Khusus / Istirahat" 
+                                               class="w-full bg-transparent border-none text-base font-bold text-amber-800 p-0 focus:ring-0 placeholder-amber-400/70"
+                                               title="Ketik nama kegiatan (misal: Upacara Bendera, Kultum, dll)">
                                         <p class="text-xs font-semibold text-amber-600 font-mono mt-0.5">{{ substr($jam->jam_mulai, 0, 5) }} – {{ substr($jam->jam_selesai, 0, 5) }}</p>
                                     </div>
                                 @else
@@ -109,7 +114,7 @@
                 </button>
                 <button wire:click="addBlock(true)" class="btn-outline py-2.5 flex-1 flex items-center justify-center gap-2 text-sm border-amber-200 text-amber-700 hover:bg-amber-50">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                    Tambah Istirahat
+                    Tambah Jam Khusus
                 </button>
             </div>
         </div>

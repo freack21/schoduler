@@ -9,7 +9,7 @@ class JamPelajaran extends Model
 {
     protected $table = 'jam_pelajaran';
 
-    protected $fillable = ['hari', 'jam_ke', 'jam_mulai', 'jam_selesai', 'is_istirahat', 'durasi_menit'];
+    protected $fillable = ['hari', 'jam_ke', 'jam_mulai', 'jam_selesai', 'is_istirahat', 'nama_kegiatan', 'durasi_menit'];
 
     protected function casts(): array
     {
