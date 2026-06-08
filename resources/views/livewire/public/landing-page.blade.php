@@ -81,7 +81,7 @@
                             <div class="w-3 h-3 rounded-full bg-yellow-400/80"></div>
                             <div class="w-3 h-3 rounded-full bg-green-400/80"></div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=1000&auto=format&fit=crop" alt="Dashboard Preview" class="w-full h-auto object-cover opacity-90 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700">
+                        <img src="{{ asset('image/foto1.jpg') }}" alt="Sekolah" class="w-full h-auto object-cover opacity-90 transition-all duration-700">
                         <div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-60"></div>
                     </div>
                     
@@ -140,7 +140,7 @@
                 <div data-aos="fade-left" class="relative">
                     <div class="absolute inset-0 bg-gradient-to-tr from-secondary/20 to-transparent rounded-3xl blur-2xl transform -rotate-3"></div>
                     <div class="relative rounded-3xl overflow-hidden border border-gray-100 shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop" alt="Kegiatan Sekolah" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700">
+                        <img src="{{ asset('image/foto2.jpg') }}" alt="Kegiatan Sekolah" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-700">
                     </div>
                 </div>
             </div>
@@ -208,7 +208,7 @@
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="relative order-2 lg:order-1" data-aos="fade-right">
                     <div class="relative w-full max-w-md mx-auto aspect-[4/5] rounded-3xl bg-gray-100 overflow-hidden shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+                        <img src="{{ asset('image/foto3.jpg') }}" alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-80"></div>
                         <div class="absolute bottom-6 left-6 right-6">
                             <p class="text-white font-bold text-2xl mb-1">{{ $kepsekNama }}</p>
