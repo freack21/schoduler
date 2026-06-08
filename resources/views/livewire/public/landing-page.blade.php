@@ -42,14 +42,6 @@
             <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
                 {{-- Left Content --}}
                 <div class="text-center lg:text-left z-10" data-aos="fade-right" data-aos-duration="1000">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm text-secondary text-sm font-semibold mb-8">
-                        <span class="relative flex h-2 w-2">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
-                        </span>
-                        Sistem Penjadwalan Digital 2.0
-                    </div>
-                    
                     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
                         Membangun Masa Depan di
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-yellow-200">
