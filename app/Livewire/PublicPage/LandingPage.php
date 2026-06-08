@@ -45,6 +45,29 @@ class LandingPage extends Component
 
     public function render()
     {
-        return view('livewire.public.landing-page');
+        $siswaCount = \App\Models\Siswa::count();
+        $guruCount = \App\Models\Guru::count();
+        $kelasCount = \App\Models\Kelas::count();
+        
+        $kepsekNama = 'Drs. H. Muhammad Nasir, M.Pd';
+        $allJsonPath = database_path('seeders/data/all.json');
+        if (file_exists($allJsonPath)) {
+            $jsonData = json_decode(file_get_contents($allJsonPath), true);
+            if (isset($jsonData['guru'])) {
+                foreach ($jsonData['guru'] as $g) {
+                    if (isset($g['mapel']) && str_contains(strtolower($g['mapel']), 'kepala sekolah')) {
+                        $kepsekNama = $g['nama'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        return view('livewire.public.landing-page', [
+            'siswaCount' => $siswaCount,
+            'guruCount' => $guruCount,
+            'kelasCount' => $kelasCount,
+            'kepsekNama' => $kepsekNama,
+        ]);
     }
 }

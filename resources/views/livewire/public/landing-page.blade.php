@@ -105,16 +105,16 @@
         <div class="bg-white rounded-2xl shadow-2xl shadow-gray-200/50 p-8 border border-gray-100">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-gray-100">
                 <div class="text-center px-4 group">
-                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
+                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">{{ $siswaCount }}</div>
                     <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Siswa Aktif</div>
                 </div>
                 <div class="text-center px-4 group">
-                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">40+</div>
+                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">{{ $guruCount }}</div>
                     <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Tenaga Pengajar</div>
                 </div>
                 <div class="text-center px-4 group" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">20Rb</div>
-                    <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">m² Luas Lahan</div>
+                    <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300">{{ $kelasCount }}</div>
+                    <div class="text-sm font-medium text-gray-500 uppercase tracking-wider">Rombongan Belajar</div>
                 </div>
                 <div class="text-center px-4 group">
                     <div class="text-4xl font-extrabold text-primary mb-1 group-hover:scale-110 transition-transform duration-300 text-secondary">A</div>
@@ -188,7 +188,7 @@
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop" alt="Kepala Sekolah" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-80"></div>
                         <div class="absolute bottom-6 left-6 right-6">
-                            <p class="text-white font-bold text-2xl mb-1">Drs. H. Muhammad Nasir, M.Pd</p>
+                            <p class="text-white font-bold text-2xl mb-1">{{ $kepsekNama }}</p>
                             <p class="text-secondary font-medium">Kepala SMA Negeri 1 Tapung Hulu</p>
                         </div>
                     </div>
@@ -216,7 +216,7 @@
                     <div class="flex items-center gap-4">
                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=150&auto=format&fit=crop" alt="Signature" class="w-16 h-16 rounded-full object-cover shadow-md border-2 border-white lg:hidden">
                         <div>
-                            <p class="font-extrabold text-gray-900">M. Nasir</p>
+                            <p class="font-extrabold text-gray-900">{{ explode(',', $kepsekNama)[0] }}</p>
                             <p class="text-sm text-gray-500 uppercase tracking-wider font-semibold">Kepala Sekolah</p>
                         </div>
                     </div>
@@ -334,11 +334,11 @@
                     <ul class="space-y-4 text-gray-400">
                         <li class="flex items-start gap-3 hover:text-white transition-colors">
                             <svg class="w-6 h-6 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
-                            <span>Jl. Kampung Lama No. 10, Kasikan, Kec. Tapung Hulu, Kab. Kampar, Riau 28464</span>
+                            <span>Jl. Kampung Lama No. 10, Kec. Tapung Hulu, Kab. Kampar, Prov. Riau</span>
                         </li>
                         <li class="flex items-center gap-3 hover:text-white transition-colors">
                             <svg class="w-5 h-5 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.864-1.041l-3.286-.481c-.526-.076-1.033.2-1.248.712l-.744 1.745c-2.908-1.42-5.22-3.732-6.64-6.64l1.745-.744c.512-.215.788-.722.712-1.248l-.481-3.286c-.075-.512-.525-.864-1.041-.864H4.5A2.25 2.25 0 002.25 6.75z"/></svg>
-                            <span>(0762) 1234567</span>
+                            <span>085271991329</span>
                         </li>
                         <li class="flex items-center gap-3 hover:text-white transition-colors">
                             <svg class="w-5 h-5 flex-shrink-0 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.909A2.25 2.25 0 012.25 6.993V6.75m19.5 0v.243m0 0l-7.5 4.615m7.5-4.615v10.5" /></svg>
