@@ -81,15 +81,33 @@
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     Reassemble Jadwal
                 </a>
+                <a href="{{ route('admin.export-jadwal') }}" class="{{ request()->routeIs('admin.export-jadwal') ? 'sidebar-link-active' : 'sidebar-link' }}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Ekspor Jadwal
+                </a>
             @elseif(auth()->user()->role === 'guru')
-                <a href="{{ route('guru.dashboard') }}" class="sidebar-link-active">
+                <a href="{{ route('guru.dashboard') }}" class="{{ request()->routeIs('guru.dashboard') ? 'sidebar-link-active' : 'sidebar-link' }}">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     Dashboard
                 </a>
+                <div class="pt-3 mt-3 border-t border-white/10">
+                    <p class="px-4 pb-2 text-xs text-gray-500 uppercase tracking-wider">Penjadwalan</p>
+                </div>
+                <a href="{{ route('guru.export-jadwal') }}" class="{{ request()->routeIs('guru.export-jadwal') ? 'sidebar-link-active' : 'sidebar-link' }}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Ekspor Jadwal
+                </a>
             @elseif(auth()->user()->role === 'siswa')
-                <a href="{{ route('siswa.dashboard') }}" class="sidebar-link-active">
+                <a href="{{ route('siswa.dashboard') }}" class="{{ request()->routeIs('siswa.dashboard') ? 'sidebar-link-active' : 'sidebar-link' }}">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     Dashboard
+                </a>
+                <div class="pt-3 mt-3 border-t border-white/10">
+                    <p class="px-4 pb-2 text-xs text-gray-500 uppercase tracking-wider">Penjadwalan</p>
+                </div>
+                <a href="{{ route('siswa.export-jadwal') }}" class="{{ request()->routeIs('siswa.export-jadwal') ? 'sidebar-link-active' : 'sidebar-link' }}">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Ekspor Jadwal
                 </a>
             @endif
         </nav>
