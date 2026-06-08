@@ -98,7 +98,7 @@ class ExportJadwalController extends Controller
 
         $jadwalGrouped = [];
         foreach ($jadwalList as $j) {
-            $jadwalGrouped[$j->kelas->tingkat_id][$j->hari][$j->jam_pelajaran_id][$j->kelas_id] = $j;
+            $jadwalGrouped[$j->kelas->tingkat_id][$j->hari][$j->jam_pelajaran_id][$j->kelas_id][] = $j;
         }
 
         $kelasByTingkat = [];
