@@ -78,7 +78,12 @@
                 </div>
 
                 <div class="mt-6 flex justify-end gap-3">
-                    <button type="button" wire:click="$set('selectedIds', [])" class="btn-outline text-sm">Reset Pilihan</button>
+                    @php
+                        $allSelected = count($selectedIds) > 0 && count($selectedIds) === count($list);
+                    @endphp
+                    <button type="button" wire:click="toggleSelectAll" class="btn-outline text-sm">
+                        {{ $allSelected ? 'Batal Tandai Semua' : 'Tandai Semua' }}
+                    </button>
                     <button wire:click="download" wire:loading.attr="disabled" class="btn-primary text-sm flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         Ekspor PDF
@@ -87,4 +92,12 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('open-new-tab', (data) => {
+                window.open(data[0].url, '_blank');
+            });
+        });
+    </script>
 </div>

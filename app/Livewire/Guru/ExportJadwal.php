@@ -24,11 +24,24 @@ class ExportJadwal extends Component
         ]);
 
         $queryStr = http_build_query(['ids' => $this->selectedIds]);
+        $url = "/export/jadwal/{$this->exportType}?" . $queryStr;
         
+        $this->dispatch('open-new-tab', url: $url);
+    }
+
+    public function toggleSelectAll()
+    {
+        $list = [];
         if ($this->exportType === 'kelas') {
-            return redirect('/export/jadwal/kelas?' . $queryStr);
+            $list = Kelas::pluck('id')->toArray();
         } elseif ($this->exportType === 'mapel') {
-            return redirect('/export/jadwal/mapel?' . $queryStr);
+            $list = Mapel::pluck('id')->toArray();
+        }
+
+        if (count($this->selectedIds) === count($list)) {
+            $this->selectedIds = [];
+        } else {
+            $this->selectedIds = $list;
         }
     }
 
