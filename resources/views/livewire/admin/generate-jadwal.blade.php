@@ -175,17 +175,31 @@
                                                                 <span class="text-gray-300">-</span>
                                                             </div>
                                                         @else
-                                                            <div class="rounded-lg px-2 py-1.5 border hover:opacity-90 transition-colors {{ count($cellItems) > 1 ? 'bg-red-50 border-red-500 shadow-sm shadow-red-100' : 'bg-blue-50/80 border-blue-100/50' }}">
-                                                                <div class="text-[9px] font-mono text-gray-500 mb-0.5">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
-                                                                <div class="font-bold text-[11px] leading-tight {{ count($cellItems) > 1 ? 'text-red-700' : 'text-blue-800' }}">
-                                                                    {{ $cell['mapel'] }}
-                                                                    <span class="font-normal {{ count($cellItems) > 1 ? 'text-red-500' : 'text-blue-500' }}">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
+                                                            @php $isAllParallel = count($cellItems) > 1 && count(array_filter($cellItems, fn($c) => !empty($c['is_parallel']))) === count($cellItems); @endphp
+                                                            @if($isAllParallel && $loop->first)
+                                                                <div class="rounded-lg px-2 py-1.5 border bg-indigo-50/80 border-indigo-200/60 shadow-sm shadow-indigo-100 hover:opacity-90 transition-colors w-full">
+                                                                    <div class="text-[9px] font-mono text-gray-500 mb-0.5">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                                    <div class="font-bold text-[11px] leading-tight text-indigo-800">
+                                                                        {{ implode(', ', array_unique(array_column($cellItems, 'mapel'))) }}
+                                                                    </div>
+                                                                    <div class="text-[10px] text-gray-600 truncate max-w-[90px] mx-auto mt-0.5" title="{{ implode(', ', array_column($cellItems, 'guru')) }}">
+                                                                        {{ implode(', ', array_column($cellItems, 'guru')) }}
+                                                                    </div>
+                                                                    <div class="text-[9px] text-indigo-600 font-bold mt-1 bg-white/60 rounded">MAPEL PARALEL</div>
                                                                 </div>
-                                                                <div class="text-[10px] text-gray-600 truncate max-w-[90px] mx-auto mt-0.5" title="{{ $cell['guru'] }}">{{ $cell['guru'] }}</div>
-                                                                @if(count($cellItems) > 1)
-                                                                    <div class="text-[9px] text-red-500 font-bold mt-1 bg-white/50 rounded">OVERLAP</div>
-                                                                @endif
-                                                            </div>
+                                                            @elseif(!$isAllParallel)
+                                                                <div class="rounded-lg px-2 py-1.5 border hover:opacity-90 transition-colors {{ count($cellItems) > 1 ? 'bg-red-50 border-red-500 shadow-sm shadow-red-100' : 'bg-blue-50/80 border-blue-100/50' }} w-full">
+                                                                    <div class="text-[9px] font-mono text-gray-500 mb-0.5">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                                    <div class="font-bold text-[11px] leading-tight {{ count($cellItems) > 1 ? 'text-red-700' : 'text-blue-800' }}">
+                                                                        {{ $cell['mapel'] }}
+                                                                        <span class="font-normal {{ count($cellItems) > 1 ? 'text-red-500' : 'text-blue-500' }}">({{ $cell['seq'] }}/{{ $cell['total'] }})</span>
+                                                                    </div>
+                                                                    <div class="text-[10px] text-gray-600 truncate max-w-[90px] mx-auto mt-0.5" title="{{ $cell['guru'] }}">{{ $cell['guru'] }}</div>
+                                                                    @if(count($cellItems) > 1)
+                                                                        <div class="text-[9px] text-red-500 font-bold mt-1 bg-white/50 rounded">OVERLAP</div>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
                                                         @endif
                                                     @endforeach
                                                 </div>

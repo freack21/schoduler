@@ -22,10 +22,10 @@ class GenerateScheduleJob implements ShouldQueue
     public $timeout = 900;
 
     // GA parameters
-    private int $populationSize = 80;
-    private int $maxGenerations = 500;
+    private int $populationSize = 100;
+    private int $maxGenerations = 600;
     private float $crossoverRate = 0.85; 
-    private float $mutationRate = 0.20;  
+    private float $mutationRate = 0.25;  
     private int $eliteCount = 8;         
     
     private int $scheduleGenerationId;
@@ -44,7 +44,9 @@ class GenerateScheduleJob implements ShouldQueue
 
         // ── LOAD DATA ──
         $jamList = JamPelajaran::all();
-        $hariAktif = explode(',', \App\Models\Pengaturan::where('key', 'hari_aktif')->value('value') ?? 'Senin,Selasa,Rabu,Kamis,Jumat');
+        $allDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $dbDays = $jamList->pluck('hari')->unique()->toArray();
+        $hariAktif = array_values(array_intersect($allDays, $dbDays));
 
         $slotMap = [];
         $s = 0;
@@ -110,14 +112,42 @@ class GenerateScheduleJob implements ShouldQueue
                     ->toArray();
 
                 if (empty($eligibleGurus)) continue;
+                
+                if ($kuri->mapel->is_parallel) {
+                    $kodePrefix = substr($kuri->mapel->kode, 0, 4);
+                    $key = 'parallel_' . $kodePrefix . '_' . $kuri->mapel->jam_per_minggu . '_' . $kuri->mapel->jam_per_hari;
 
-                $demands[] = [
-                    'kelas_id' => $k->id,
-                    'mapel_id' => $kuri->mapel_id,
-                    'jam_per_minggu' => $kuri->mapel->jam_per_minggu,
-                    'jam_per_hari' => $kuri->mapel->jam_per_hari,
-                    'eligible_gurus' => array_values($eligibleGurus)
-                ];
+                    if (!isset($kelasDemands[$key])) {
+                        $kelasDemands[$key] = [
+                            'kelas_id' => $k->id,
+                            'mapel_ids' => [],
+                            'is_parallel' => true,
+                            'jam_per_minggu' => $kuri->mapel->jam_per_minggu,
+                            'jam_per_hari' => $kuri->mapel->jam_per_hari,
+                            'eligible_gurus' => []
+                        ];
+                    }
+                    
+                    if (!in_array($kuri->mapel_id, $kelasDemands[$key]['mapel_ids'])) {
+                        $kelasDemands[$key]['mapel_ids'][] = $kuri->mapel_id;
+                        $kelasDemands[$key]['eligible_gurus'][$kuri->mapel_id] = array_values($eligibleGurus);
+                    }
+                } else {
+                    $demands[] = [
+                        'kelas_id' => $k->id,
+                        'mapel_ids' => [$kuri->mapel_id],
+                        'is_parallel' => false,
+                        'jam_per_minggu' => $kuri->mapel->jam_per_minggu,
+                        'jam_per_hari' => $kuri->mapel->jam_per_hari,
+                        'eligible_gurus' => [
+                            $kuri->mapel_id => array_values($eligibleGurus)
+                        ]
+                    ];
+                }
+            }
+            
+            foreach ($kelasDemands as $d) {
+                $demands[] = $d;
             }
         }
 
@@ -129,7 +159,9 @@ class GenerateScheduleJob implements ShouldQueue
             $maxPerHari = $demand['jam_per_hari'];
             
             while ($sisa > 0) {
-                $take = min($sisa, $maxPerHari);
+                // If maxPerHari is empty or 0, default to sisa to not split
+                $maxPH = (empty($maxPerHari) || $maxPerHari <= 0) ? $sisa : $maxPerHari;
+                $take = min($sisa, $maxPH);
                 $bIdx = count($blocks);
                 $blocks[] = [
                     'demand_idx' => $dIdx,
@@ -176,6 +208,16 @@ class GenerateScheduleJob implements ShouldQueue
                 $fitness = 1.0 / (1.0 + $score);
                 $fitnessValues[$idx] = $fitness;
                 $indexed[] = ['c' => $chromosome, 'f' => $fitness, 's' => $score, 'idx' => $idx];
+                if ($gen === 0) {
+                    if ($idx === 0) {
+                        \Illuminate\Support\Facades\Log::info("FIRST RANDOM CHROM EVAL: " . json_encode($eval));
+                    }
+                    if ($idx === (int)($this->populationSize * 0.3)) {
+                        \Illuminate\Support\Facades\Log::info("FIRST SMART CHROM EVAL: " . json_encode($eval));
+                        file_put_contents(storage_path('demands_job.json'), json_encode($evalContext['demands'], JSON_PRETTY_PRINT));
+                        file_put_contents(storage_path('blocks_job.json'), json_encode($evalContext['blocks'], JSON_PRETTY_PRINT));
+                    }
+                }
                 
                 if ($score < $bestScore) {
                     $bestScore = $score;
@@ -185,15 +227,19 @@ class GenerateScheduleJob implements ShouldQueue
 
             usort($indexed, fn($a, $b) => $b['f'] <=> $a['f']);
 
+            if ($gen === 0) {
+                \Illuminate\Support\Facades\Log::info("BEST CHROM EVAL (GEN 0): " . json_encode($this->evaluate($indexed[0]['c'], $evalContext)));
+            }
+
             if ($gen % 10 === 0) {
                 $bestEval = $this->evaluate($bestChromosome, $evalContext);
-                $hard = $bestEval['guru_conflicts'] + $bestEval['kelas_conflicts'];
+                $hard = $bestEval['guru_conflicts'] + $bestEval['kelas_conflicts'] + $bestEval['same_day_mapel'];
                 $genState->update([
                     'generation' => $gen + 1,
                     'fitness' => $indexed[0]['f'],
                     'violations' => $hard,
                     'dist_violations' => $bestEval['dist_violations'],
-                    'message' => "Evolusi generasi " . ($gen + 1) . "... (Hard: {$hard})",
+                    'message' => "Evolusi generasi " . ($gen + 1) . "... (Hard: {$hard}, Packing: {$bestEval['packing_penalty']})",
                 ]);
             }
 
@@ -263,12 +309,19 @@ class GenerateScheduleJob implements ShouldQueue
         // ── POST-GA REPAIR PHASE ──
         if ($bestChromosome) {
             $repairRounds = 0;
-            while ($repairRounds < 50) {
+            while ($repairRounds < 150) {
                 $eval = $this->evaluate($bestChromosome, $evalContext);
-                $hardConflicts = $eval['guru_conflicts'] + $eval['kelas_conflicts'];
+                $hardConflicts = $eval['guru_conflicts'] + $eval['kelas_conflicts'] + $eval['same_day_mapel'];
                 if ($hardConflicts === 0) break;
                 
                 $conflictingBlocks = $eval['conflicting_blocks'];
+                if (empty($conflictingBlocks) && $hardConflicts > 0) {
+                    // if conflicts exist but not registered in conflicting blocks (e.g. same day mapel)
+                    $conflictingBlocks = array_keys($evalContext['blocks']);
+                    shuffle($conflictingBlocks);
+                    $conflictingBlocks = array_slice($conflictingBlocks, 0, 20);
+                }
+                
                 if (empty($conflictingBlocks)) break;
                 
                 $improved = false;
@@ -280,9 +333,29 @@ class GenerateScheduleJob implements ShouldQueue
                     $bestTrial = null;
                     $bestNewScore = $currentScore;
                     
+                    // Try changing guru if possible
+                    $dIdx = $evalContext['blocks'][$b]['demand_idx'];
+                    $demand = $evalContext['demands'][$dIdx];
+                    foreach ($demand['eligible_gurus'] as $mId => $eligibleGurus) {
+                        if (count($eligibleGurus) > 1) {
+                            foreach ($eligibleGurus as $g) {
+                                if ($g === $bestChromosome['gurus'][$dIdx][$mId]) continue;
+                                $trial = $bestChromosome;
+                                $trial['gurus'][$dIdx][$mId] = $g;
+                                $trialEval = $this->evaluate($trial, $evalContext);
+                                if ($trialEval['total'] < $bestNewScore) {
+                                    $bestNewScore = $trialEval['total'];
+                                    $bestTrial = $trial;
+                                    $improved = true;
+                                }
+                            }
+                        }
+                    }
+
                     // Shuffle starts for randomness in repair
+                    $validStarts = $evalContext['validBlockStarts'][$blockSize];
                     shuffle($validStarts);
-                    $sampledStarts = array_slice($validStarts, 0, 50);
+                    $sampledStarts = array_slice($validStarts, 0, 100);
                     
                     foreach ($sampledStarts as $s) {
                         if ($s === $bestChromosome['slots'][$b]) continue;
@@ -296,8 +369,11 @@ class GenerateScheduleJob implements ShouldQueue
                         }
                     }
                     
-                    // Add Swap Logic
-                    $sameSizeBlocks = array_keys(array_filter($evalContext['blocks'], fn($x) => $x['size'] === $blockSize));
+                    // Add Swap Logic (Swap within the same class to preserve class schedule validity)
+                    $bKelasId = $evalContext['demands'][$evalContext['blocks'][$b]['demand_idx']]['kelas_id'];
+                    $sameSizeBlocks = array_keys(array_filter($evalContext['blocks'], function($x) use ($blockSize, $bKelasId, $evalContext) {
+                        return $x['size'] === $blockSize && $evalContext['demands'][$x['demand_idx']]['kelas_id'] === $bKelasId;
+                    }));
                     shuffle($sameSizeBlocks);
                     $sampledBlocks = array_slice($sameSizeBlocks, 0, 50);
                     
@@ -338,15 +414,21 @@ class GenerateScheduleJob implements ShouldQueue
                 $block = $evalContext['blocks'][$bIdx];
                 $dIdx = $block['demand_idx'];
                 $demand = $evalContext['demands'][$dIdx];
-                $guruId = $bestChromosome['gurus'][$dIdx];
+                $guruMap = $bestChromosome['gurus'][$dIdx];
                 $kelasId = $demand['kelas_id'];
                 
                 $canSave = true;
                 for ($i = 0; $i < $block['size']; $i++) {
                     $sIdx = $startSlot + $i;
-                    if (isset($savedKelasSlots[$kelasId][$sIdx]) || isset($savedGuruSlots[$guruId][$sIdx])) {
+                    if (isset($savedKelasSlots[$kelasId][$sIdx])) {
                         $canSave = false;
                         break;
+                    }
+                    foreach ($guruMap as $guruId) {
+                        if (isset($savedGuruSlots[$guruId][$sIdx])) {
+                            $canSave = false;
+                            break 2;
+                        }
                     }
                 }
                 
@@ -354,18 +436,21 @@ class GenerateScheduleJob implements ShouldQueue
                     for ($i = 0; $i < $block['size']; $i++) {
                         $sIdx = $startSlot + $i;
                         $savedKelasSlots[$kelasId][$sIdx] = true;
-                        $savedGuruSlots[$guruId][$sIdx] = true;
                         
                         $slot = $slotMap[$sIdx];
-                        $entries[] = [
-                            'guru_id' => $guruId,
-                            'mapel_id' => $demand['mapel_id'],
-                            'kelas_id' => $demand['kelas_id'],
-                            'hari' => $slot['hari'],
-                            'jam_pelajaran_id' => $slot['jam_pelajaran_id'],
-                            'created_at' => now(),
-                            'updated_at' => now(),
-                        ];
+                        foreach ($guruMap as $mId => $guruId) {
+                            $savedGuruSlots[$guruId][$sIdx] = true;
+                            
+                            $entries[] = [
+                                'guru_id' => $guruId,
+                                'mapel_id' => $mId,
+                                'kelas_id' => $demand['kelas_id'],
+                                'hari' => $slot['hari'],
+                                'jam_pelajaran_id' => $slot['jam_pelajaran_id'],
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ];
+                        }
                     }
                 }
             }
@@ -378,14 +463,14 @@ class GenerateScheduleJob implements ShouldQueue
 
         $final = $bestChromosome ? $this->evaluate($bestChromosome, $evalContext) : null;
         if ($final) {
-            $hard = $final['guru_conflicts'] + $final['kelas_conflicts'];
+            $hard = $final['guru_conflicts'] + $final['kelas_conflicts'] + $final['same_day_mapel'];
             $finalFitness = round(1.0 / (1.0 + $final['total']), 6);
             $genState->update([
                 'status' => 'done',
                 'fitness' => $finalFitness,
                 'violations' => $hard,
                 'dist_violations' => $final['dist_violations'],
-                'message' => $hard > 0 ? "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang." : "Jadwal berhasil digenerate tanpa bentrok keras!",
+                'message' => $hard > 0 ? "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang." : "Jadwal berhasil digenerate tanpa bentrok keras dan penuh di hari awal!",
             ]);
         } else {
             $genState->update(['status' => 'failed', 'message' => 'Gagal menghasilkan jadwal']);
@@ -402,7 +487,11 @@ class GenerateScheduleJob implements ShouldQueue
         $slots = [];
 
         foreach ($demands as $dIdx => $demand) {
-            $gurus[$dIdx] = $demand['eligible_gurus'][array_rand($demand['eligible_gurus'])];
+            $picked = [];
+            foreach ($demand['eligible_gurus'] as $mId => $eligibleList) {
+                $picked[$mId] = $eligibleList[array_rand($eligibleList)];
+            }
+            $gurus[$dIdx] = $picked;
         }
 
         foreach ($blocks as $bIdx => $block) {
@@ -427,28 +516,31 @@ class GenerateScheduleJob implements ShouldQueue
         
         // 1. Assign Gurus (Load Balancing)
         $dIndices = array_keys($demands);
-        usort($dIndices, fn($a, $b) => count($demands[$a]['eligible_gurus']) <=> count($demands[$b]['eligible_gurus']));
+        usort($dIndices, fn($a, $b) => array_sum(array_map('count', $demands[$a]['eligible_gurus'])) <=> array_sum(array_map('count', $demands[$b]['eligible_gurus'])));
 
         foreach ($dIndices as $dIdx) {
             $demand = $demands[$dIdx];
-            $eligible = $demand['eligible_gurus'];
-            
-            $bestGuru = $eligible[0];
-            $minLoad = PHP_INT_MAX;
-            foreach ($eligible as $gid) {
-                $load = $guruLoad[$gid] ?? 0;
-                if ($load < $minLoad) {
-                    $minLoad = $load;
-                    $bestGuru = $gid;
+            $picked = [];
+            foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                $bestGuru = $eligible[0];
+                $minLoad = PHP_INT_MAX;
+                foreach ($eligible as $gid) {
+                    $load = $guruLoad[$gid] ?? 0;
+                    if ($load < $minLoad) {
+                        $minLoad = $load;
+                        $bestGuru = $gid;
+                    }
                 }
+                $picked[$mId] = $bestGuru;
+                $guruLoad[$bestGuru] = ($guruLoad[$bestGuru] ?? 0) + $demand['jam_per_minggu'];
             }
-            $gurus[$dIdx] = $bestGuru;
-            $guruLoad[$bestGuru] = ($guruLoad[$bestGuru] ?? 0) + $demand['jam_per_minggu'];
+            $gurus[$dIdx] = $picked;
         }
 
         // 2. Assign Slots (Minimize Conflicts)
         $usedGuruSlots = [];
         $usedKelasSlots = [];
+        $usedKelasMapelDay = [];
         
         $bIndices = array_keys($blocks);
         usort($bIndices, fn($a, $b) => $blocks[$b]['size'] <=> $blocks[$a]['size']);
@@ -457,12 +549,17 @@ class GenerateScheduleJob implements ShouldQueue
             $block = $blocks[$bIdx];
             $dIdx = $block['demand_idx'];
             $demand = $demands[$dIdx];
-            $guruId = $gurus[$dIdx];
+            $guruMap = $gurus[$dIdx];
             $kelasId = $demand['kelas_id'];
             $size = $block['size'];
             
             $validStarts = $validBlockStarts[$size];
-            shuffle($validStarts);
+            // Randomly sort or shuffle to preserve genetic diversity while packing
+            if (rand(0, 100) < 70) {
+                sort($validStarts);
+            } else {
+                shuffle($validStarts);
+            }
             
             $bestSlot = $validStarts[0] ?? 0;
             $minConflicts = PHP_INT_MAX;
@@ -471,8 +568,17 @@ class GenerateScheduleJob implements ShouldQueue
                 $conflicts = 0;
                 for ($i = 0; $i < $size; $i++) {
                     $sIdx = $s + $i;
-                    if (isset($usedGuruSlots[$guruId][$sIdx])) $conflicts++;
+                    foreach ($guruMap as $guruId) {
+                        if (isset($usedGuruSlots[$guruId][$sIdx])) $conflicts++;
+                    }
                     if (isset($usedKelasSlots[$kelasId][$sIdx])) $conflicts++;
+                }
+                
+                $dayIdx = $slotMap[$s]['hari_idx'];
+                foreach ($demand['mapel_ids'] as $mapelId) {
+                    if (isset($usedKelasMapelDay[$kelasId][$dayIdx][$mapelId])) {
+                        $conflicts += 100; // Extremely high penalty to avoid same day mapel during init
+                    }
                 }
                 
                 if ($conflicts === 0) {
@@ -487,8 +593,15 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             $slots[$bIdx] = $bestSlot;
+            $bestDayIdx = $slotMap[$bestSlot]['hari_idx'];
+            foreach ($demand['mapel_ids'] as $mapelId) {
+                $usedKelasMapelDay[$kelasId][$bestDayIdx][$mapelId] = true;
+            }
+            
             for ($i = 0; $i < $size; $i++) {
-                $usedGuruSlots[$guruId][$bestSlot + $i] = true;
+                foreach ($guruMap as $guruId) {
+                    $usedGuruSlots[$guruId][$bestSlot + $i] = true;
+                }
                 $usedKelasSlots[$kelasId][$bestSlot + $i] = true;
             }
         }
@@ -511,11 +624,16 @@ class GenerateScheduleJob implements ShouldQueue
         $guruDailyLoad = [];
         $kelasDailySlots = [];
         $frontLoadPenalty = 0;
+        $kelasMapelDay = [];
+        $sameDayMapelPenalty = 0;
+        
+        $maxSIdx = [];
+        $totalSlotsUsed = [];
 
         foreach ($blocks as $bIdx => $block) {
             $dIdx = $block['demand_idx'];
             $demand = $demands[$dIdx];
-            $guruId = $chromosome['gurus'][$dIdx];
+            $guruMap = $chromosome['gurus'][$dIdx];
             $kelasId = $demand['kelas_id'];
             $start = $chromosome['slots'][$bIdx];
             $size = $block['size'];
@@ -523,27 +641,53 @@ class GenerateScheduleJob implements ShouldQueue
             $hasConflict = false;
             for ($i = 0; $i < $size; $i++) {
                 $sIdx = $start + $i;
-                if (isset($guruSlots[$guruId][$sIdx])) {
-                    $guruConflicts++;
-                    $hasConflict = true;
+                foreach ($guruMap as $guruId) {
+                    if (isset($guruSlots[$guruId][$sIdx])) {
+                        $guruConflicts++;
+                        $hasConflict = true;
+                    }
+                    $guruSlots[$guruId][$sIdx] = true;
                 }
+                
                 if (isset($kelasSlots[$kelasId][$sIdx])) {
                     $kelasConflicts++;
                     $hasConflict = true;
                 }
-                $guruSlots[$guruId][$sIdx] = true;
                 $kelasSlots[$kelasId][$sIdx] = true;
 
                 $dayIdx = $slotMap[$sIdx]['hari_idx'];
                 $kelasDailySlots[$kelasId][$dayIdx][] = $sIdx;
                 $frontLoadPenalty += $dayIdx;
+                
+                if (!isset($maxSIdx[$kelasId]) || $sIdx > $maxSIdx[$kelasId]) {
+                    $maxSIdx[$kelasId] = $sIdx;
+                }
+                $totalSlotsUsed[$kelasId] = ($totalSlotsUsed[$kelasId] ?? 0) + 1;
             }
             if ($hasConflict) {
                 $conflictingBlocks[$bIdx] = true;
             }
 
             $dayIdx = $slotMap[$start]['hari_idx'];
-            $guruDailyLoad[$guruId][$dayIdx] = ($guruDailyLoad[$guruId][$dayIdx] ?? 0) + $size;
+            foreach ($guruMap as $guruId) {
+                $guruDailyLoad[$guruId][$dayIdx] = ($guruDailyLoad[$guruId][$dayIdx] ?? 0) + $size;
+            }
+            
+            foreach ($demand['mapel_ids'] as $mapelId) {
+                if (isset($kelasMapelDay[$kelasId][$dayIdx][$mapelId])) {
+                    $sameDayMapelPenalty++;
+                    $conflictingBlocks[$bIdx] = true;
+                }
+                $kelasMapelDay[$kelasId][$dayIdx][$mapelId] = true;
+            }
+        }
+
+        $packingPenalty = 0;
+        foreach ($maxSIdx as $kId => $maxS) {
+            $used = $totalSlotsUsed[$kId] ?? 0;
+            if ($used > 0) {
+                $packingPenalty += ($maxS - $used + 1);
+            }
         }
 
         $distViolations = 0;
@@ -574,12 +718,20 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        $total = ($guruConflicts * 50000) + ($kelasConflicts * 50000) + ($distViolations * 100) + ($gapPenalties * 2) + ($frontLoadPenalty * 1);
+        $total = ($guruConflicts * 1000000) 
+               + ($kelasConflicts * 1000000) 
+               + ($sameDayMapelPenalty * 50000)
+               + ($distViolations * 100) 
+               + ($gapPenalties * 10) 
+               + ($packingPenalty * 5)
+               + ($frontLoadPenalty * 1);
 
         return [
             'guru_conflicts' => $guruConflicts,
             'kelas_conflicts' => $kelasConflicts,
+            'same_day_mapel' => $sameDayMapelPenalty,
             'dist_violations' => $distViolations,
+            'packing_penalty' => $packingPenalty,
             'total' => $total,
             'conflicting_blocks' => array_keys($conflictingBlocks),
         ];
@@ -653,9 +805,11 @@ class GenerateScheduleJob implements ShouldQueue
                     $bIdx = $conflictingBlocks[array_rand($conflictingBlocks)];
                     $dIdx = $blocks[$bIdx]['demand_idx'];
                 }
-                $eligible = $demands[$dIdx]['eligible_gurus'];
+                $eligibleMap = $demands[$dIdx]['eligible_gurus'];
+                $mIdToMutate = array_rand($eligibleMap);
+                $eligible = $eligibleMap[$mIdToMutate];
                 if (count($eligible) > 1) {
-                    $chromosome['gurus'][$dIdx] = $eligible[array_rand($eligible)];
+                    $chromosome['gurus'][$dIdx][$mIdToMutate] = $eligible[array_rand($eligible)];
                 }
             } else {
                 // Mutate Slot
@@ -699,8 +853,11 @@ class GenerateScheduleJob implements ShouldQueue
                 }
             }
             
-            // Try Swap Mutation
-            $sameSizeBlocks = array_keys(array_filter($blocks, fn($x) => $x['size'] === $size));
+            // Try Swap Mutation (Within same class)
+            $bKelasId = $ctx['demands'][$blocks[$bIdx]['demand_idx']]['kelas_id'];
+            $sameSizeBlocks = array_keys(array_filter($blocks, function($x) use ($size, $bKelasId, $ctx) {
+                return $x['size'] === $size && $ctx['demands'][$x['demand_idx']]['kelas_id'] === $bKelasId;
+            }));
             shuffle($sameSizeBlocks);
             $sampledBlocks = array_slice($sameSizeBlocks, 0, 20);
             foreach ($sampledBlocks as $otherBIdx) {
@@ -718,11 +875,17 @@ class GenerateScheduleJob implements ShouldQueue
         }
         
         
-        // Random swaps
+        // Random swaps (Within same class)
         for ($i = 0; $i < 50; $i++) {
             $trial = $bestChromosome;
             $bIdx1 = array_rand($blocks);
-            $bIdx2 = array_rand($blocks);
+            $bKelasId = $ctx['demands'][$blocks[$bIdx1]['demand_idx']]['kelas_id'];
+            $sameClassBlocks = array_keys(array_filter($blocks, function($x) use ($bKelasId, $ctx) {
+                return $ctx['demands'][$x['demand_idx']]['kelas_id'] === $bKelasId;
+            }));
+            if (count($sameClassBlocks) < 2) continue;
+            
+            $bIdx2 = $sameClassBlocks[array_rand($sameClassBlocks)];
             if ($blocks[$bIdx1]['size'] === $blocks[$bIdx2]['size']) {
                 $temp = $trial['slots'][$bIdx1];
                 $trial['slots'][$bIdx1] = $trial['slots'][$bIdx2];

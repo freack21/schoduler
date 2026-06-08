@@ -147,6 +147,7 @@ class GenerateJadwal extends Component
                         'jam_selesai' => $jam->jam_selesai,
                         'is_istirahat' => false,
                         'is_empty' => false,
+                        'is_parallel' => $entry->mapel->is_parallel,
                     ];
                 }
 

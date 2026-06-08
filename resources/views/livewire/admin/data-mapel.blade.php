@@ -25,7 +25,12 @@
                         <tr class="table-row" wire:key="mapel-{{ $mapel->id }}">
                             <td class="px-6 py-4 text-gray-500">{{ $i + 1 }}</td>
                             <td class="px-6 py-4"><span class="badge bg-amber-50 text-amber-700 font-mono">{{ $mapel->kode }}</span></td>
-                            <td class="px-6 py-4 font-medium text-gray-900">{{ $mapel->nama }}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900">
+                                {{ $mapel->nama }}
+                                @if($mapel->is_parallel)
+                                    <span class="ml-2 badge bg-indigo-50 text-indigo-700 text-xs">Paralel / Multi-Guru</span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center gap-1 text-gray-600">
                                     <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -79,6 +84,15 @@
                         <p class="text-xs text-gray-400 mt-1">Ukuran blok jam per hari</p>
                         @error('jam_per_hari') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                     </div>
+                </div>
+                <div class="pt-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" wire:model="is_parallel" class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                        <div>
+                            <span class="text-sm font-medium text-gray-900">Mapel Paralel / Multi-Guru</span>
+                            <p class="text-xs text-gray-500">Centang jika mapel ini (misal: Agama) diajarkan serentak oleh semua guru yang ditugaskan di kelas yang sama.</p>
+                        </div>
+                    </label>
                 </div>
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" wire:click="$set('showModal', false)" class="btn-outline text-sm">Batal</button>

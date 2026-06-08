@@ -17,12 +17,14 @@ class DataMapel extends Component
     public string $nama = '';
     public int $jam_per_minggu = 2;
     public int $jam_per_hari = 2;
+    public bool $is_parallel = false;
 
     public function openCreateModal(): void
     {
-        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari']);
+        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari', 'is_parallel']);
         $this->jam_per_minggu = 2;
         $this->jam_per_hari = 2;
+        $this->is_parallel = false;
         $this->showModal = true;
     }
 
@@ -34,6 +36,7 @@ class DataMapel extends Component
         $this->nama = $mapel->nama;
         $this->jam_per_minggu = $mapel->jam_per_minggu;
         $this->jam_per_hari = $mapel->jam_per_hari;
+        $this->is_parallel = $mapel->is_parallel;
         $this->showModal = true;
     }
 
@@ -44,6 +47,7 @@ class DataMapel extends Component
             'nama' => 'required|string|max:255',
             'jam_per_minggu' => 'required|integer|min:1|max:10',
             'jam_per_hari' => 'required|integer|min:1|max:10',
+            'is_parallel' => 'boolean',
         ];
 
         if (!$this->editingId) {
@@ -56,11 +60,17 @@ class DataMapel extends Component
 
         Mapel::updateOrCreate(
             ['id' => $this->editingId],
-            ['kode' => strtoupper($this->kode), 'nama' => $this->nama, 'jam_per_minggu' => $this->jam_per_minggu, 'jam_per_hari' => $this->jam_per_hari]
+            [
+                'kode' => strtoupper($this->kode), 
+                'nama' => $this->nama, 
+                'jam_per_minggu' => $this->jam_per_minggu, 
+                'jam_per_hari' => $this->jam_per_hari,
+                'is_parallel' => $this->is_parallel
+            ]
         );
 
         $this->showModal = false;
-        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari']);
+        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari', 'is_parallel']);
         $this->dispatch('toast', type: 'success', message: 'Data mapel berhasil disimpan!');
     }
 
