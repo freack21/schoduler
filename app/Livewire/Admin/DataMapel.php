@@ -18,13 +18,15 @@ class DataMapel extends Component
     public int $jam_per_minggu = 2;
     public int $jam_per_hari = 2;
     public bool $is_parallel = false;
+    public ?string $kelompok_paralel = null;
 
     public function openCreateModal(): void
     {
-        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari', 'is_parallel']);
+        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari', 'is_parallel', 'kelompok_paralel']);
         $this->jam_per_minggu = 2;
         $this->jam_per_hari = 2;
         $this->is_parallel = false;
+        $this->kelompok_paralel = null;
         $this->showModal = true;
     }
 
@@ -37,6 +39,7 @@ class DataMapel extends Component
         $this->jam_per_minggu = $mapel->jam_per_minggu;
         $this->jam_per_hari = $mapel->jam_per_hari;
         $this->is_parallel = $mapel->is_parallel;
+        $this->kelompok_paralel = $mapel->kelompok_paralel;
         $this->showModal = true;
     }
 
@@ -48,6 +51,7 @@ class DataMapel extends Component
             'jam_per_minggu' => 'required|integer|min:1|max:10',
             'jam_per_hari' => 'required|integer|min:1|max:10',
             'is_parallel' => 'boolean',
+            'kelompok_paralel' => 'nullable|string|max:255',
         ];
 
         if (!$this->editingId) {
@@ -65,12 +69,13 @@ class DataMapel extends Component
                 'nama' => $this->nama, 
                 'jam_per_minggu' => $this->jam_per_minggu, 
                 'jam_per_hari' => $this->jam_per_hari,
-                'is_parallel' => $this->is_parallel
+                'is_parallel' => $this->is_parallel,
+                'kelompok_paralel' => $this->is_parallel ? $this->kelompok_paralel : null
             ]
         );
 
         $this->showModal = false;
-        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari', 'is_parallel']);
+        $this->reset(['editingId', 'kode', 'nama', 'jam_per_minggu', 'jam_per_hari', 'is_parallel', 'kelompok_paralel']);
         $this->dispatch('toast', type: 'success', message: 'Data mapel berhasil disimpan!');
     }
 

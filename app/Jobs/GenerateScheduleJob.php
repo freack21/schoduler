@@ -114,8 +114,8 @@ class GenerateScheduleJob implements ShouldQueue
                 if (empty($eligibleGurus)) continue;
                 
                 if ($kuri->mapel->is_parallel) {
-                    $kodePrefix = substr($kuri->mapel->kode, 0, 4);
-                    $key = 'parallel_' . $kodePrefix . '_' . $kuri->mapel->jam_per_minggu . '_' . $kuri->mapel->jam_per_hari;
+                    $kelompok = $kuri->mapel->kelompok_paralel ?: ('id_' . $kuri->mapel->id);
+                    $key = 'parallel_' . md5($kelompok) . '_' . $kuri->mapel->jam_per_minggu . '_' . $kuri->mapel->jam_per_hari;
 
                     if (!isset($kelasDemands[$key])) {
                         $kelasDemands[$key] = [

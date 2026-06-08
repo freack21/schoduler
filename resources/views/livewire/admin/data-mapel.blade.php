@@ -29,6 +29,9 @@
                                 {{ $mapel->nama }}
                                 @if($mapel->is_parallel)
                                     <span class="ml-2 badge bg-indigo-50 text-indigo-700 text-xs">Paralel / Multi-Guru</span>
+                                    @if($mapel->kelompok_paralel)
+                                        <span class="ml-1 badge bg-indigo-100 text-indigo-800 text-xs border border-indigo-200">{{ $mapel->kelompok_paralel }}</span>
+                                    @endif
                                 @endif
                             </td>
                             <td class="px-6 py-4">
@@ -87,13 +90,22 @@
                 </div>
                 <div class="pt-2">
                     <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" wire:model="is_parallel" class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                        <input type="checkbox" wire:model.live="is_parallel" class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
                         <div>
                             <span class="text-sm font-medium text-gray-900">Mapel Paralel / Multi-Guru</span>
                             <p class="text-xs text-gray-500">Centang jika mapel ini (misal: Agama) diajarkan serentak oleh semua guru yang ditugaskan di kelas yang sama.</p>
                         </div>
                     </label>
                 </div>
+                
+                @if($is_parallel)
+                <div class="mt-3 p-3 bg-blue-50/50 rounded-lg border border-blue-100">
+                    <label class="label-field text-blue-900">Nama Kelompok Paralel <span class="text-red-500">*</span></label>
+                    <input wire:model="kelompok_paralel" type="text" class="input-field border-blue-200 focus:border-blue-400 focus:ring-blue-400" placeholder="Contoh: Agama, Pilihan Lintas Minat">
+                    <p class="text-[11px] text-blue-600/80 mt-1.5 leading-relaxed">Mapel dengan nama kelompok yang <strong>sama persis</strong> akan disatukan ke dalam 1 blok waktu yang sama.</p>
+                    @error('kelompok_paralel') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+                @endif
                 <div class="flex justify-end gap-3 pt-4">
                     <button type="button" wire:click="$set('showModal', false)" class="btn-outline text-sm">Batal</button>
                     <button type="submit" class="btn-primary text-sm">{{ $editingId ? 'Update' : 'Simpan' }}</button>
