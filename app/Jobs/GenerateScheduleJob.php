@@ -101,6 +101,7 @@ class GenerateScheduleJob implements ShouldQueue
                 $kuriList = $kuriList->whereNull('jurusan_id');
             }
 
+            $kelasDemands = [];
             foreach ($kuriList as $kuri) {
                 $eligibleGurus = $guruMapelAll->where('mapel_id', $kuri->mapel_id)
                     ->where('tingkat_id', $k->tingkat_id)
