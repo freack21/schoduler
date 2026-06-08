@@ -202,8 +202,8 @@
 
                     @foreach($jams as $jIdx => $jam)
                         <tr>
-                            @if($jIdx === 0)
-                                <td rowspan="{{ $jamsCount }}" class="col-hari">
+                            <td class="col-hari" style="border-top: {{ $jIdx === 0 ? '1px solid #000' : 'none' }}; border-bottom: {{ $jIdx === $jamsCount - 1 ? '1px solid #000' : 'none' }};">
+                                @if($jIdx === (int)floor($jamsCount / 2))
                                     @php
                                         // DOMPDF support for vertical text is limited, using br tags as fallback
                                         $chars = str_split(strtoupper($hari));
@@ -211,8 +211,8 @@
                                     @foreach($chars as $char)
                                         {{ $char }}<br>
                                     @endforeach
-                                </td>
-                            @endif
+                                @endif
+                            </td>
 
                             <td class="col-jam">{{ $jam->jam_ke }}</td>
                             <td class="col-waktu">{{ substr($jam->jam_mulai, 0, 5) }}-{{ substr($jam->jam_selesai, 0, 5) }}</td>
