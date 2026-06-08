@@ -21,7 +21,7 @@ class Dashboard extends Component
         $user = auth()->user();
         $guru = Guru::where('user_id', $user->id)->first();
 
-        $guruMapels = $guru ? $guru->guruMapel()->with(['mapel', 'kelas'])->get() : collect();
+        $guruMapels = $guru ? $guru->guruMapel()->with(['mapel', 'tingkat', 'jurusan'])->get() : collect();
 
         // Get schedule
         $hariMap = [

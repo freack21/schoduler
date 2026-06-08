@@ -27,7 +27,7 @@
                     </div>
                     <div class="flex flex-wrap gap-1.5 ml-12">
                         @foreach($items as $gm)
-                            <span class="badge bg-primary/10 text-primary">{{ $gm->kelas->nama }}</span>
+                            <span class="badge bg-primary/10 text-primary">{{ $gm->tingkat->nama ?? '' }} {{ $gm->jurusan->nama ?? '' }}</span>
                         @endforeach
                     </div>
                 </div>
