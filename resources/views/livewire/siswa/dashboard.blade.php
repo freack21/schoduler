@@ -63,8 +63,8 @@
                                         </div>
                                         <div class="w-0.5 h-8 bg-secondary rounded-full"></div>
                                         <div>
-                                            <p class="font-medium text-gray-900 text-sm">{{ $j->guruMapel->mapel->nama }}</p>
-                                            <p class="text-xs text-gray-500">{{ $j->guruMapel->guru->user->nama_lengkap }}</p>
+                                            <p class="font-medium text-gray-900 text-sm">{{ $j->mapel->nama ?? '' }}</p>
+                                            <p class="text-xs text-gray-500">{{ $j->guru->user->nama_lengkap ?? '' }}</p>
                                         </div>
                                     </div>
                                 @endforeach
@@ -97,8 +97,8 @@
                                     <td class="px-2 py-1.5 text-center">
                                         @if($entry)
                                             <div class="bg-green-50 rounded px-2 py-1.5">
-                                                <div class="font-bold text-green-700">{{ $entry->guruMapel->mapel->kode }}</div>
-                                                <div class="text-[10px] text-gray-500 truncate">{{ $entry->guruMapel->guru->user->nama_lengkap }}</div>
+                                                <div class="font-bold text-green-700">{{ substr($entry->mapel->nama ?? '', 0, 15) }}...</div>
+                                                <div class="text-[10px] text-gray-500 truncate">{{ $entry->guru->user->nama_lengkap ?? '' }}</div>
                                             </div>
                                         @else
                                             <span class="text-gray-300">-</span>

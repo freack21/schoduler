@@ -34,14 +34,14 @@ class Dashboard extends Component
         ];
         $hariIni = $hariMap[Carbon::now()->format('l')] ?? 'Senin';
 
-        $jadwalHariIni = $guru ? Jadwal::with(['guruMapel.mapel', 'guruMapel.kelas', 'jamPelajaran'])
-            ->whereHas('guruMapel', fn($q) => $q->where('guru_id', $guru->id))
+        $jadwalHariIni = $guru ? Jadwal::with(['mapel', 'kelas', 'jamPelajaran'])
+            ->where('guru_id', $guru->id)
             ->where('hari', $hariIni)
             ->get()
             ->sortBy(fn($j) => $j->jamPelajaran->jam_ke) : collect();
 
-        $jadwalMingguan = $guru ? Jadwal::with(['guruMapel.mapel', 'guruMapel.kelas', 'jamPelajaran'])
-            ->whereHas('guruMapel', fn($q) => $q->where('guru_id', $guru->id))
+        $jadwalMingguan = $guru ? Jadwal::with(['mapel', 'kelas', 'jamPelajaran'])
+            ->where('guru_id', $guru->id)
             ->get()
             ->groupBy('hari') : collect();
 

@@ -22,8 +22,8 @@ class Dashboard extends Component
         $teman = collect();
 
         if ($siswa) {
-            $jadwal = Jadwal::with(['guruMapel.mapel', 'guruMapel.guru.user', 'jamPelajaran'])
-                ->whereHas('guruMapel', fn($q) => $q->where('kelas_id', $siswa->kelas_id))
+            $jadwal = Jadwal::with(['mapel', 'guru.user', 'jamPelajaran'])
+                ->where('kelas_id', $siswa->kelas_id)
                 ->get();
 
             $teman = $siswa->kelas->siswa()
