@@ -332,8 +332,9 @@
     {{-- Portal Login Section --}}
     <section id="portal-login" class="relative py-24 bg-gradient-to-b from-gray-50 to-primary-dark/5 border-t border-gray-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="bg-primary rounded-3xl p-8 sm:p-12 shadow-2xl shadow-primary/30 relative overflow-hidden" data-aos="zoom-in">
-                <!-- Decorative background elements -->
+            <div data-aos="zoom-in" wire:ignore.self>
+                <div class="bg-primary rounded-3xl p-8 sm:p-12 shadow-2xl shadow-primary/30 relative overflow-hidden">
+                    <!-- Decorative background elements -->
                 <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/20 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
                 <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/20 rounded-full blur-2xl transform -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
                 
@@ -409,6 +410,7 @@
                         </form>
                         @endif
                     </div>
+                </div>
                 </div>
             </div>
         </div>
