@@ -66,10 +66,13 @@ class DataJamPelajaran extends Component
 
     public function removeBlock(int $id)
     {
-        JamPelajaran::findOrFail($id)->delete();
+        $jam = JamPelajaran::find($id);
+        if (!$jam) return;
+
+        $jam->delete();
         $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
-        foreach ($jams as $index => $jam) {
-            $jam->update(['jam_ke' => $index + 1]);
+        foreach ($jams as $index => $j) {
+            $j->update(['jam_ke' => $index + 1]);
         }
         $this->recalculateTimes($this->hariFilter, $this->jamMulaiHari);
     }
