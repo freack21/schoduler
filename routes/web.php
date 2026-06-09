@@ -11,7 +11,6 @@ use App\Livewire\Siswa;
 Route::get('/', LandingPage::class)->name('home');
 
 // Auth
-Route::get('/login', MultiLogin::class)->name('login')->middleware('login');
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Export Jadwal (Global for Auth)

@@ -11,6 +11,12 @@ use Livewire\Component;
 class LandingPage extends Component
 {
     public string $userId = '';
+    
+    // Admin login fields
+    public string $adminUsername = '';
+    public string $adminPassword = '';
+    
+    public string $loginTab = 'siswa_guru'; // 'siswa_guru' or 'admin'
 
     public function loginSiswaGuru()
     {
@@ -41,6 +47,29 @@ class LandingPage extends Component
         } else {
             $this->redirect(route('siswa.dashboard'), navigate: true);
         }
+    }
+
+    public function loginAdmin()
+    {
+        $this->validate([
+            'adminUsername' => 'required|string',
+            'adminPassword' => 'required|string',
+        ], [
+            'adminUsername.required' => 'Username harus diisi.',
+            'adminPassword.required' => 'Password harus diisi.',
+        ]);
+
+        $user = \App\Models\User::where('id', $this->adminUsername)->first();
+        
+        if (!$user || $user->role !== 'admin' || !\Illuminate\Support\Facades\Hash::check($this->adminPassword, $user->password)) {
+            $this->dispatch('toast', type: 'error', message: 'Username atau password salah.');
+            return;
+        }
+
+        \Illuminate\Support\Facades\Auth::login($user);
+        session()->regenerate();
+
+        $this->redirect(route('admin.dashboard'), navigate: true);
     }
 
     public function render()

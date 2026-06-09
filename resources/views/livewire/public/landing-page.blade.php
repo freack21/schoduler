@@ -329,7 +329,7 @@
         </div>
     </section>
 
-    {{-- Portal Guru & Siswa Login Section --}}
+    {{-- Portal Login Section --}}
     <section id="portal-login" class="relative py-24 bg-gradient-to-b from-gray-50 to-primary-dark/5 border-t border-gray-100">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="bg-primary rounded-3xl p-8 sm:p-12 shadow-2xl shadow-primary/30 relative overflow-hidden" data-aos="zoom-in">
@@ -340,11 +340,17 @@
                 <div class="relative z-10 flex flex-col md:flex-row gap-10 items-center justify-between">
                     <div class="md:w-1/2 text-center md:text-left">
                         <span class="inline-block px-4 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-bold tracking-wide mb-4">AKSES INTERNAL</span>
-                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">Portal Guru & Siswa</h2>
-                        <p class="text-gray-300 leading-relaxed text-lg mb-0">Silakan masukkan Nomor Induk Anda untuk mengakses dashboard akademik, memantau jadwal, dan mengelola kelas.</p>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">Portal Akademik</h2>
+                        <p class="text-gray-300 leading-relaxed text-lg mb-0">Silakan pilih peran dan masukkan kredensial Anda untuk mengakses sistem informasi akademik.</p>
                     </div>
                     
                     <div class="md:w-[45%] w-full bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/10">
+                        <div class="flex p-1 bg-white/5 rounded-xl mb-6 border border-white/10">
+                            <button wire:click="$set('loginTab', 'siswa_guru')" class="flex-1 py-2 text-sm font-bold rounded-lg transition-all {{ $loginTab === 'siswa_guru' ? 'bg-secondary text-primary shadow-md' : 'text-gray-400 hover:text-white' }}">Guru & Siswa</button>
+                            <button wire:click="$set('loginTab', 'admin')" class="flex-1 py-2 text-sm font-bold rounded-lg transition-all {{ $loginTab === 'admin' ? 'bg-secondary text-primary shadow-md' : 'text-gray-400 hover:text-white' }}">Admin</button>
+                        </div>
+                        
+                        @if($loginTab === 'siswa_guru')
                         <form wire:submit.prevent="loginSiswaGuru" class="space-y-5">
                             <div>
                                 <label for="userId" class="block text-sm font-semibold text-gray-300 mb-2">NISN (Siswa) / NIP (Guru)</label>
@@ -360,12 +366,48 @@
                             </div>
                             
                             <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary hover:bg-yellow-400 text-primary font-bold rounded-xl transition-all duration-300 shadow-lg shadow-secondary/20 group">
-                                Cek Portal
+                                Akses Portal
                                 <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
                             </button>
                         </form>
+                        @else
+                        <form wire:submit.prevent="loginAdmin" class="space-y-5">
+                            <div>
+                                <label for="adminUsername" class="block text-sm font-semibold text-gray-300 mb-2">Username</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="adminUsername" wire:model="adminUsername" class="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-secondary focus:border-transparent transition-all sm:text-sm" placeholder="Ketik username admin..." autocomplete="off">
+                                </div>
+                                @error('adminUsername') <span class="text-red-400 text-xs mt-1.5 block font-medium">{{ $message }}</span> @enderror
+                            </div>
+                            
+                            <div>
+                                <label for="adminPassword" class="block text-sm font-semibold text-gray-300 mb-2">Password</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                        </svg>
+                                    </div>
+                                    <input type="password" id="adminPassword" wire:model="adminPassword" class="block w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:ring-2 focus:ring-secondary focus:border-transparent transition-all sm:text-sm" placeholder="Ketik password admin...">
+                                </div>
+                                @error('adminPassword') <span class="text-red-400 text-xs mt-1.5 block font-medium">{{ $message }}</span> @enderror
+                            </div>
+                            
+                            <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary hover:bg-yellow-400 text-primary font-bold rounded-xl transition-all duration-300 shadow-lg shadow-secondary/20 group">
+                                Login Admin
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </button>
+                        </form>
+                        @endif
                     </div>
                 </div>
             </div>
