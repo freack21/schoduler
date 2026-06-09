@@ -39,13 +39,21 @@
 
     {{-- Schedule Tabs --}}
     <div class="card !p-0 overflow-hidden">
-        <div class="flex border-b border-gray-200">
-            <button wire:click="$set('activeTab', 'hari-ini')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'hari-ini' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
-                Hari Ini ({{ $hariIni }})
-            </button>
-            <button wire:click="$set('activeTab', 'mingguan')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'mingguan' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
-                Mingguan
-            </button>
+        <div class="flex border-b border-gray-200 justify-between items-center pr-6">
+            <div class="flex">
+                <button wire:click="$set('activeTab', 'hari-ini')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'hari-ini' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
+                    Hari Ini ({{ $hariIni }})
+                </button>
+                <button wire:click="$set('activeTab', 'mingguan')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'mingguan' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
+                    Mingguan
+                </button>
+            </div>
+            @if($guru)
+            <a href="/export/jadwal/guru?ids[]={{ $guru->id }}" target="_blank" class="px-3 py-1.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Ekspor PDF
+            </a>
+            @endif
         </div>
 
         <div class="p-6">

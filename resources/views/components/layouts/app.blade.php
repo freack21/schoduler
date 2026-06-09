@@ -13,6 +13,7 @@
     @livewireStyles
 </head>
 <body class="bg-content-bg min-h-screen" x-data="{ sidebarOpen: false }">
+    @if(auth()->check() && auth()->user()->role === 'admin')
     {{-- Mobile Overlay --}}
     <div x-show="sidebarOpen" x-transition:enter="transition-opacity ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="sidebarOpen = false" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden" style="display:none;"></div>
 
@@ -126,15 +127,19 @@
         </div>
     </aside>
 
+    @endif
+
     {{-- Main Content --}}
-    <div class="lg:ml-[260px] min-h-screen flex flex-col">
+    <div class="{{ auth()->check() && auth()->user()->role === 'admin' ? 'lg:ml-[260px]' : '' }} min-h-screen flex flex-col">
         {{-- Top Bar --}}
         <header class="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 sm:px-6 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
+                    @if(auth()->check() && auth()->user()->role === 'admin')
                     <button @click="sidebarOpen = true" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
                         <svg class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
                     </button>
+                    @endif
                     <div>
                         <h2 class="text-lg font-semibold text-gray-800">{{ $title ?? 'Dashboard' }}</h2>
                     </div>

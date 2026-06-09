@@ -357,7 +357,7 @@
                             </div>
                             
                             <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-secondary hover:bg-yellow-400 text-primary font-bold rounded-xl transition-all duration-300 shadow-lg shadow-secondary/20 group">
-                                Akses Portal
+                                Cek Jadwal
                                 <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>

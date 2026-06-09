@@ -40,11 +40,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 // Guru
 Route::middleware(['auth', 'role:guru'])->prefix('guru')->group(function () {
     Route::get('/dashboard', Guru\Dashboard::class)->name('guru.dashboard');
-    Route::get('/export-jadwal', Guru\ExportJadwal::class)->name('guru.export-jadwal');
 });
 
 // Siswa
 Route::middleware(['auth', 'role:siswa'])->prefix('siswa')->group(function () {
     Route::get('/dashboard', Siswa\Dashboard::class)->name('siswa.dashboard');
-    Route::get('/export-jadwal', Siswa\ExportJadwal::class)->name('siswa.export-jadwal');
 });
