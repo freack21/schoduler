@@ -197,6 +197,10 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
+    button, [role="button"], a[href], select, summary {
+        cursor: pointer;
+    }
+
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
         width: 8px;
