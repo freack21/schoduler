@@ -313,7 +313,7 @@
                     </ul>
                 </div>
                 <div class="rounded-3xl overflow-hidden shadow-2xl border border-gray-100 h-[500px]" data-aos="fade-left">
-                    <iframe width="100%" height="100%" frameborder="0" src="https://maps.google.com/maps?q=0.5787,100.9534&output=embed" allowfullscreen loading="lazy" class="filter contrast-125 saturate-150"></iframe>
+                    <iframe width="100%" height="100%" frameborder="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.5870006827067!2d100.72590957396504!3d0.6169776634952285!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d4d668e42ea183%3A0x81a687c3c835a25a!2sSMA%20Negeri%201%20Tapung%20Hulu!5e0!3m2!1sid!2sid!4v1780997155416!5m2!1sid!2sid" allowfullscreen loading="lazy" class="filter contrast-125 saturate-150"></iframe>
                 </div>
             </div>
         </div>
