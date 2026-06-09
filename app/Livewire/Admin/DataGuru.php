@@ -210,6 +210,9 @@ class DataGuru extends Component
             $query->orderBy('total_jam', $this->sortDir);
         }
 
+        // Tiebreaker: ensure deterministic pagination when rows share the same sort value
+        $query->orderBy('guru.id', 'asc');
+
         return view('livewire.admin.data-guru', [
             'guruList' => $query->paginate(10),
             'mapelList' => Mapel::orderBy('nama')->get(),
