@@ -52,16 +52,6 @@
                     <p class="text-lg sm:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
                         Berdiri sejak tahun 2003, SMA Negeri 1 Tapung Hulu berkomitmen untuk terus meningkatkan kualitas pendidikan dan melahirkan generasi muda yang unggul, berakhlak mulia, dan siap menghadapi tantangan masa depan.
                     </p>
-                    
-                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
-                        <a href="#portal-login" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-secondary text-primary font-bold text-lg hover:bg-yellow-400 hover:shadow-xl hover:shadow-secondary/30 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2">
-                            Akses Portal
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                        </a>
-                        <a href="#visi-misi" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium text-lg border border-white/10 hover:border-white/20 backdrop-blur-sm transition-all duration-300">
-                            Pelajari Lebih Lanjut
-                        </a>
-                    </div>
                 </div>
 
                 {{-- Right Hero Image/Mockup --}}
