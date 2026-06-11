@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @livewireStyles
 </head>
-<body class="bg-bg-light min-h-screen">
+<body class="bg-primary min-h-screen">
     {{ $slot }}
     @livewireScripts
 
