@@ -5,8 +5,11 @@ namespace App\Livewire\Admin;
 use App\Models\Jadwal;
 use App\Models\Kelas;
 use App\Models\JamPelajaran;
+use App\Models\Kurikulum;
+use App\Models\GuruMapel;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 #[Layout('components.layouts.app')]
@@ -19,6 +22,16 @@ class EditJadwal extends Component
     public $selectedJadwalId = null;
     public $selectedHari = null;
     public $selectedJamPelajaranId = null;
+
+    // Modal Insert Manual State
+    public bool $showInsertModal = false;
+    public $insertHari = null;
+    public $insertJamId = null;
+    public $insertMapelId = null;
+    public $insertGuruId = null;
+    
+    public array $availableMapel = [];
+    public array $availableGurus = [];
 
     public function mount()
     {
@@ -50,8 +63,8 @@ class EditJadwal extends Component
                 $this->selectedHari = $hari;
                 $this->selectedJamPelajaranId = $jamPelajaranId;
             } else {
-                // You can't select an empty slot to move
-                $this->dispatch('toast', type: 'error', message: 'Pilih blok jadwal yang ingin dipindah!');
+                // If clicking an empty slot without selecting anything first, open Insert Manual modal
+                $this->openInsertModal($hari, $jamPelajaranId);
             }
         } else {
             // Second click: determine destination
@@ -129,6 +142,178 @@ class EditJadwal extends Component
         }
     }
 
+    public function openInsertModal($hari, $jamId)
+    {
+        $this->insertHari = $hari;
+        $this->insertJamId = $jamId;
+        $this->insertMapelId = null;
+        $this->insertGuruId = null;
+        $this->availableMapel = [];
+        $this->availableGurus = [];
+
+        // Fetch curriculum stats to only show missing mapels
+        $stats = $this->getCurriculumStats();
+        $missing = [];
+        foreach ($stats as $stat) {
+            if ($stat['missing'] > 0) {
+                $missing[] = [
+                    'id' => $stat['mapel_id'],
+                    'nama' => $stat['nama'] . ' (Sisa: ' . $stat['missing'] . ' jam)',
+                ];
+            }
+        }
+        $this->availableMapel = $missing;
+
+        if (count($missing) > 0) {
+            $this->showInsertModal = true;
+        } else {
+            $this->dispatch('toast', type: 'warning', message: 'Seluruh mapel kurikulum kelas ini sudah terpenuhi.');
+        }
+    }
+
+    public function updatedInsertMapelId($mapelId)
+    {
+        $this->insertGuruId = null;
+        if (!$mapelId) {
+            $this->availableGurus = [];
+            return;
+        }
+
+        $kelas = Kelas::find($this->kelas_id);
+        if (!$kelas) return;
+
+        // Get eligible teachers based on GuruMapel
+        $gurus = GuruMapel::with('guru.user')
+            ->where('mapel_id', $mapelId)
+            ->where('tingkat_id', $kelas->tingkat_id)
+            ->where(function($query) use ($kelas) {
+                $query->whereNull('jurusan_id')
+                      ->orWhere('jurusan_id', $kelas->jurusan_id);
+            })
+            ->get()
+            ->map(function ($gm) {
+                return [
+                    'id' => $gm->guru_id,
+                    'nama' => $gm->guru->user->nama_lengkap
+                ];
+            })->toArray();
+
+        $this->availableGurus = $gurus;
+    }
+
+    public function insertManual()
+    {
+        $this->validate([
+            'insertMapelId' => 'required|integer',
+            'insertGuruId' => 'required|string',
+        ], [
+            'insertMapelId.required' => 'Pilih mapel terlebih dahulu.',
+            'insertGuruId.required' => 'Pilih guru pengampu terlebih dahulu.',
+        ]);
+
+        // Check Guru Availability
+        $conflict = Jadwal::where('guru_id', $this->insertGuruId)
+            ->where('hari', $this->insertHari)
+            ->where('jam_pelajaran_id', $this->insertJamId)
+            ->first();
+
+        if ($conflict) {
+            $this->dispatch('toast', type: 'error', message: 'Gagal! Guru tersebut sedang mengajar di kelas '.$conflict->kelas->nama.' pada jam ini.');
+            return;
+        }
+
+        Jadwal::create([
+            'guru_id' => $this->insertGuruId,
+            'mapel_id' => $this->insertMapelId,
+            'kelas_id' => $this->kelas_id,
+            'hari' => $this->insertHari,
+            'jam_pelajaran_id' => $this->insertJamId,
+        ]);
+
+        $this->showInsertModal = false;
+        $this->dispatch('toast', type: 'success', message: 'Mapel berhasil ditambahkan ke jadwal!');
+    }
+
+    public function confirmDeleteBlock(int $jadwalId)
+    {
+        $this->dispatch('swal-confirm', 
+            title: 'Hapus Blok Jadwal?',
+            text: 'Apakah Anda yakin ingin menghapus mapel ini dari jadwal?',
+            confirmText: 'Ya, Hapus!',
+            method: 'doDeleteBlock',
+            payload: ['id' => $jadwalId]
+        );
+    }
+
+    #[On('doDeleteBlock')]
+    public function doDeleteBlock(int $id)
+    {
+        Jadwal::where('id', $id)->delete();
+        $this->dispatch('toast', type: 'success', message: 'Blok jadwal berhasil dihapus!');
+    }
+
+    public function confirmClearClass()
+    {
+        $this->dispatch('swal-confirm', 
+            title: 'Kosongkan Jadwal Kelas?',
+            text: 'Semua jadwal di kelas ini akan dihapus permanen. Lanjutkan?',
+            confirmText: 'Ya, Kosongkan!',
+            method: 'doClearClass',
+            payload: []
+        );
+    }
+
+    #[On('doClearClass')]
+    public function doClearClass()
+    {
+        Jadwal::where('kelas_id', $this->kelas_id)->delete();
+        $this->dispatch('toast', type: 'success', message: 'Semua jadwal kelas berhasil dikosongkan!');
+    }
+
+    private function getCurriculumStats(): array
+    {
+        $kelas = Kelas::find($this->kelas_id);
+        if (!$kelas) return [];
+
+        $kurikulumList = Kurikulum::with('mapel')
+            ->where('tingkat_id', $kelas->tingkat_id)
+            ->where(function($query) use ($kelas) {
+                $query->whereNull('jurusan_id')
+                      ->orWhere('jurusan_id', $kelas->jurusan_id);
+            })
+            ->get();
+
+        $jadwalGroup = Jadwal::where('kelas_id', $this->kelas_id)
+            ->selectRaw('mapel_id, COUNT(*) as total_jam')
+            ->groupBy('mapel_id')
+            ->pluck('total_jam', 'mapel_id')
+            ->toArray();
+
+        $stats = [];
+        foreach ($kurikulumList as $kuri) {
+            $required = $kuri->mapel->jam_per_minggu;
+            $filled = $jadwalGroup[$kuri->mapel_id] ?? 0;
+            $missing = max(0, $required - $filled);
+            
+            $stats[] = [
+                'mapel_id' => $kuri->mapel_id,
+                'kode' => $kuri->mapel->kode,
+                'nama' => $kuri->mapel->nama,
+                'required' => $required,
+                'filled' => $filled,
+                'missing' => $missing,
+                'is_complete' => $filled >= $required,
+            ];
+        }
+
+        // Sort by incomplete first
+        usort($stats, function($a, $b) {
+            return $a['is_complete'] <=> $b['is_complete'];
+        });
+
+        return $stats;
+    }
+
     public function render()
     {
         $jadwalRaw = Jadwal::with(['mapel', 'guru.user'])
@@ -154,7 +339,8 @@ class EditJadwal extends Component
             'matrix' => $matrix,
             'hariAktif' => $hariAktif,
             'rowMap' => $rowMap,
-            'maxJam' => $maxJam
+            'maxJam' => $maxJam,
+            'curriculumStats' => $this->getCurriculumStats(),
         ]);
     }
 }
