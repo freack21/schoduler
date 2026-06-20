@@ -13,6 +13,12 @@ use Livewire\Component;
 #[Title('Dashboard Siswa')]
 class Dashboard extends Component
 {
+    public string $selectedTahunAjaran = '';
+
+    public function mount()
+    {
+        $this->selectedTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
+    }
     public function render()
     {
         $user = auth()->user();
@@ -24,6 +30,7 @@ class Dashboard extends Component
         if ($siswa) {
             $jadwal = Jadwal::with(['mapel', 'guru.user', 'jamPelajaran'])
                 ->where('kelas_id', $siswa->kelas_id)
+                ->where('tahun_ajaran', $this->selectedTahunAjaran)
                 ->get();
 
             $teman = $siswa->kelas->siswa()
@@ -46,6 +53,20 @@ class Dashboard extends Component
             'teman' => $teman,
             'allHari' => $allHari,
             'jamList' => $jamList,
+            'tahunAjaranList' => $this->getTahunAjaranList(),
         ]);
+    }
+
+    private function getTahunAjaranList(): array
+    {
+        $active = \App\Models\Pengaturan::activeTahunAjaran();
+        $db = \App\Models\Jadwal::whereNotNull('tahun_ajaran')
+            ->distinct()
+            ->pluck('tahun_ajaran')
+            ->toArray();
+        if (!in_array($active, $db)) {
+            $db[] = $active;
+        }
+        return array_unique($db);
     }
 }

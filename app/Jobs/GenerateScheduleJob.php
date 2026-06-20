@@ -404,7 +404,8 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         // ── SAVE RESULT ──
-        Jadwal::truncate();
+        $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
+        Jadwal::where('tahun_ajaran', $activeTahunAjaran)->delete();
 
         if ($bestChromosome) {
             $entries = [];
@@ -448,6 +449,7 @@ class GenerateScheduleJob implements ShouldQueue
                                 'kelas_id' => $demand['kelas_id'],
                                 'hari' => $slot['hari'],
                                 'jam_pelajaran_id' => $slot['jam_pelajaran_id'],
+                                'tahun_ajaran' => $activeTahunAjaran,
                                 'created_at' => now(),
                                 'updated_at' => now(),
                             ];

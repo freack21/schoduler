@@ -15,6 +15,12 @@ class ExportJadwal extends Component
 {
     public string $exportType = 'kelas';
     public array $selectedIds = [];
+    public string $selectedTahunAjaran = '';
+
+    public function mount()
+    {
+        $this->selectedTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
+    }
 
     public function download()
     {
@@ -24,7 +30,10 @@ class ExportJadwal extends Component
             'selectedIds.required' => 'Pilih minimal satu data untuk diekspor.',
         ]);
 
-        $queryStr = http_build_query(['ids' => $this->selectedIds]);
+        $queryStr = http_build_query([
+            'ids' => $this->selectedIds,
+            'tahun_ajaran' => $this->selectedTahunAjaran
+        ]);
         $url = "/export/jadwal/{$this->exportType}?" . $queryStr;
         
         $this->dispatch('open-new-tab', url: $url);
@@ -69,7 +78,21 @@ class ExportJadwal extends Component
         }
 
         return view('livewire.admin.export-jadwal', [
-            'list' => $list
+            'list' => $list,
+            'tahunAjaranList' => $this->getTahunAjaranList()
         ]);
+    }
+
+    private function getTahunAjaranList(): array
+    {
+        $active = \App\Models\Pengaturan::activeTahunAjaran();
+        $db = \App\Models\Jadwal::whereNotNull('tahun_ajaran')
+            ->distinct()
+            ->pluck('tahun_ajaran')
+            ->toArray();
+        if (!in_array($active, $db)) {
+            $db[] = $active;
+        }
+        return array_unique($db);
     }
 }

@@ -38,8 +38,8 @@
     </div>
 
     {{-- Schedule Tabs --}}
-    <div class="card !p-0 overflow-hidden">
-        <div class="flex border-b border-gray-200 justify-between items-center pr-6">
+    <div class="card !p-0 overflow-hidden mb-6">
+        <div class="flex border-b border-gray-200 justify-between items-center pr-6 flex-wrap gap-4">
             <div class="flex">
                 <button wire:click="$set('activeTab', 'hari-ini')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'hari-ini' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
                     Hari Ini ({{ $hariIni }})
@@ -47,13 +47,25 @@
                 <button wire:click="$set('activeTab', 'mingguan')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'mingguan' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
                     Mingguan
                 </button>
+                <button wire:click="$set('activeTab', 'modul-jar')" class="px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer {{ $activeTab === 'modul-jar' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
+                    Modul Ajar / Silabus
+                </button>
             </div>
-            @if($guru)
-            <a href="/export/jadwal/guru?ids[]={{ $guru->id }}" target="_blank" class="px-3 py-1.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                Ekspor PDF
-            </a>
-            @endif
+            
+            <div class="flex items-center gap-3 py-2 pr-2">
+                <select wire:model.live="selectedTahunAjaran" class="input-field py-1 px-3 text-xs w-48">
+                    @foreach($tahunAjaranList as $ta)
+                        <option value="{{ $ta }}">{{ $ta }}</option>
+                    @endforeach
+                </select>
+
+                @if($guru)
+                <a href="/export/jadwal/guru?ids[]={{ $guru->id }}&tahun_ajaran={{ urlencode($selectedTahunAjaran) }}" target="_blank" class="px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    Ekspor PDF
+                </a>
+                @endif
+            </div>
         </div>
 
         <div class="p-6">
@@ -82,7 +94,7 @@
                         @endforeach
                     </div>
                 @endif
-            @else
+            @elseif($activeTab === 'mingguan')
                 {{-- Weekly Schedule --}}
                 <div class="overflow-x-auto -mx-6">
                     <table class="w-full text-xs min-w-[600px]">
@@ -121,7 +133,133 @@
                         </tbody>
                     </table>
                 </div>
+            @else
+                {{-- Modul Ajar / Silabus --}}
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center flex-wrap gap-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 text-sm">Daftar Modul Ajar / Silabus Anda</h4>
+                            <p class="text-xs text-gray-500 mt-0.5">Upload modul ajar untuk mata pelajaran yang Anda ampu.</p>
+                        </div>
+                        
+                        @if(empty(auth()->user()->password))
+                            <div class="text-xs text-red-600 bg-red-50 px-3 py-2 border border-red-100 rounded-lg max-w-sm">
+                                <strong>Pemberitahuan:</strong> Password Anda belum diatur. Silakan hubungi admin untuk mengisi password akun Anda agar dapat mengelola modul ajar.
+                            </div>
+                        @else
+                            <button wire:click="openUploadModal" class="px-3 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-sm cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                Upload Modul Ajar
+                            </button>
+                        @endif
+                    </div>
+
+                    @if($modulAjars->isEmpty())
+                        <div class="text-center py-8 text-gray-400">
+                            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                            <p class="text-sm">Anda belum mengupload modul ajar apa pun.</p>
+                        </div>
+                    @else
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            @foreach($modulAjars as $ma)
+                                <div class="p-4 border border-gray-200 rounded-xl bg-white flex justify-between items-start gap-4">
+                                    <div class="min-w-0">
+                                        <h5 class="font-semibold text-gray-900 text-sm truncate" title="{{ $ma->nama_file }}">{{ $ma->nama_file }}</h5>
+                                        <p class="text-xs text-gray-500 mt-0.5">Mapel: {{ $ma->mapel->nama }}</p>
+                                        <p class="text-[10px] text-gray-400 mt-1">Diupload pada: {{ $ma->created_at->format('d M Y H:i') }}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <a href="{{ asset('storage/' . $ma->file_path) }}" target="_blank" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Download">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                        </a>
+                                        <button wire:click="confirmDeleteModulAjar({{ $ma->id }})" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer" title="Hapus">
+                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
             @endif
         </div>
     </div>
+
+    {{-- MODAL UPLOAD MODUL AJAR --}}
+    @if($showUploadModal)
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fadeIn">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+                <div class="flex justify-between items-center border-b pb-3">
+                    <h3 class="font-bold text-gray-900 text-lg">Upload Modul Ajar / Silabus</h3>
+                    <button wire:click="$set('showUploadModal', false)" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <form wire:submit.prevent="uploadModulAjar" class="space-y-4">
+                    <div>
+                        <label class="label-field block text-xs font-semibold uppercase tracking-wider mb-1.5">Pilih Mata Pelajaran</label>
+                        <select wire:model="selectedMapelId" class="input-field w-full">
+                            <option value="">-- Pilih Mapel --</option>
+                            @foreach($uniqueMapels as $m)
+                                <option value="{{ $m->id }}">{{ $m->nama }}</option>
+                            @endforeach
+                        </select>
+                        @error('selectedMapelId') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="label-field block text-xs font-semibold uppercase tracking-wider mb-1.5">File Modul Ajar (PDF/Docx/etc max 10MB)</label>
+                        <input type="file" wire:model="modulAjarFile" class="input-field w-full py-1">
+                        @error('modulAjarFile') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="label-field block text-xs font-semibold uppercase tracking-wider mb-1.5">Konfirmasi Password Akun Anda</label>
+                        <input type="password" wire:model="passwordConfirm" class="input-field w-full" placeholder="Ketik password untuk verifikasi...">
+                        @error('passwordConfirm') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" wire:click="$set('showUploadModal', false)" class="btn-outline text-xs cursor-pointer">Batal</button>
+                        <button type="submit" wire:loading.attr="disabled" class="btn-primary text-xs flex items-center gap-1.5 cursor-pointer">
+                            <span wire:loading wire:target="modulAjarFile" class="animate-spin rounded-full h-3.5 w-3.5 border-2 border-white border-t-transparent"></span>
+                            Simpan Modul
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+
+    {{-- MODAL DELETE VERIFICATION --}}
+    @if($showDeleteModal)
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fadeIn">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl space-y-4">
+                <div class="flex justify-between items-center border-b pb-3">
+                    <h3 class="font-bold text-gray-900 text-lg">Konfirmasi Hapus Modul Ajar</h3>
+                    <button wire:click="$set('showDeleteModal', false)" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+
+                <div class="text-sm text-gray-600">
+                    Untuk menghapus berkas modul ajar ini, silakan ketik password akun Anda untuk melakukan verifikasi keamanan.
+                </div>
+
+                <form wire:submit.prevent="deleteModulAjar" class="space-y-4">
+                    <div>
+                        <label class="label-field block text-xs font-semibold uppercase tracking-wider mb-1.5">Password Anda</label>
+                        <input type="password" wire:model="deletePasswordConfirm" class="input-field w-full" placeholder="Ketik password Anda...">
+                        @error('deletePasswordConfirm') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" wire:click="$set('showDeleteModal', false)" class="btn-outline text-xs cursor-pointer">Batal</button>
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-red-700 transition-colors shadow-sm cursor-pointer">Verifikasi & Hapus</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
 </div>

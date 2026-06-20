@@ -91,7 +91,9 @@ class EditJadwal extends Component
         if (!$source) return;
 
         // Check Guru Availability for Destination Slot
+        $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
         $conflictDest = Jadwal::where('guru_id', $source->guru_id)
+            ->where('tahun_ajaran', $activeTahunAjaran)
             ->where('hari', $destHari)
             ->where('jam_pelajaran_id', $destJamId)
             ->where('id', '!=', $source->id)
@@ -109,6 +111,7 @@ class EditJadwal extends Component
 
             // Check Guru Availability for Source Slot
             $conflictSource = Jadwal::where('guru_id', $dest->guru_id)
+                ->where('tahun_ajaran', $activeTahunAjaran)
                 ->where('hari', $source->hari)
                 ->where('jam_pelajaran_id', $source->jam_pelajaran_id)
                 ->where('id', '!=', $dest->id)
@@ -212,7 +215,9 @@ class EditJadwal extends Component
         ]);
 
         // Check Guru Availability
+        $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
         $conflict = Jadwal::where('guru_id', $this->insertGuruId)
+            ->where('tahun_ajaran', $activeTahunAjaran)
             ->where('hari', $this->insertHari)
             ->where('jam_pelajaran_id', $this->insertJamId)
             ->first();
@@ -228,6 +233,7 @@ class EditJadwal extends Component
             'kelas_id' => $this->kelas_id,
             'hari' => $this->insertHari,
             'jam_pelajaran_id' => $this->insertJamId,
+            'tahun_ajaran' => $activeTahunAjaran,
         ]);
 
         $this->showInsertModal = false;
@@ -266,7 +272,10 @@ class EditJadwal extends Component
     #[On('doClearClass')]
     public function doClearClass()
     {
-        Jadwal::where('kelas_id', $this->kelas_id)->delete();
+        $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
+        Jadwal::where('kelas_id', $this->kelas_id)
+            ->where('tahun_ajaran', $activeTahunAjaran)
+            ->delete();
         $this->dispatch('toast', type: 'success', message: 'Semua jadwal kelas berhasil dikosongkan!');
     }
 
@@ -283,7 +292,9 @@ class EditJadwal extends Component
             })
             ->get();
 
+        $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
         $jadwalGroup = Jadwal::where('kelas_id', $this->kelas_id)
+            ->where('tahun_ajaran', $activeTahunAjaran)
             ->selectRaw('mapel_id, COUNT(*) as total_jam')
             ->groupBy('mapel_id')
             ->pluck('total_jam', 'mapel_id')
@@ -316,8 +327,10 @@ class EditJadwal extends Component
 
     public function render()
     {
+        $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
         $jadwalRaw = Jadwal::with(['mapel', 'guru.user'])
             ->where('kelas_id', $this->kelas_id)
+            ->where('tahun_ajaran', $activeTahunAjaran)
             ->get();
 
         $matrix = [];

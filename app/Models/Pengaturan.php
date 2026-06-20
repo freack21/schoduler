@@ -37,4 +37,15 @@ class Pengaturan extends Model
         $value = static::getValue('hari_aktif', 'Senin,Selasa,Rabu,Kamis,Jumat');
         return array_map('trim', explode(',', $value));
     }
+
+    /**
+     * Get active semester + tahun ajaran.
+     * Format: "Ganjil 2024/2025" or "Genap 2024/2025"
+     */
+    public static function activeTahunAjaran(): string
+    {
+        $semester = static::getValue('semester', 'Ganjil');
+        $tahun = static::getValue('tahun_ajaran', '2024/2025');
+        return trim($semester . ' ' . $tahun);
+    }
 }

@@ -1,7 +1,17 @@
 <div class="overflow-x-hidden">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* Custom additional styles if needed */
+        html, body {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            scroll-behavior: smooth;
+        }
+        [data-aos] {
+            pointer-events: none;
+        }
+        .aos-animate {
+            pointer-events: auto;
+        }
     </style>
     {{-- Navbar --}}
     <nav x-data="{ scrolled: false }" 
@@ -18,7 +28,10 @@
                 </div>
                 <div class="flex items-center gap-6">
                     <div class="hidden md:flex space-x-8 text-white/80 font-medium text-sm">
+                        <a href="#tentang-kami" class="hover:text-secondary transition-colors">Profil</a>
                         <a href="#visi-misi" class="hover:text-secondary transition-colors">Visi & Misi</a>
+                        <a href="#galeri" class="hover:text-secondary transition-colors">Galeri</a>
+                        <a href="#ekstrakurikuler" class="hover:text-secondary transition-colors">Ekstrakurikuler</a>
                         <a href="#fasilitas" class="hover:text-secondary transition-colors">Fasilitas</a>
                     </div>
                 </div>
@@ -180,6 +193,155 @@
                         @endforeach
                     </ul>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Dokumentasi Galeri Section --}}
+    <section id="galeri" class="py-24 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide mb-4">DOKUMENTASI</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">Galeri Kegiatan Sekolah</h2>
+                <p class="text-lg text-gray-500 mt-4 max-w-2xl mx-auto">Momen-momen berharga dan aktivitas pembelajaran, ekstrakurikuler, serta prestasi di SMA Negeri 1 Tapung Hulu.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @php
+                    $galeri = [
+                        [
+                            'image' => 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
+                            'title' => 'Upacara Bendera Senin',
+                            'category' => 'Kegiatan Rutin',
+                            'desc' => 'Penanaman kedisiplinan dan jiwa nasionalisme siswa melalui upacara bendera setiap hari Senin.'
+                        ],
+                        [
+                            'image' => 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
+                            'title' => 'Praktikum Kimia Terpadu',
+                            'category' => 'Akademik',
+                            'desc' => 'Siswa kelas XI IPA melakukan eksperimen reaksi kimia secara langsung di laboratorium terpadu.'
+                        ],
+                        [
+                            'image' => 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80',
+                            'title' => 'Kemah Pramuka Gabungan',
+                            'category' => 'Ekstrakurikuler',
+                            'desc' => 'Kegiatan perkemahan sabtu minggu (Persami) untuk melatih kemandirian dan kepemimpinan.'
+                        ],
+                        [
+                            'image' => 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80',
+                            'title' => 'Turnamen Futsal Kampar',
+                            'category' => 'Prestasi Olahraga',
+                            'desc' => 'Tim futsal SMAN 1 Tapung Hulu saat berlaga dalam kejuaraan piala bupati Kampar.'
+                        ],
+                        [
+                            'image' => 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=600&q=80',
+                            'title' => 'Pentas Seni & Karya Siswa',
+                            'category' => 'Kesenian',
+                            'desc' => 'Apresiasi bakat seni musik, tari tradisional, dan drama karya siswa-siswi bertalenta.'
+                        ],
+                        [
+                            'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80',
+                            'title' => 'Wisuda Pelepasan Siswa',
+                            'category' => 'Kelulusan',
+                            'desc' => 'Momen mengharukan pelepasan siswa kelas XII yang siap melanjutkan ke jenjang perguruan tinggi.'
+                        ]
+                    ];
+                @endphp
+
+                @foreach($galeri as $item)
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}" class="group card !p-0 overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-500 rounded-3xl bg-white">
+                        <div class="relative overflow-hidden aspect-[4/3] bg-gray-100">
+                            <img src="{{ $item['image'] }}" alt="{{ $item['title'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                <span class="badge bg-secondary text-primary font-bold text-xs">{{ $item['category'] }}</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-semibold text-secondary uppercase tracking-wider block mb-1.5">{{ $item['category'] }}</span>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">{{ $item['title'] }}</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed">{{ $item['desc'] }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- Informasi Ekstrakurikuler Section --}}
+    <section id="ekstrakurikuler" class="py-24 bg-gray-50 relative overflow-hidden border-t border-b border-gray-100">
+        <div class="absolute bottom-0 right-0 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-secondary/20 text-secondary text-sm font-bold tracking-wide mb-4">PENGEMBANGAN DIRI</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">Kegiatan Ekstrakurikuler</h2>
+                <p class="text-lg text-gray-500 mt-4 max-w-2xl mx-auto">Kami memfasilitasi minat dan bakat siswa melalui beragam ekstrakurikuler terakreditasi untuk membentuk softskills unggul.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                @php
+                    $ekskul = [
+                        [
+                            'title' => 'Gerakan Pramuka',
+                            'color' => 'from-amber-500 to-orange-600',
+                            'textColor' => 'text-amber-600',
+                            'bgColor' => 'bg-amber-50',
+                            'desc' => 'Pembinaan karakter mandiri, cinta alam, kedisiplinan, dan kepemimpinan berlandaskan Dasa Darma Pramuka.',
+                            'keys' => ['Persami & Kemah Bhakti', 'Pemberian TKK', 'Lomba Tingkat Kabupaten'],
+                            'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 006.1 1.83 8.24 8.24 0 01-3.1 3.1A8.224 8.224 0 0115.36 5.2z"/>'
+                        ],
+                        [
+                            'title' => 'Paskibra Sekolah',
+                            'color' => 'from-rose-500 to-red-600',
+                            'textColor' => 'text-rose-600',
+                            'bgColor' => 'bg-rose-50',
+                            'desc' => 'Pendidikan bela negara, pembentukan postur tubuh yang tegap, kedisiplinan tinggi, serta kekompakan baris-berbaris.',
+                            'keys' => ['Upacara Hari Kemerdekaan', 'Lomba Formasi Variasi', 'Seleksi Paskibraka Kampar'],
+                            'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21v8h-6.5l-1-1H5v7m0 0h16M5 17h16"/>'
+                        ],
+                        [
+                            'title' => 'Futsal & Basket',
+                            'color' => 'from-blue-500 to-indigo-600',
+                            'textColor' => 'text-blue-600',
+                            'bgColor' => 'bg-blue-50',
+                            'desc' => 'Wadah pembinaan kebugaran fisik dan bakat olahraga bola besar untuk meraih juara di turnamen regional Kampar.',
+                            'keys' => ['Latihan Rutin Mingguan', 'Pertandingan Persahabatan', 'Piala OSIS Cup'],
+                            'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.504-1.125-1.125-1.125h-.75M8.25 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.75M9.75 14.25v-3.375C9.75 7.629 12.001 5.25 15 5.25a3 3 0 003 3v6m-6 3.75v.008h.008v-.008H12v-.008zm0-3.75v.008h.008v-.008H12v-.008zm0-3.75v.008h.008v-.008H12V6.75z"/>'
+                        ],
+                        [
+                            'title' => 'English & Science Club',
+                            'color' => 'from-emerald-500 to-teal-600',
+                            'textColor' => 'text-emerald-600',
+                            'bgColor' => 'bg-emerald-50',
+                            'desc' => 'Meningkatkan rasa percaya diri berbicara bahasa Inggris, riset sains, olimpiade matematika, fisika, dan IPS.',
+                            'keys' => ['English Speech & Debate', 'Karya Ilmiah Remaja (KIR)', 'Bimbingan Olimpiade Sains'],
+                            'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>'
+                        ]
+                    ];
+                @endphp
+
+                @foreach($ekskul as $item)
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}" class="group relative bg-white p-8 rounded-3xl border border-gray-100 shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl {{ $item['bgColor'] }} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                                <svg class="w-7 h-7 {{ $item['textColor'] }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">{!! $item['icon'] !!}</svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">{{ $item['title'] }}</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed mb-6">{{ $item['desc'] }}</p>
+                        </div>
+                        
+                        <div class="border-t border-gray-100 pt-4">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-2">Program Utama:</span>
+                            <ul class="space-y-1.5">
+                                @foreach($item['keys'] as $key)
+                                    <li class="flex items-center gap-2 text-xs text-gray-600 font-medium">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+                                        {{ $key }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -430,6 +592,8 @@
                     <ul class="space-y-3">
                         <li><a href="#tentang-kami" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Profil Sekolah</a></li>
                         <li><a href="#visi-misi" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Visi & Misi</a></li>
+                        <li><a href="#galeri" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Galeri Dokumentasi</a></li>
+                        <li><a href="#ekstrakurikuler" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Ekstrakurikuler</a></li>
                         <li><a href="#fasilitas" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Fasilitas</a></li>
                         <li><a href="#kontak" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Lokasi & Kontak</a></li>
                         <li><a href="#portal-login" class="text-gray-400 hover:text-secondary hover:pl-2 transition-all duration-300 block">Portal Internal</a></li>

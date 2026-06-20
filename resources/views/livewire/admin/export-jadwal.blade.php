@@ -8,7 +8,16 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <!-- Pilihan Jenis Ekspor -->
             <div class="md:col-span-1 space-y-4">
-                <label class="label-field block font-medium">Jenis Ekspor</label>
+                <div>
+                    <label class="label-field block font-medium mb-1.5 text-xs text-gray-500 uppercase tracking-wider">Tahun Ajaran / Semester</label>
+                    <select wire:model.live="selectedTahunAjaran" class="input-field w-full">
+                        @foreach($tahunAjaranList as $ta)
+                            <option value="{{ $ta }}">{{ $ta }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <label class="label-field block font-medium text-xs text-gray-500 uppercase tracking-wider">Jenis Ekspor</label>
                 
                 <div class="space-y-3">
                     <label class="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-colors {{ $exportType === 'kelas' ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-200' }}">

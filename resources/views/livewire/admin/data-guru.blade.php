@@ -5,10 +5,20 @@
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
             <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari guru..." class="input-field pl-10">
         </div>
-        <button wire:click="openCreateModal" class="btn-primary flex items-center gap-2 text-sm">
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            Tambah Guru
-        </button>
+        <div class="flex items-center gap-3">
+            <!-- Import Excel -->
+            <label class="btn-outline flex items-center gap-2 text-sm cursor-pointer py-2 px-3">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Import Excel
+                <input type="file" wire:model="excelFile" class="hidden" accept=".xlsx,.xls,.csv" wire:change="importExcel">
+            </label>
+            <div wire:loading wire:target="excelFile" class="text-xs text-gray-500 animate-pulse">Mengunggah...</div>
+
+            <button wire:click="openCreateModal" class="btn-primary flex items-center gap-2 text-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                Tambah Guru
+            </button>
+        </div>
     </div>
 
     {{-- Table --}}
@@ -76,6 +86,9 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-end gap-2">
+                                    <button wire:click="openModulModal({{ $guru->id }})" class="p-1.5 rounded-lg hover:bg-emerald-50 text-emerald-600 transition-colors cursor-pointer" title="Modul Ajar / Silabus">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+                                    </button>
                                     <button wire:click="openAssignModal({{ $guru->id }})" class="p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 transition-colors cursor-pointer" title="Assign Mapel">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-6.06a4.5 4.5 0 00-6.364 0l-4.5 4.5a4.5 4.5 0 006.364 6.364l1.757-1.757"/></svg>
                                     </button>
@@ -189,6 +202,44 @@
 
                 <div class="flex justify-end pt-4 mt-4 border-t border-gray-100">
                     <button wire:click="$set('showAssignModal', false)" class="btn-outline text-sm">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    {{-- Viewing Modul Ajar Modal --}}
+    @if($showModulModal)
+    <div class="modal-overlay" wire:click.self="$set('showModulModal', false)">
+        <div class="modal-content max-w-xl animate-fadeIn" @click.stop>
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-lg font-semibold text-gray-900">Modul Ajar Guru — {{ $viewingGuruName }}</h3>
+                <button wire:click="$set('showModulModal', false)" class="text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3 max-h-96 overflow-y-auto pr-1">
+                    @forelse($viewingModulAjars as $ma)
+                        <div class="flex items-center justify-between p-3.5 bg-gray-50 border border-gray-100 rounded-xl hover:border-emerald-100 hover:bg-emerald-50/20 transition-all">
+                            <div>
+                                <span class="block text-sm font-semibold text-gray-900 truncate max-w-xs sm:max-w-md" title="{{ $ma['nama_file'] }}">{{ $ma['nama_file'] }}</span>
+                                <span class="block text-xs text-gray-500 mt-0.5">Mata Pelajaran: {{ $ma['mapel']['nama'] ?? '-' }}</span>
+                            </div>
+                            <a href="{{ asset('storage/' . $ma['file_path']) }}" target="_blank" class="px-3 py-1.5 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-lg hover:bg-emerald-100 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                Unduh
+                            </a>
+                        </div>
+                    @empty
+                        <div class="text-center py-8 text-gray-400">
+                            <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                            <p class="text-sm">Belum ada modul ajar yang diunggah oleh guru ini.</p>
+                        </div>
+                    @endforelse
+                </div>
+                <div class="flex justify-end pt-4 mt-4 border-t border-gray-100">
+                    <button wire:click="$set('showModulModal', false)" class="btn-outline text-sm">Tutup</button>
                 </div>
             </div>
         </div>

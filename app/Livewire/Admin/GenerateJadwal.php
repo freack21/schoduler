@@ -109,8 +109,10 @@ class GenerateJadwal extends Component
             }
 
             foreach ($kelasList as $kelas) {
+                $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
                 $jadwal = Jadwal::with(['mapel', 'guru.user', 'jamPelajaran'])
                     ->where('kelas_id', $kelas->id)
+                    ->where('tahun_ajaran', $activeTahunAjaran)
                     ->get()
                     ->sortBy(function ($entry) use ($hariAktif) {
                         $dayIndex = array_search($entry->hari, $hariAktif);

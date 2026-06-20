@@ -12,19 +12,26 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Livewire\WithFileUploads;
+
 #[Layout('components.layouts.app')]
 #[Title('Data Guru')]
 class DataGuru extends Component
 {
     use WithPagination;
+    use WithFileUploads;
 
     public string $search = '';
     public string $sortBy = 'nama_lengkap';
     public string $sortDir = 'asc';
 
+    // Excel import
+    public $excelFile;
+
     // Form fields
     public bool $showModal = false;
     public bool $showAssignModal = false;
+    public bool $showModulModal = false;
     public ?int $editingId = null;
     public string $nip = '';
     public string $nama_lengkap = '';
@@ -37,6 +44,10 @@ class DataGuru extends Component
     public ?int $selectedTingkatId = null;
     public ?int $selectedJurusanId = null;
     public array $assignments = [];
+
+    // Modul ajar fields
+    public string $viewingGuruName = '';
+    public array $viewingModulAjars = [];
 
     public function updatingSearch(): void
     {
@@ -123,6 +134,75 @@ class DataGuru extends Component
         $guru = Guru::findOrFail($id);
         User::where('id', $guru->user_id)->delete();
         $this->dispatch('toast', type: 'success', message: 'Guru berhasil dihapus!');
+    }
+
+    public function importExcel(): void
+    {
+        $this->validate([
+            'excelFile' => 'required|file|max:10240',
+        ], [
+            'excelFile.required' => 'Pilih berkas Excel terlebih dahulu.',
+        ]);
+
+        $path = $this->excelFile->getRealPath();
+        
+        if ($xlsx = \Shuchkin\SimpleXLSX::parse($path)) {
+            $rows = $xlsx->rows();
+            if (count($rows) > 0) {
+                // Skip header row
+                array_shift($rows);
+                
+                $imported = 0;
+                $skipped = 0;
+
+                foreach ($rows as $row) {
+                    if (empty($row[0]) || empty($row[1])) {
+                        $skipped++;
+                        continue;
+                    }
+
+                    $nip = trim($row[0]);
+                    $nama = trim($row[1]);
+                    $pass = !empty($row[2]) ? trim($row[2]) : '123456';
+
+                    // Find or create user
+                    $user = User::find($nip);
+                    if ($user) {
+                        $user->update([
+                            'nama_lengkap' => $nama,
+                        ]);
+                        $imported++;
+                    } else {
+                        $user = User::create([
+                            'id' => $nip,
+                            'nama_lengkap' => $nama,
+                            'password' => $pass,
+                            'role' => 'guru',
+                        ]);
+                        Guru::create(['user_id' => $user->id]);
+                        $imported++;
+                    }
+                }
+                $this->dispatch('toast', type: 'success', message: "Berhasil mengimpor $imported guru! ($skipped baris dilewati karena kosong)");
+            } else {
+                $this->dispatch('toast', type: 'error', message: 'File Excel tidak memiliki baris data.');
+            }
+        } else {
+            $this->dispatch('toast', type: 'error', message: 'Gagal menguraikan file Excel: ' . \Shuchkin\SimpleXLSX::parseError());
+        }
+
+        $this->excelFile = null;
+    }
+
+    public function openModulModal(int $guruId): void
+    {
+        $guru = Guru::with('user')->findOrFail($guruId);
+        $this->viewingGuruName = $guru->user->nama_lengkap;
+        $this->viewingModulAjars = \App\Models\ModulAjar::where('guru_id', $guru->id)
+            ->with('mapel')
+            ->get()
+            ->toArray();
+        $this->showModulModal = true;
     }
 
     // ── Assign Mapel ──

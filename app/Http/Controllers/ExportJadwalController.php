@@ -17,8 +17,12 @@ class ExportJadwalController extends Controller
         $ids = $request->input('ids', []);
         if (empty($ids)) return back()->with('error', 'Pilih minimal 1 kelas.');
 
+        $tahunAjaran = $request->input('tahun_ajaran', \App\Models\Pengaturan::activeTahunAjaran());
         $entities = Kelas::whereIn('id', $ids)->get();
-        $jadwalList = Jadwal::with(['mapel', 'guru', 'jamPelajaran'])->whereIn('kelas_id', $ids)->get();
+        $jadwalList = Jadwal::with(['mapel', 'guru', 'jamPelajaran'])
+            ->whereIn('kelas_id', $ids)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->get();
         $jamPelajaran = JamPelajaran::orderBy('jam_ke')->get()->groupBy('hari');
 
         $jadwalGrouped = [];
@@ -30,6 +34,7 @@ class ExportJadwalController extends Controller
             'entities' => $entities,
             'jadwalGrouped' => $jadwalGrouped,
             'jamPelajaran' => $jamPelajaran,
+            'tahunAjaran' => $tahunAjaran,
         ])->setPaper('a4', 'landscape');
 
         return $pdf->stream('Jadwal_Kelas.pdf');
@@ -40,8 +45,12 @@ class ExportJadwalController extends Controller
         $ids = $request->input('ids', []);
         if (empty($ids)) return back()->with('error', 'Pilih minimal 1 guru.');
 
+        $tahunAjaran = $request->input('tahun_ajaran', \App\Models\Pengaturan::activeTahunAjaran());
         $entities = Guru::whereIn('id', $ids)->get();
-        $jadwalList = Jadwal::with(['mapel', 'kelas', 'jamPelajaran'])->whereIn('guru_id', $ids)->get();
+        $jadwalList = Jadwal::with(['mapel', 'kelas', 'jamPelajaran'])
+            ->whereIn('guru_id', $ids)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->get();
         $jamPelajaran = JamPelajaran::orderBy('jam_ke')->get()->groupBy('hari');
 
         $jadwalGrouped = [];
@@ -53,6 +62,7 @@ class ExportJadwalController extends Controller
             'entities' => $entities,
             'jadwalGrouped' => $jadwalGrouped,
             'jamPelajaran' => $jamPelajaran,
+            'tahunAjaran' => $tahunAjaran,
         ])->setPaper('a4', 'landscape');
 
         return $pdf->stream('Jadwal_Guru.pdf');
@@ -63,8 +73,12 @@ class ExportJadwalController extends Controller
         $ids = $request->input('ids', []);
         if (empty($ids)) return back()->with('error', 'Pilih minimal 1 mata pelajaran.');
 
+        $tahunAjaran = $request->input('tahun_ajaran', \App\Models\Pengaturan::activeTahunAjaran());
         $entities = Mapel::whereIn('id', $ids)->get();
-        $jadwalList = Jadwal::with(['guru', 'kelas', 'jamPelajaran'])->whereIn('mapel_id', $ids)->get();
+        $jadwalList = Jadwal::with(['guru', 'kelas', 'jamPelajaran'])
+            ->whereIn('mapel_id', $ids)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->get();
         $jamPelajaran = JamPelajaran::orderBy('jam_ke')->get()->groupBy('hari');
 
         $jadwalGrouped = [];
@@ -76,6 +90,7 @@ class ExportJadwalController extends Controller
             'entities' => $entities,
             'jadwalGrouped' => $jadwalGrouped,
             'jamPelajaran' => $jamPelajaran,
+            'tahunAjaran' => $tahunAjaran,
         ])->setPaper('a4', 'landscape');
 
         return $pdf->stream('Jadwal_Mapel.pdf');
@@ -86,12 +101,14 @@ class ExportJadwalController extends Controller
         $ids = $request->input('ids', []);
         if (empty($ids)) return back()->with('error', 'Pilih minimal 1 tingkat.');
 
+        $tahunAjaran = $request->input('tahun_ajaran', \App\Models\Pengaturan::activeTahunAjaran());
         $tingkatList = \App\Models\Tingkat::whereIn('id', $ids)->get();
         $kelasList = Kelas::whereIn('tingkat_id', $ids)->with(['jurusan', 'tingkat'])->orderBy('nama')->get();
         $kelasIds = $kelasList->pluck('id')->toArray();
 
         $jadwalList = Jadwal::with(['mapel', 'guru', 'jamPelajaran', 'kelas'])
             ->whereIn('kelas_id', $kelasIds)
+            ->where('tahun_ajaran', $tahunAjaran)
             ->get();
         
         $jamPelajaran = JamPelajaran::orderBy('jam_ke')->get()->groupBy('hari');
@@ -111,6 +128,7 @@ class ExportJadwalController extends Controller
             'kelasByTingkat' => $kelasByTingkat,
             'jadwalGrouped' => $jadwalGrouped,
             'jamPelajaran' => $jamPelajaran,
+            'tahunAjaran' => $tahunAjaran,
         ])->setPaper('folio', 'landscape');
 
         return $pdf->stream('Jadwal_Komprehensif.pdf');
