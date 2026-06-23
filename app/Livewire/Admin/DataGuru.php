@@ -307,6 +307,23 @@ class DataGuru extends Component
             $query->orderBy('users.nama_lengkap', $this->sortDir);
         } elseif ($this->sortBy === 'beban_mengajar') {
             $query->orderBy('total_jam', $this->sortDir);
+        } elseif ($this->sortBy === 'golongan') {
+            $sortCase = "CASE 
+                WHEN guru.golongan LIKE '%IV.e%' THEN 12
+                WHEN guru.golongan LIKE '%IV.d%' THEN 11
+                WHEN guru.golongan LIKE '%IV.c%' THEN 10
+                WHEN guru.golongan LIKE '%IV.b%' THEN 9
+                WHEN guru.golongan LIKE '%IV.a%' THEN 8
+                WHEN guru.golongan LIKE '%III.d%' THEN 7
+                WHEN guru.golongan LIKE '%III.c%' THEN 6
+                WHEN guru.golongan LIKE '%III.b%' THEN 5
+                WHEN guru.golongan LIKE '%III/b%' THEN 5
+                WHEN guru.golongan LIKE '%Muda-9%' THEN 4
+                WHEN guru.golongan LIKE '%Muda-5%' THEN 3
+                WHEN guru.golongan IS NULL OR guru.golongan = '' THEN 0
+                ELSE 1
+            END";
+            $query->orderByRaw("{$sortCase} {$this->sortDir}");
         }
 
         // Tiebreaker: ensure deterministic pagination when rows share the same sort value

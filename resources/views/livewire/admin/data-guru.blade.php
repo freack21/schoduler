@@ -36,7 +36,14 @@
                                 @endif
                             </div>
                         </th>
-                        <th class="px-6 py-3">Pangkat/Golongan</th>
+                        <th class="px-6 py-3 cursor-pointer hover:bg-gray-100/50 select-none" wire:click="sort('golongan')">
+                            <div class="flex items-center gap-2">
+                                Pangkat/Golongan
+                                @if($sortBy === 'golongan')
+                                    <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $sortDir === 'asc' ? 'M5 15l7-7 7 7' : 'M19 9l-7 7-7-7' }}"/></svg>
+                                @endif
+                            </div>
+                        </th>
                         <th class="px-6 py-3">NIP</th>
                         <th class="px-6 py-3">Mapel yang Diajar</th>
                         <th class="px-6 py-3 cursor-pointer hover:bg-gray-100/50 select-none" wire:click="sort('beban_mengajar')">
