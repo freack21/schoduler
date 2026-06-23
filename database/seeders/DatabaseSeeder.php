@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
 
     private function loadAllJson(): array
     {
-        $path = database_path('seeders/data/all.json');
+        $path = database_path('seeders/data/all_v2.json');
 
         if (! file_exists($path)) {
             throw new RuntimeException("File data tidak ditemukan: {$path}");
