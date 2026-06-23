@@ -10,7 +10,7 @@ class Guru extends Model
 {
     protected $table = 'guru';
 
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id', 'golongan'];
 
     public function user(): BelongsTo
     {

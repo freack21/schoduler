@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
 
     private function loadAllJson(): array
     {
-        $path = database_path('seeders/data/data_seeder.json');
+        $path = database_path('seeders/data/all.json');
 
         if (! file_exists($path)) {
             throw new RuntimeException("File data tidak ditemukan: {$path}");
@@ -256,7 +256,10 @@ class DatabaseSeeder extends Seeder
                 'role' => 'guru',
             ]);
 
-            $guru = Guru::create(['user_id' => $user->id]);
+            $guru = Guru::create([
+                'user_id' => $user->id,
+                'golongan' => trim((string) ($row['golongan'] ?? '')),
+            ]);
             $count++;
 
             foreach ($this->parseMapelAssignments((string) ($row['mapel'] ?? '')) as $assignment) {

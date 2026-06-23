@@ -36,6 +36,7 @@
                                 @endif
                             </div>
                         </th>
+                        <th class="px-6 py-3">Pangkat/Golongan</th>
                         <th class="px-6 py-3">NIP</th>
                         <th class="px-6 py-3">Mapel yang Diajar</th>
                         <th class="px-6 py-3 cursor-pointer hover:bg-gray-100/50 select-none" wire:click="sort('beban_mengajar')">
@@ -60,6 +61,9 @@
                                     </div>
                                     {{ $guru->user->nama_lengkap }}
                                 </div>
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 text-sm font-medium">
+                                {{ $guru->golongan ?: '-' }}
                             </td>
                             <td class="px-6 py-4 text-gray-500 font-mono text-xs">{{ $guru->user->id }}</td>
                             <td class="px-6 py-4">
@@ -102,7 +106,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="px-6 py-12 text-center text-gray-400">Belum ada data guru.</td></tr>
+                        <tr><td colspan="7" class="px-6 py-12 text-center text-gray-400">Belum ada data guru.</td></tr>
                     @endforelse
                 </tbody>
             </table>
@@ -129,6 +133,11 @@
                     <label class="label-field">Nama Lengkap</label>
                     <input wire:model="nama_lengkap" type="text" class="input-field" placeholder="Masukkan nama lengkap">
                     @error('nama_lengkap') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="label-field">Pangkat / Golongan</label>
+                    <input wire:model="golongan" type="text" class="input-field" placeholder="Contoh: Pembina Tk.I/IV.b">
+                    @error('golongan') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="label-field">Password {{ $editingId ? '(kosongkan jika tidak diubah)' : '' }}</label>

@@ -35,6 +35,7 @@ class DataGuru extends Component
     public ?int $editingId = null;
     public string $nip = '';
     public string $nama_lengkap = '';
+    public string $golongan = '';
     public string $password = '';
 
     // Assign mapel fields
@@ -66,7 +67,7 @@ class DataGuru extends Component
 
     public function openCreateModal(): void
     {
-        $this->reset(['editingId', 'nip', 'nama_lengkap', 'password']);
+        $this->reset(['editingId', 'nip', 'nama_lengkap', 'golongan', 'password']);
         $this->showModal = true;
     }
 
@@ -76,6 +77,7 @@ class DataGuru extends Component
         $this->editingId = $guruId;
         $this->nip = $guru->user->id;
         $this->nama_lengkap = $guru->user->nama_lengkap;
+        $this->golongan = $guru->golongan ?? '';
         $this->password = '';
         $this->showModal = true;
     }
@@ -85,6 +87,7 @@ class DataGuru extends Component
         $rules = [
             'nip' => 'required|string|max:255',
             'nama_lengkap' => 'required|string|max:255',
+            'golongan' => 'nullable|string|max:255',
         ];
 
         if (!$this->editingId) {
@@ -102,6 +105,9 @@ class DataGuru extends Component
                 'nama_lengkap' => $this->nama_lengkap,
                 ...($this->password ? ['password' => $this->password] : []),
             ]);
+            $guru->update([
+                'golongan' => $this->golongan,
+            ]);
         } else {
             $user = User::create([
                 'id' => $this->nip,
@@ -109,11 +115,14 @@ class DataGuru extends Component
                 'password' => $this->password,
                 'role' => 'guru',
             ]);
-            Guru::create(['user_id' => $user->id]);
+            Guru::create([
+                'user_id' => $user->id,
+                'golongan' => $this->golongan,
+            ]);
         }
 
         $this->showModal = false;
-        $this->reset(['editingId', 'nip', 'nama_lengkap', 'password']);
+        $this->reset(['editingId', 'nip', 'nama_lengkap', 'golongan', 'password']);
         $this->dispatch('toast', type: 'success', message: 'Data guru berhasil disimpan!');
     }
 
@@ -164,6 +173,7 @@ class DataGuru extends Component
                     $nip = trim($row[0]);
                     $nama = trim($row[1]);
                     $pass = !empty($row[2]) ? trim($row[2]) : '123456';
+                    $golongan = !empty($row[3]) ? trim($row[3]) : null;
 
                     // Find or create user
                     $user = User::find($nip);
@@ -171,6 +181,12 @@ class DataGuru extends Component
                         $user->update([
                             'nama_lengkap' => $nama,
                         ]);
+                        $guru = Guru::where('user_id', $user->id)->first();
+                        if ($guru) {
+                            $guru->update([
+                                'golongan' => $golongan,
+                            ]);
+                        }
                         $imported++;
                     } else {
                         $user = User::create([
@@ -179,7 +195,10 @@ class DataGuru extends Component
                             'password' => $pass,
                             'role' => 'guru',
                         ]);
-                        Guru::create(['user_id' => $user->id]);
+                        Guru::create([
+                            'user_id' => $user->id,
+                            'golongan' => $golongan,
+                        ]);
                         $imported++;
                     }
                 }
