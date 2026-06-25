@@ -43,34 +43,34 @@
     @livewireStyles
 
     {{-- JSON-LD Structured Data: Organization --}}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "SMA Negeri 1 Tapung Hulu",
-        "alternateName": "SMAN 1 Tapung Hulu",
-        "url": "{{ url('/') }}",
-        "description": "Sekolah Menengah Atas Negeri 1 Tapung Hulu — Terakreditasi A. Membangun generasi berprestasi, mandiri, berakar pada kearifan lokal, dan berwawasan lingkungan global.",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Jl. Kampung Lama No. 10",
-            "addressLocality": "Kasikan",
-            "addressRegion": "Riau",
-            "addressCountry": "ID",
-            "postalCode": "28464"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "0.5787",
-            "longitude": "100.9534"
-        },
-        "telephone": "085271991329",
-        "email": "sma.negeri1.tapunghulu@gmail.com",
-        "sameAs": [
-            "{{ url('/') }}"
-        ]
-    }
-    </script>
+    @php
+    $baseUrl = url('/');
+    $jsonLd = [
+        '@context' => 'https://schema.org',
+        '@type' => 'EducationalOrganization',
+        'name' => 'SMA Negeri 1 Tapung Hulu',
+        'alternateName' => 'SMAN 1 Tapung Hulu',
+        'url' => $baseUrl,
+        'description' => 'Sekolah Menengah Atas Negeri 1 Tapung Hulu — Terakreditasi A. Membangun generasi berprestasi, mandiri, berakar pada kearifan lokal, dan berwawasan lingkungan global.',
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Jl. Kampung Lama No. 10',
+            'addressLocality' => 'Kasikan',
+            'addressRegion' => 'Riau',
+            'addressCountry' => 'ID',
+            'postalCode' => '28464',
+        ],
+        'geo' => [
+            '@type' => 'GeoCoordinates',
+            'latitude' => '0.5787',
+            'longitude' => '100.9534',
+        ],
+        'telephone' => '085271991329',
+        'email' => 'sma.negeri1.tapunghulu@gmail.com',
+        'sameAs' => [$baseUrl],
+    ];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}</script>
 </head>
 <body class="bg-primary min-h-screen">
     {{ $slot }}
