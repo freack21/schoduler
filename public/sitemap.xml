@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- Halaman Utama -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Halaman Profil / Tentang Kami -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#tentang-kami</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Halaman Visi & Misi -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#visi-misi</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Halaman Galeri -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#galeri</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Halaman Ekstrakurikuler -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#ekstrakurikuler</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Halaman Fasilitas -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#fasilitas</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Halaman Kontak -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#kontak</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Portal Login -->
+    <url>
+        <loc>https://sman1tapunghulu.my.id/#portal-login</loc>
+        <lastmod>2026-06-25</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+</urlset>

@@ -7,7 +7,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Layout('components.layouts.guest')]
-#[Title('Beranda')]
+#[Title('SMA Negeri 1 Tapung Hulu — Portal Akademik & Penjadwalan Digital')]
 class LandingPage extends Component
 {
     public string $userId = '';

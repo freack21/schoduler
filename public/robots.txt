@@ -1,2 +1,15 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://sman1tapunghulu.my.id/sitemap.xml
+
+# Block sensitive paths (admin, internal)
+Disallow: /admin/
+Disallow: /guru/
+Disallow: /siswa/
+Disallow: /export/
+Disallow: /logout
+
+# Crawl delay (respectful crawling)
+Crawl-delay: 10

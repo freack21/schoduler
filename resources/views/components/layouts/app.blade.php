@@ -4,7 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $title ?? 'Dashboard' }} - SMA Negeri 1 Tapung Hulu</title>
+
+    {{-- Primary SEO --}}
+    <title>{{ $title ?? 'Dashboard' }} | SMA Negeri 1 Tapung Hulu</title>
+    <meta name="description" content="SMA Negeri 1 Tapung Hulu — Sistem Informasi Akademik. Kelola jadwal pelajaran, data guru, siswa, dan kelas secara digital. Terakreditasi A.">
+    <meta name="keywords" content="SMA Negeri 1 Tapung Hulu, dashboard akademik, jadwal pelajaran, manajemen sekolah, data guru, data siswa, penjadwalan, Kampar, Riau">
+    <meta name="author" content="SMA Negeri 1 Tapung Hulu">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.ico') }}">
+
+    {{-- Fonts & Assets --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
