@@ -27,7 +27,7 @@ Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam d
         'fitness' => 0,
         'violations' => 0,
         'dist_violations' => 0,
-        'max_generations' => 300,
+        'max_generations' => 500,
         'started_at' => now(),
     ]);
 
