@@ -23,11 +23,10 @@ class GenerateScheduleJob implements ShouldQueue
 
     // GA parameters
     private int $populationSize = 100;
-    private int $maxGenerations = 600;
-    private float $crossoverRate = 0.85; 
-    private float $mutationRate = 0.25;  
-    private int $eliteCount = 8;         
-    
+    private int $maxGenerations = 500;
+    private float $crossoverRate = 0.8;
+    private float $mutationRate = 0.1;
+    private int $eliteCount = 2;
     private int $scheduleGenerationId;
 
     public function __construct(int $scheduleGenerationId)
@@ -183,14 +182,9 @@ class GenerateScheduleJob implements ShouldQueue
 
         // ── INITIAL POPULATION ──
         $population = [];
-        $smartCount = max(10, (int) round($this->populationSize * 0.60));
         
         for ($i = 0; $i < $this->populationSize; $i++) {
-            if ($i < $smartCount) {
-                $population[] = $this->createSmartChromosome($evalContext);
-            } else {
-                $population[] = $this->createRandomChromosome($evalContext);
-            }
+            $population[] = $this->createRandomChromosome($evalContext);
         }
 
         $bestChromosome = null;
@@ -246,162 +240,29 @@ class GenerateScheduleJob implements ShouldQueue
 
             if ($bestScore === 0) break;
 
-            if ($gen > 0 && $gen % 5 === 0 && $bestChromosome) {
-                $improved = $this->localSearch($bestChromosome, $evalContext);
-                $improvedScore = $this->evaluate($improved, $evalContext)['total'];
-                if ($improvedScore < $bestScore) {
-                    $bestScore = $improvedScore;
-                    $bestChromosome = $improved;
-                    $population[0] = $bestChromosome;
-                }
-            }
-
             $newPop = [];
             for ($i = 0; $i < $this->eliteCount; $i++) {
                 $newPop[] = $indexed[$i]['c'];
             }
 
             while (count($newPop) < $this->populationSize) {
-                $p1 = $this->tournamentSelect($population, $fitnessValues);
-                $p2 = $this->tournamentSelect($population, $fitnessValues);
-                [$c1, $c2] = $this->crossover($p1, $p2, $evalContext);
-                $c1 = $this->mutate($c1, $evalContext);
-                $c2 = $this->mutate($c2, $evalContext);
+                $p1 = $this->rouletteWheelSelect($population, $fitnessValues);
+                $p2 = $this->rouletteWheelSelect($population, $fitnessValues);
+                
+                [$c1, $c2] = $this->crossoverOnePoint($p1, $p2);
+                
+                $c1 = $this->mutateRandom($c1, $evalContext);
+                $c2 = $this->mutateRandom($c2, $evalContext);
+                
                 $newPop[] = $c1;
                 if (count($newPop) < $this->populationSize) {
                     $newPop[] = $c2;
                 }
             }
             $population = $newPop;
-
-            if ($bestScore < $lastBestScore) {
-                $stagnantGenerations = 0;
-                $lastBestScore = $bestScore;
-            } else {
-                $stagnantGenerations++;
-            }
-            
-            if ($stagnantGenerations >= 30) {
-                $keepCount = (int) ceil($this->populationSize * 0.15);
-                $newPop = [];
-                for ($i = 0; $i < $keepCount; $i++) {
-                    $newPop[] = $indexed[$i]['c'];
-                }
-                $freshCount = (int)(($this->populationSize - $keepCount) * 0.5);
-                for ($i = 0; $i < $freshCount; $i++) {
-                    $newPop[] = $this->createSmartChromosome($evalContext);
-                }
-                while (count($newPop) < $this->populationSize) {
-                    $p1 = $this->tournamentSelect($population, $fitnessValues);
-                    $p2 = $this->tournamentSelect($population, $fitnessValues);
-                    [$c1, $c2] = $this->crossover($p1, $p2, $evalContext);
-                    $c1 = $this->mutate($c1, $evalContext);
-                    $c2 = $this->mutate($c2, $evalContext);
-                    $newPop[] = $c1;
-                    if (count($newPop) < $this->populationSize) {
-                        $newPop[] = $c2;
-                    }
-                }
-                $population = $newPop;
-                $stagnantGenerations = 0;
-            }
         }
 
-        // ── POST-GA REPAIR PHASE ──
-        if ($bestChromosome) {
-            $repairRounds = 0;
-            while ($repairRounds < 150) {
-                $eval = $this->evaluate($bestChromosome, $evalContext);
-                $hardConflicts = $eval['guru_conflicts'] + $eval['kelas_conflicts'] + $eval['same_day_mapel'];
-                if ($hardConflicts === 0) break;
-                
-                $conflictingBlocks = $eval['conflicting_blocks'];
-                if (empty($conflictingBlocks) && $hardConflicts > 0) {
-                    // if conflicts exist but not registered in conflicting blocks (e.g. same day mapel)
-                    $conflictingBlocks = array_keys($evalContext['blocks']);
-                    shuffle($conflictingBlocks);
-                    $conflictingBlocks = array_slice($conflictingBlocks, 0, 20);
-                }
-                
-                if (empty($conflictingBlocks)) break;
-                
-                $improved = false;
-                foreach ($conflictingBlocks as $b) {
-                    $blockSize = $evalContext['blocks'][$b]['size'];
-                    $validStarts = $evalContext['validBlockStarts'][$blockSize];
-                    $currentScore = $eval['total'];
-                    
-                    $bestTrial = null;
-                    $bestNewScore = $currentScore;
-                    
-                    // Try changing guru if possible
-                    $dIdx = $evalContext['blocks'][$b]['demand_idx'];
-                    $demand = $evalContext['demands'][$dIdx];
-                    foreach ($demand['eligible_gurus'] as $mId => $eligibleGurus) {
-                        if (count($eligibleGurus) > 1) {
-                            foreach ($eligibleGurus as $g) {
-                                if ($g === $bestChromosome['gurus'][$dIdx][$mId]) continue;
-                                $trial = $bestChromosome;
-                                $trial['gurus'][$dIdx][$mId] = $g;
-                                $trialEval = $this->evaluate($trial, $evalContext);
-                                if ($trialEval['total'] < $bestNewScore) {
-                                    $bestNewScore = $trialEval['total'];
-                                    $bestTrial = $trial;
-                                    $improved = true;
-                                }
-                            }
-                        }
-                    }
 
-                    // Shuffle starts for randomness in repair
-                    $validStarts = $evalContext['validBlockStarts'][$blockSize];
-                    shuffle($validStarts);
-                    $sampledStarts = array_slice($validStarts, 0, 100);
-                    
-                    foreach ($sampledStarts as $s) {
-                        if ($s === $bestChromosome['slots'][$b]) continue;
-                        $trial = $bestChromosome;
-                        $trial['slots'][$b] = $s;
-                        $trialEval = $this->evaluate($trial, $evalContext);
-                        if ($trialEval['total'] < $bestNewScore) {
-                            $bestNewScore = $trialEval['total'];
-                            $bestTrial = $trial;
-                            $improved = true;
-                        }
-                    }
-                    
-                    // Add Swap Logic (Swap within the same class to preserve class schedule validity)
-                    $bKelasId = $evalContext['demands'][$evalContext['blocks'][$b]['demand_idx']]['kelas_id'];
-                    $sameSizeBlocks = array_keys(array_filter($evalContext['blocks'], function($x) use ($blockSize, $bKelasId, $evalContext) {
-                        return $x['size'] === $blockSize && $evalContext['demands'][$x['demand_idx']]['kelas_id'] === $bKelasId;
-                    }));
-                    shuffle($sameSizeBlocks);
-                    $sampledBlocks = array_slice($sameSizeBlocks, 0, 50);
-                    
-                    foreach ($sampledBlocks as $otherBIdx) {
-                        if ($b === $otherBIdx) continue;
-                        $trial = $bestChromosome;
-                        $temp = $trial['slots'][$b];
-                        $trial['slots'][$b] = $trial['slots'][$otherBIdx];
-                        $trial['slots'][$otherBIdx] = $temp;
-                        $trialEval = $this->evaluate($trial, $evalContext);
-                        if ($trialEval['total'] < $bestNewScore) {
-                            $bestNewScore = $trialEval['total'];
-                            $bestTrial = $trial;
-                            $improved = true;
-                        }
-                    }
-                    
-                    if ($bestTrial) {
-                        $bestChromosome = $bestTrial;
-                        $bestScore = $bestNewScore;
-                    }
-                }
-                
-                if (!$improved) break;
-                $repairRounds++;
-            }
-        }
 
         // ── SAVE RESULT ──
         $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
@@ -721,13 +582,13 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        $total = ($guruConflicts * 1000000) 
-               + ($kelasConflicts * 1000000) 
-               + ($sameDayMapelPenalty * 50000)
-               + ($distViolations * 100) 
-               + ($gapPenalties * 10) 
-               + ($packingPenalty * 5)
-               + ($frontLoadPenalty * 1);
+        $total = $guruConflicts 
+               + $kelasConflicts 
+               + ($sameDayMapelPenalty * 0.1)
+               + ($distViolations * 0.01) 
+               + ($gapPenalties * 0.001) 
+               + ($packingPenalty * 0.0001)
+               + ($frontLoadPenalty * 0.00001);
 
         return [
             'guru_conflicts' => $guruConflicts,
@@ -740,19 +601,23 @@ class GenerateScheduleJob implements ShouldQueue
         ];
     }
 
-    private function tournamentSelect(array $population, array $fitnessValues): array
+    private function rouletteWheelSelect(array $population, array $fitnessValues): array
     {
-        $bestIdx = rand(0, count($population) - 1);
-        for ($i = 1; $i < 4; $i++) {
-            $idx = rand(0, count($population) - 1);
-            if ($fitnessValues[$idx] > $fitnessValues[$bestIdx]) {
-                $bestIdx = $idx;
+        $totalFitness = array_sum($fitnessValues);
+        $r = $this->randFloat() * $totalFitness;
+        $cumulative = 0.0;
+        
+        foreach ($population as $idx => $chromosome) {
+            $cumulative += $fitnessValues[$idx];
+            if ($cumulative >= $r) {
+                return $chromosome;
             }
         }
-        return $population[$bestIdx];
+        
+        return $population[count($population) - 1];
     }
 
-    private function crossover(array $p1, array $p2, array $ctx): array
+    private function crossoverOnePoint(array $p1, array $p2): array
     {
         if ($this->randFloat() > $this->crossoverRate) {
             return [$p1, $p2];
@@ -760,9 +625,30 @@ class GenerateScheduleJob implements ShouldQueue
 
         $c1 = ['gurus' => [], 'slots' => []];
         $c2 = ['gurus' => [], 'slots' => []];
+        
+        $totalBlocks = count($p1['slots']);
+        if ($totalBlocks < 2) return [$p1, $p2];
+        
+        $crossoverPoint = rand(1, $totalBlocks - 1);
 
-        foreach ($p1['gurus'] as $dIdx => $gid) {
-            if (rand(0, 1)) {
+        $bIdxKeys = array_keys($p1['slots']);
+        
+        foreach ($bIdxKeys as $i => $bIdx) {
+            if ($i < $crossoverPoint) {
+                $c1['slots'][$bIdx] = $p1['slots'][$bIdx];
+                $c2['slots'][$bIdx] = $p2['slots'][$bIdx];
+            } else {
+                $c1['slots'][$bIdx] = $p2['slots'][$bIdx];
+                $c2['slots'][$bIdx] = $p1['slots'][$bIdx];
+            }
+        }
+        
+        $dIdxKeys = array_keys($p1['gurus']);
+        $demandCrossoverPoint = (int) (($crossoverPoint / $totalBlocks) * count($dIdxKeys));
+        if ($demandCrossoverPoint === 0) $demandCrossoverPoint = 1;
+        
+        foreach ($dIdxKeys as $i => $dIdx) {
+            if ($i < $demandCrossoverPoint) {
                 $c1['gurus'][$dIdx] = $p1['gurus'][$dIdx];
                 $c2['gurus'][$dIdx] = $p2['gurus'][$dIdx];
             } else {
@@ -771,56 +657,19 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        foreach ($p1['slots'] as $bIdx => $slot) {
-            if (rand(0, 1)) {
-                $c1['slots'][$bIdx] = $p1['slots'][$bIdx];
-                $c2['slots'][$bIdx] = $p2['slots'][$bIdx];
-            } else {
-                $c1['slots'][$bIdx] = $p2['slots'][$bIdx];
-                $c2['slots'][$bIdx] = $p1['slots'][$bIdx];
-            }
-        }
-
         return [$c1, $c2];
     }
 
-    private function mutate(array $chromosome, array $ctx): array
+    private function mutateRandom(array $chromosome, array $ctx): array
     {
-        if ($this->randFloat() > $this->mutationRate) {
-            return $chromosome;
-        }
-
         $demands = $ctx['demands'];
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
-        
-        $eval = $this->evaluate($chromosome, $ctx);
-        $conflictingBlocks = $eval['conflicting_blocks'];
-        
-        $numMutations = rand(1, 4);
 
-        for ($m = 0; $m < $numMutations; $m++) {
-            // Decide whether to mutate Guru or Slot
-            if (rand(0, 1) === 0) {
-                // Mutate Guru
-                $dIdx = array_rand($demands);
-                if (!empty($conflictingBlocks) && rand(0, 1) === 0) {
-                    $bIdx = $conflictingBlocks[array_rand($conflictingBlocks)];
-                    $dIdx = $blocks[$bIdx]['demand_idx'];
-                }
-                $eligibleMap = $demands[$dIdx]['eligible_gurus'];
-                $mIdToMutate = array_rand($eligibleMap);
-                $eligible = $eligibleMap[$mIdToMutate];
-                if (count($eligible) > 1) {
-                    $chromosome['gurus'][$dIdx][$mIdToMutate] = $eligible[array_rand($eligible)];
-                }
-            } else {
-                // Mutate Slot
-                $bIdx = array_rand($blocks);
-                if (!empty($conflictingBlocks) && rand(0, 1) === 0) {
-                    $bIdx = $conflictingBlocks[array_rand($conflictingBlocks)];
-                }
-                $size = $blocks[$bIdx]['size'];
+        // Mutate slots
+        foreach ($blocks as $bIdx => $block) {
+            if ($this->randFloat() < $this->mutationRate) {
+                $size = $block['size'];
                 $validStarts = $validBlockStarts[$size];
                 if (!empty($validStarts)) {
                     $chromosome['slots'][$bIdx] = $validStarts[array_rand($validStarts)];
@@ -828,80 +677,19 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        return $chromosome;
-    }
+        // Mutate gurus
+        foreach ($demands as $dIdx => $demand) {
+            if ($this->randFloat() < $this->mutationRate) {
+                $eligibleMap = $demand['eligible_gurus'];
+                $mIdToMutate = array_rand($eligibleMap);
+                $eligible = $eligibleMap[$mIdToMutate];
+                if (count($eligible) > 1) {
+                    $chromosome['gurus'][$dIdx][$mIdToMutate] = $eligible[array_rand($eligible)];
+                }
+            }
+        }
 
-    private function localSearch(array $chromosome, array $ctx): array
-    {
-        $blocks = $ctx['blocks'];
-        $validBlockStarts = $ctx['validBlockStarts'];
-        
-        $eval = $this->evaluate($chromosome, $ctx);
-        $bestScore = $eval['total'];
-        $bestChromosome = $chromosome;
-        
-        $conflictingBlocks = $eval['conflicting_blocks'];
-        foreach ($conflictingBlocks as $bIdx) {
-            $size = $blocks[$bIdx]['size'];
-            $validStarts = $validBlockStarts[$size];
-            
-            foreach ($validStarts as $s) {
-                if ($s === $bestChromosome['slots'][$bIdx]) continue;
-                $trial = $bestChromosome;
-                $trial['slots'][$bIdx] = $s;
-                $trialScore = $this->evaluate($trial, $ctx)['total'];
-                if ($trialScore < $bestScore) {
-                    $bestScore = $trialScore;
-                    $bestChromosome = $trial;
-                }
-            }
-            
-            // Try Swap Mutation (Within same class)
-            $bKelasId = $ctx['demands'][$blocks[$bIdx]['demand_idx']]['kelas_id'];
-            $sameSizeBlocks = array_keys(array_filter($blocks, function($x) use ($size, $bKelasId, $ctx) {
-                return $x['size'] === $size && $ctx['demands'][$x['demand_idx']]['kelas_id'] === $bKelasId;
-            }));
-            shuffle($sameSizeBlocks);
-            $sampledBlocks = array_slice($sameSizeBlocks, 0, 20);
-            foreach ($sampledBlocks as $otherBIdx) {
-                if ($bIdx === $otherBIdx) continue;
-                $trial = $bestChromosome;
-                $temp = $trial['slots'][$bIdx];
-                $trial['slots'][$bIdx] = $trial['slots'][$otherBIdx];
-                $trial['slots'][$otherBIdx] = $temp;
-                $trialScore = $this->evaluate($trial, $ctx)['total'];
-                if ($trialScore < $bestScore) {
-                    $bestScore = $trialScore;
-                    $bestChromosome = $trial;
-                }
-            }
-        }
-        
-        
-        // Random swaps (Within same class)
-        for ($i = 0; $i < 50; $i++) {
-            $trial = $bestChromosome;
-            $bIdx1 = array_rand($blocks);
-            $bKelasId = $ctx['demands'][$blocks[$bIdx1]['demand_idx']]['kelas_id'];
-            $sameClassBlocks = array_keys(array_filter($blocks, function($x) use ($bKelasId, $ctx) {
-                return $ctx['demands'][$x['demand_idx']]['kelas_id'] === $bKelasId;
-            }));
-            if (count($sameClassBlocks) < 2) continue;
-            
-            $bIdx2 = $sameClassBlocks[array_rand($sameClassBlocks)];
-            if ($blocks[$bIdx1]['size'] === $blocks[$bIdx2]['size']) {
-                $temp = $trial['slots'][$bIdx1];
-                $trial['slots'][$bIdx1] = $trial['slots'][$bIdx2];
-                $trial['slots'][$bIdx2] = $temp;
-                $trialScore = $this->evaluate($trial, $ctx)['total'];
-                if ($trialScore < $bestScore) {
-                    $bestScore = $trialScore;
-                    $bestChromosome = $trial;
-                }
-            }
-        }
-        
-        return $bestChromosome;
+        return $chromosome;
     }
 
     private function randFloat(): float
