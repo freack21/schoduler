@@ -63,6 +63,15 @@ class GenerateJadwal extends Component
         // Removed as hari_aktif is now determined dynamically
     }
 
+    public function cancelGenerate(): void
+    {
+        $latest = ScheduleGeneration::latest('id')->first();
+        if ($latest && in_array($latest->status, ['starting', 'running'])) {
+            $latest->update(['status' => 'cancelled', 'message' => 'Proses generate jadwal dibatalkan secara manual.']);
+            $this->refreshStatus();
+        }
+    }
+
     public function generate(): void
     {
         $genState = ScheduleGeneration::create([

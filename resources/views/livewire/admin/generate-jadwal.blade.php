@@ -13,7 +13,7 @@
                 <p class="text-sm text-gray-500 mt-1 ml-8">Generate jadwal pelajaran secara otomatis dengan persebaran optimal menggunakan pendekatan *Genetic Algorithm*.</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                @if($status === 'idle' || $status === 'done' || $status === 'error')
+                @if($status === 'idle' || $status === 'done' || $status === 'error' || $status === 'cancelled')
                     <div class="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
                         <span class="px-3 py-2 bg-gray-50 text-gray-500 text-sm font-medium border-r border-gray-200">Max Generasi</span>
                         <input type="number" wire:model="inputMaxGenerations" class="w-24 px-3 py-2 focus:outline-none focus:ring-0 border-0 text-sm" min="10" max="10000" step="10">
@@ -50,8 +50,14 @@
                     </div>
                     <span class="text-sm font-bold text-primary tracking-widest uppercase">Memproses Jadwal...</span>
                 </div>
-                <div class="text-xs font-mono bg-white/60 px-3 py-1 rounded-full text-gray-500 border border-gray-200">
-                    Engine: Genetic Algorithm
+                <div class="flex items-center gap-2">
+                    <button wire:click="cancelGenerate" wire:confirm="Yakin mau ngebatalin generate jadwal yang lagi jalan?" class="text-xs font-semibold bg-red-50 text-red-600 px-3 py-1 rounded-full border border-red-200 hover:bg-red-100 transition-colors shadow-sm flex items-center gap-1 cursor-pointer">
+                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        Batalkan
+                    </button>
+                    <div class="text-xs font-mono bg-white/60 px-3 py-1 rounded-full text-gray-500 border border-gray-200">
+                        Engine: Genetic Algorithm
+                    </div>
                 </div>
             </div>
 
@@ -131,7 +137,7 @@
     </div>
     @endif
 
-    @if($status === 'error')
+    @if($status === 'error' || $status === 'cancelled')
     <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200">
         <p class="text-sm font-medium text-red-800">❌ {{ $message }}</p>
     </div>

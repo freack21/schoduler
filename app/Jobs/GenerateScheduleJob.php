@@ -245,6 +245,13 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             if ($gen % 10 === 0) {
+                // Cek status pembatalan
+                $currentCheck = ScheduleGeneration::find($this->scheduleGenerationId);
+                if ($currentCheck && $currentCheck->status === 'cancelled') {
+                    \Illuminate\Support\Facades\Log::info("Job generation cancelled by user.");
+                    return;
+                }
+
                 $bestEval = $this->evaluate($bestChromosome, $evalContext);
                 $hard = $bestEval['guru_conflicts'] + $bestEval['kelas_conflicts'] + $bestEval['same_day_mapel'];
                 $genState->update([
