@@ -28,8 +28,8 @@ class FixPeminatanXI extends Command
         DB::beginTransaction();
         try {
             // 1. Buat "Jurusan" sebagai Peminatan
-            $mipa = Jurusan::firstOrCreate(['nama' => 'MIPA'], ['kode' => 'MIPA']);
-            $ips = Jurusan::firstOrCreate(['nama' => 'IPS'], ['kode' => 'IPS']);
+            $mipa = Jurusan::firstOrCreate(['kode' => 'MIPA'], ['nama' => 'MIPA']);
+            $ips = Jurusan::firstOrCreate(['kode' => 'IPS'], ['nama' => 'IPS']);
 
             $this->line("✅ Membuat pengelompokan Peminatan MIPA dan IPS.");
 
