@@ -25,6 +25,7 @@ class GenerateJadwal extends Component
     public string $message = '';
     public bool $showResult = false;
     public int $maxGenerations = 1000;
+    public int $inputMaxGenerations = 500;
 
     public function mount(): void
     {
@@ -70,7 +71,7 @@ class GenerateJadwal extends Component
             'fitness' => 0,
             'violations' => 0,
             'dist_violations' => 0,
-            'max_generations' => 300, // Matching job default
+            'max_generations' => $this->inputMaxGenerations,
             'started_at' => now(),
         ]);
 

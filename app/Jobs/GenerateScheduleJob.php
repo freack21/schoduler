@@ -39,6 +39,8 @@ class GenerateScheduleJob implements ShouldQueue
         $genState = ScheduleGeneration::find($this->scheduleGenerationId);
         if (!$genState) return;
         
+        $this->maxGenerations = $genState->max_generations ?? 500;
+        
         $genState->update(['status' => 'running', 'message' => 'Memulai inisialisasi data...']);
 
         // ── LOAD DATA ──
