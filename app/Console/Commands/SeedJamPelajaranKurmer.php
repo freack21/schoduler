@@ -30,7 +30,6 @@ class SeedJamPelajaranKurmer extends Command
     {
         $this->info("🗑️ Menghapus data jam pelajaran lama...");
         
-        DB::beginTransaction();
         try {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             JamPelajaran::truncate();
@@ -97,12 +96,10 @@ class SeedJamPelajaranKurmer extends Command
                 JamPelajaran::create($row);
             }
 
-            DB::commit();
             $this->info("✅ Jadwal berhasil dibuat! Total Slot Pelajaran Aktif: 46 Jam/Minggu.");
             $this->line("💡 Sekolah selesai paling lambat jam 15:45.");
 
         } catch (\Exception $e) {
-            DB::rollBack();
             $this->error("❌ Gagal: " . $e->getMessage());
         }
     }
@@ -113,7 +110,7 @@ class SeedJamPelajaranKurmer extends Command
         foreach ($waktuArray as $w) {
             $jadwal[] = [
                 'hari' => $hari,
-                'jam_ke' => $w[2] ? null : $jamKe,
+                'jam_ke' => $w[2] ? 0 : $jamKe,
                 'jam_mulai' => $w[0] . ':00',
                 'jam_selesai' => $w[1] . ':00',
                 'is_istirahat' => $w[2],
