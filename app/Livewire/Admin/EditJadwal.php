@@ -339,7 +339,7 @@ class EditJadwal extends Component
         }
 
         $hariAktif = explode(',', \App\Models\Pengaturan::where('key', 'hari_aktif')->value('value') ?? 'Senin,Selasa,Rabu,Kamis,Jumat');
-        $jamList = JamPelajaran::orderBy('jam_ke')->get();
+        $jamList = JamPelajaran::orderBy('jam_mulai')->get();
 
         $rowMap = [];
         $maxJam = 0;

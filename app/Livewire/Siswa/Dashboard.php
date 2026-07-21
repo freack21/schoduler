@@ -45,7 +45,7 @@ class Dashboard extends Component
         }
 
         $allHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
-        $jamList = JamPelajaran::where('hari', 'Senin')->orderBy('jam_ke')->get();
+        $jamList = JamPelajaran::where('hari', 'Senin')->orderBy('jam_mulai')->get();
 
         return view('livewire.siswa.dashboard', [
             'siswa' => $siswa,

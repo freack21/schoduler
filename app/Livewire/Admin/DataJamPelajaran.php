@@ -30,7 +30,7 @@ class DataJamPelajaran extends Component
 
     public function loadJamMulai()
     {
-        $firstJam = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->first();
+        $firstJam = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_mulai')->first();
         if ($firstJam) {
             $this->jamMulaiHari = substr($firstJam->jam_mulai, 0, 5);
         } else {
@@ -47,7 +47,7 @@ class DataJamPelajaran extends Component
 
     public function addBlock(bool $isIstirahat)
     {
-        $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
+        $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_mulai')->get();
         $nextJamKe = $jams->max('jam_ke') + 1;
         
         $durasi = $isIstirahat ? 15 : 45;
@@ -70,7 +70,7 @@ class DataJamPelajaran extends Component
         if (!$jam) return;
 
         $jam->delete();
-        $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
+        $jams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_mulai')->get();
         foreach ($jams as $index => $j) {
             $j->update(['jam_ke' => $index + 1]);
         }
@@ -95,9 +95,9 @@ class DataJamPelajaran extends Component
         $swapJam = null;
 
         if ($direction === 'up') {
-            $swapJam = JamPelajaran::where('hari', $this->hariFilter)->where('jam_ke', '<', $jam->jam_ke)->orderBy('jam_ke', 'desc')->first();
+            $swapJam = JamPelajaran::where('hari', $this->hariFilter)->where('jam_ke', '<', $jam->jam_ke)->orderBy('jam_mulai', 'desc')->first();
         } else {
-            $swapJam = JamPelajaran::where('hari', $this->hariFilter)->where('jam_ke', '>', $jam->jam_ke)->orderBy('jam_ke', 'asc')->first();
+            $swapJam = JamPelajaran::where('hari', $this->hariFilter)->where('jam_ke', '>', $jam->jam_ke)->orderBy('jam_mulai', 'asc')->first();
         }
 
         if ($swapJam) {
@@ -114,7 +114,7 @@ class DataJamPelajaran extends Component
 
         JamPelajaran::where('hari', $targetHari)->delete();
 
-        $sourceJams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get();
+        $sourceJams = JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_mulai')->get();
         foreach ($sourceJams as $jam) {
             JamPelajaran::create([
                 'hari' => $targetHari,
@@ -132,7 +132,7 @@ class DataJamPelajaran extends Component
 
     private function recalculateTimes(string $hari, string $startAt)
     {
-        $jams = JamPelajaran::where('hari', $hari)->orderBy('jam_ke')->get();
+        $jams = JamPelajaran::where('hari', $hari)->orderBy('jam_mulai')->get();
         if ($jams->isEmpty()) return;
 
         $currentTime = Carbon::createFromFormat('H:i', $startAt);
@@ -152,7 +152,7 @@ class DataJamPelajaran extends Component
     public function render()
     {
         return view('livewire.admin.data-jam-pelajaran', [
-            'jamList' => JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_ke')->get(),
+            'jamList' => JamPelajaran::where('hari', $this->hariFilter)->orderBy('jam_mulai')->get(),
         ]);
     }
 }

@@ -175,7 +175,7 @@ class Dashboard extends Component
             ->get() : collect();
 
         $allHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
-        $jamList = JamPelajaran::where('hari', 'Senin')->orderBy('jam_ke')->get();
+        $jamList = JamPelajaran::where('hari', 'Senin')->orderBy('jam_mulai')->get();
 
         return view('livewire.guru.dashboard', [
             'guru' => $guru,
