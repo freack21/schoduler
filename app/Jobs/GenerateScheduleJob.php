@@ -729,17 +729,42 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // SWAP MUTATION (untuk mengatasi jadwal padat 100%) - 20% chance
-        if ($this->randFloat() < 0.2) {
-            $bKeys = array_keys($blocks);
-            $b1 = $bKeys[array_rand($bKeys)];
-            $b2 = $bKeys[array_rand($bKeys)];
+        // SWAP MUTATION: Targeted swap for dense schedules (30% chance)
+        if ($this->randFloat() < 0.3) {
+            $eval = $this->evaluate($chromosome, $ctx);
+            $conflicts = $eval['conflicting_blocks'];
             
-            // Hanya swap jika size block sama, biar gak error
-            if ($blocks[$b1]['size'] === $blocks[$b2]['size']) {
-                $temp = $chromosome['slots'][$b1];
-                $chromosome['slots'][$b1] = $chromosome['slots'][$b2];
-                $chromosome['slots'][$b2] = $temp;
+            if (!empty($conflicts)) {
+                $bIdx = array_rand($conflicts);
+                $block = $blocks[$bIdx];
+                $kelasId = $demands[$block['demand_idx']]['kelas_id'];
+                $size = $block['size'];
+                
+                // Cari block lain di kelas yang sama dengan ukuran yang sama
+                $sameKelasBlocks = [];
+                foreach ($blocks as $idx => $b) {
+                    if ($idx !== $bIdx && $b['size'] === $size && $demands[$b['demand_idx']]['kelas_id'] === $kelasId) {
+                        $sameKelasBlocks[] = $idx;
+                    }
+                }
+                
+                if (!empty($sameKelasBlocks)) {
+                    $swapTarget = $sameKelasBlocks[array_rand($sameKelasBlocks)];
+                    
+                    // Lakukan swap
+                    $temp = $chromosome['slots'][$bIdx];
+                    $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
+                    $chromosome['slots'][$swapTarget] = $temp;
+                    
+                    // Evaluasi, kalau makin hancur, rollback
+                    $testEval = $this->evaluate($chromosome, $ctx);
+                    if ($testEval['total'] > $eval['total']) {
+                        // Rollback
+                        $temp = $chromosome['slots'][$bIdx];
+                        $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
+                        $chromosome['slots'][$swapTarget] = $temp;
+                    }
+                }
             }
         }
 
