@@ -228,6 +228,18 @@ class GenerateScheduleJob implements ShouldQueue
 
             usort($indexed, fn($a, $b) => $b['f'] <=> $a['f']);
 
+            if ($bestScore < $lastBestScore) {
+                $lastBestScore = $bestScore;
+                $stagnantGenerations = 0;
+            } else {
+                $stagnantGenerations++;
+            }
+            
+            $currentMutationRate = $this->mutationRate;
+            if ($stagnantGenerations > 15) {
+                $currentMutationRate = min(0.8, $this->mutationRate + ($stagnantGenerations * 0.02));
+            }
+
             if ($gen === 0) {
                 \Illuminate\Support\Facades\Log::info("BEST CHROM EVAL (GEN 0): " . json_encode($this->evaluate($indexed[0]['c'], $evalContext)));
             }
@@ -257,8 +269,8 @@ class GenerateScheduleJob implements ShouldQueue
                 
                 [$c1, $c2] = $this->crossoverOnePoint($p1, $p2);
                 
-                $c1 = $this->mutateRandom($c1, $evalContext);
-                $c2 = $this->mutateRandom($c2, $evalContext);
+                $c1 = $this->mutateRandom($c1, $evalContext, $currentMutationRate);
+                $c2 = $this->mutateRandom($c2, $evalContext, $currentMutationRate);
                 
                 $newPop[] = $c1;
                 if (count($newPop) < $this->populationSize) {
@@ -665,15 +677,54 @@ class GenerateScheduleJob implements ShouldQueue
         return [$c1, $c2];
     }
 
-    private function mutateRandom(array $chromosome, array $ctx): array
+    private function mutateRandom(array $chromosome, array $ctx, float $mutRate): array
     {
         $demands = $ctx['demands'];
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
+        // Targeted Repair (Local Search) for conflicts (30% chance)
+        if ($this->randFloat() < 0.3) {
+            $eval = $this->evaluate($chromosome, $ctx);
+            $conflicts = $eval['conflicting_blocks'];
+            
+            if (!empty($conflicts)) {
+                shuffle($conflicts);
+                $toRepair = array_slice($conflicts, 0, mt_rand(1, 3));
+                
+                foreach ($toRepair as $bIdx) {
+                    $block = $blocks[$bIdx];
+                    $size = $block['size'];
+                    $validStarts = $validBlockStarts[$size];
+                    
+                    if (empty($validStarts)) continue;
+                    
+                    $bestSlot = $chromosome['slots'][$bIdx];
+                    $bestScore = $eval['total'];
+                    
+                    shuffle($validStarts);
+                    $testSlots = array_slice($validStarts, 0, 15);
+                    
+                    foreach ($testSlots as $testSlot) {
+                        $chromosome['slots'][$bIdx] = $testSlot;
+                        $testEval = $this->evaluate($chromosome, $ctx);
+                        if ($testEval['total'] < $bestScore) {
+                            $bestScore = $testEval['total'];
+                            $bestSlot = $testSlot;
+                            $eval = $testEval;
+                            if ($testEval['guru_conflicts'] + $testEval['kelas_conflicts'] == 0) {
+                                break;
+                            }
+                        }
+                    }
+                    $chromosome['slots'][$bIdx] = $bestSlot;
+                }
+            }
+        }
+
         // Mutate slots
         foreach ($blocks as $bIdx => $block) {
-            if ($this->randFloat() < $this->mutationRate) {
+            if ($this->randFloat() < $mutRate) {
                 $size = $block['size'];
                 $validStarts = $validBlockStarts[$size];
                 if (!empty($validStarts)) {
@@ -684,7 +735,7 @@ class GenerateScheduleJob implements ShouldQueue
 
         // Mutate gurus
         foreach ($demands as $dIdx => $demand) {
-            if ($this->randFloat() < $this->mutationRate) {
+            if ($this->randFloat() < $mutRate) {
                 $eligibleMap = $demand['eligible_gurus'];
                 $mIdToMutate = array_rand($eligibleMap);
                 $eligible = $eligibleMap[$mIdToMutate];
