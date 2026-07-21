@@ -71,13 +71,17 @@ class FixScheduleConstraints extends Command
         $this->info("📊 Total Slot Aktif saat ini: $totalSlots jam/minggu");
         $this->info("📈 Beban Kelas Terberat ($maxKelasName): $maxDemand jam/minggu");
 
-        if ($maxDemand <= $totalSlots) {
+        // Tambah 2 slot ekstra sebagai "breathing room" (ruang gerak) untuk algoritma
+        // Jadwal yang 100% padat tanpa celah akan menyebabkan Block-Size Parity Lock
+        $targetSlots = $maxDemand + 2;
+
+        if ($targetSlots <= $totalSlots) {
             $this->info("✅ Sistem secara matematis SUDAH MUNGKIN untuk mencapai 0 bentrok. Tidak perlu perbaikan!");
             return;
         }
 
-        $shortage = $maxDemand - $totalSlots;
-        $this->warn("⚠️ Sistem kekurangan $shortage slot jam pelajaran/minggu!");
+        $shortage = $targetSlots - $totalSlots;
+        $this->warn("⚠️ Sistem membutuhkan $shortage slot jam pelajaran tambahan untuk ruang gerak algoritma!");
 
         if (!$this->confirm('Apakah Anda ingin sistem secara otomatis menambahkan slot Jam Pelajaran ekstra (sore hari) untuk menutupi kekurangan ini?', true)) {
             $this->info('Dibatalkan.');
