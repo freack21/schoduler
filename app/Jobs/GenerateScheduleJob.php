@@ -253,12 +253,12 @@ class GenerateScheduleJob implements ShouldQueue
                 }
 
                 $bestEval = $this->evaluate($bestChromosome, $evalContext);
-                $hard = $bestEval['guru_conflicts'] + $bestEval['kelas_conflicts'] + $bestEval['same_day_mapel'];
+                $hard = $bestEval['guru_conflicts'] + $bestEval['kelas_conflicts']; // same_day_mapel moved to dist_violations
                 $genState->update([
                     'generation' => $gen + 1,
                     'fitness' => $indexed[0]['f'],
                     'violations' => $hard,
-                    'dist_violations' => $bestEval['dist_violations'],
+                    'dist_violations' => $bestEval['dist_violations'] + $bestEval['same_day_mapel'],
                     'message' => "Evolusi generasi " . ($gen + 1) . "... (Hard: {$hard}, Packing: {$bestEval['packing_penalty']})",
                 ]);
             }
@@ -352,14 +352,14 @@ class GenerateScheduleJob implements ShouldQueue
 
         $final = $bestChromosome ? $this->evaluate($bestChromosome, $evalContext) : null;
         if ($final) {
-            $hard = $final['guru_conflicts'] + $final['kelas_conflicts'] + $final['same_day_mapel'];
+            $hard = $final['guru_conflicts'] + $final['kelas_conflicts'];
             $finalFitness = round(1.0 / (1.0 + $final['total']), 6);
             $genState->update([
                 'status' => 'done',
                 'fitness' => $finalFitness,
                 'violations' => $hard,
-                'dist_violations' => $final['dist_violations'],
-                'message' => $hard > 0 ? "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang." : "Jadwal berhasil digenerate tanpa bentrok keras dan penuh di hari awal!",
+                'dist_violations' => $final['dist_violations'] + $final['same_day_mapel'],
+                'message' => $hard > 0 ? "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang." : "Jadwal berhasil digenerate tanpa bentrok fisik (Sempurna)!",
             ]);
         } else {
             $genState->update(['status' => 'failed', 'message' => 'Gagal menghasilkan jadwal']);
@@ -726,6 +726,20 @@ class GenerateScheduleJob implements ShouldQueue
                     }
                     $chromosome['slots'][$bIdx] = $bestSlot;
                 }
+            }
+        }
+
+        // SWAP MUTATION (untuk mengatasi jadwal padat 100%) - 20% chance
+        if ($this->randFloat() < 0.2) {
+            $bKeys = array_keys($blocks);
+            $b1 = $bKeys[array_rand($bKeys)];
+            $b2 = $bKeys[array_rand($bKeys)];
+            
+            // Hanya swap jika size block sama, biar gak error
+            if ($blocks[$b1]['size'] === $blocks[$b2]['size']) {
+                $temp = $chromosome['slots'][$b1];
+                $chromosome['slots'][$b1] = $chromosome['slots'][$b2];
+                $chromosome['slots'][$b2] = $temp;
             }
         }
 
