@@ -183,7 +183,11 @@ class GenerateScheduleJob implements ShouldQueue
         // ── INITIAL POPULATION ──
         $population = [];
         
-        for ($i = 0; $i < $this->populationSize; $i++) {
+        $smartCount = (int)($this->populationSize * 0.5);
+        for ($i = 0; $i < $smartCount; $i++) {
+            $population[] = $this->createSmartChromosome($evalContext);
+        }
+        for ($i = $smartCount; $i < $this->populationSize; $i++) {
             $population[] = $this->createRandomChromosome($evalContext);
         }
 
@@ -246,8 +250,8 @@ class GenerateScheduleJob implements ShouldQueue
             }
 
             while (count($newPop) < $this->populationSize) {
-                $p1 = $this->rouletteWheelSelect($population, $fitnessValues);
-                $p2 = $this->rouletteWheelSelect($population, $fitnessValues);
+                $p1 = $this->tournamentSelect($population, $fitnessValues);
+                $p2 = $this->tournamentSelect($population, $fitnessValues);
                 
                 [$c1, $c2] = $this->crossoverOnePoint($p1, $p2);
                 
@@ -386,6 +390,7 @@ class GenerateScheduleJob implements ShouldQueue
             $demand = $demands[$dIdx];
             $picked = [];
             foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                shuffle($eligible);
                 $bestGuru = $eligible[0];
                 $minLoad = PHP_INT_MAX;
                 foreach ($eligible as $gid) {
@@ -601,20 +606,18 @@ class GenerateScheduleJob implements ShouldQueue
         ];
     }
 
-    private function rouletteWheelSelect(array $population, array $fitnessValues): array
+    private function tournamentSelect(array $population, array $fitnessValues): array
     {
-        $totalFitness = array_sum($fitnessValues);
-        $r = $this->randFloat() * $totalFitness;
-        $cumulative = 0.0;
-        
-        foreach ($population as $idx => $chromosome) {
-            $cumulative += $fitnessValues[$idx];
-            if ($cumulative >= $r) {
-                return $chromosome;
+        $best = null;
+        $bestFitness = -1.0;
+        for ($i = 0; $i < 3; $i++) {
+            $idx = array_rand($population);
+            if ($fitnessValues[$idx] > $bestFitness) {
+                $bestFitness = $fitnessValues[$idx];
+                $best = $population[$idx];
             }
         }
-        
-        return $population[count($population) - 1];
+        return $best;
     }
 
     private function crossoverOnePoint(array $p1, array $p2): array
