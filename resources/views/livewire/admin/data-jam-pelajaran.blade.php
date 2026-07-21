@@ -50,7 +50,7 @@
                                 <div class="w-6 h-6"></div>
                             @endif
                             
-                            <span class="text-xs font-black text-gray-500">{{ $jam->jam_ke }}</span>
+                            <span class="text-xs font-black text-gray-500">{{ $jam->jam_ke == 0 ? '-' : $jam->jam_ke }}</span>
                             
                             @if(!$loop->last)
                                 <button wire:click="moveBlock({{ $jam->id }}, 'down')" class="p-1 rounded text-gray-400 hover:text-primary hover:bg-white transition-colors" title="Geser ke bawah">
@@ -79,7 +79,7 @@
                                     </div>
                                 @else
                                     <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                                        <span class="font-black text-sm">J{{ $jam->jam_ke }}</span>
+                                        <span class="font-black text-sm">J{{ $jam->jam_ke == 0 ? '-' : $jam->jam_ke }}</span>
                                     </div>
                                     <div>
                                         <h3 class="font-bold text-gray-800 text-base">Jam Pelajaran</h3>
