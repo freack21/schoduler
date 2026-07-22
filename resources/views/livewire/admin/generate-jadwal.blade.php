@@ -162,9 +162,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for($i = 1; $i <= $maxJamKe; $i++)
+                            @for($i = 0; $i <= $maxPos; $i++)
                                 <tr class="table-row">
-                                    <td class="px-3 py-2 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-100">{{ $i }}</td>
+                                    @php
+                                        $rowLabel = '-';
+                                        foreach($hari as $h) {
+                                            $j = $jamMap[$h][$i] ?? null;
+                                            if ($j && $j->jam_ke > 0) {
+                                                $rowLabel = $j->jam_ke;
+                                                break;
+                                            }
+                                        }
+                                    @endphp
+                                    <td class="px-3 py-2 text-center font-bold text-gray-700 bg-gray-50 border-r border-gray-100">{{ $rowLabel }}</td>
                                     @foreach($hari as $h)
                                         @php $cellItems = $data['matrix'][$i][$h] ?? []; @endphp
                                         

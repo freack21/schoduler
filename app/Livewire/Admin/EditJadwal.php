@@ -339,20 +339,25 @@ class EditJadwal extends Component
         }
 
         $hariAktif = explode(',', \App\Models\Pengaturan::where('key', 'hari_aktif')->value('value') ?? 'Senin,Selasa,Rabu,Kamis,Jumat');
-        $jamList = JamPelajaran::orderBy('jam_mulai')->get();
+        $jams = JamPelajaran::orderBy('jam_mulai')->get();
 
-        $rowMap = [];
-        $maxJam = 0;
-        foreach ($jamList as $j) {
-            if ($j->jam_ke > $maxJam) $maxJam = $j->jam_ke;
-            $rowMap[$j->jam_ke][$j->hari] = $j;
+        $jamMap = [];
+        $maxPos = 0;
+        foreach ($hariAktif as $h) {
+            $jamsForHari = $jams->where('hari', $h)->sortBy('jam_mulai')->values();
+            foreach ($jamsForHari as $pos => $jam) {
+                $jamMap[$h][$pos] = $jam;
+                if ($pos > $maxPos) {
+                    $maxPos = $pos;
+                }
+            }
         }
 
         return view('livewire.admin.edit-jadwal', [
             'matrix' => $matrix,
             'hariAktif' => $hariAktif,
-            'rowMap' => $rowMap,
-            'maxJam' => $maxJam,
+            'jamMap' => $jamMap,
+            'maxPos' => $maxPos,
             'curriculumStats' => $this->getCurriculumStats(),
         ]);
     }

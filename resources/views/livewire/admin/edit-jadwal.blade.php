@@ -76,21 +76,32 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        @for($i = 1; $i <= $maxJam; $i++)
+                        @for($i = 0; $i <= $maxPos; $i++)
                             <tr>
-                                <td class="px-3 py-3 bg-gray-50 text-gray-600 font-bold border-r border-gray-200">{{ $i }}</td>
+                                @php
+                                    $rowLabel = '-';
+                                    foreach($hariAktif as $h) {
+                                        $j = $jamMap[$h][$i] ?? null;
+                                        if ($j && $j->jam_ke > 0) {
+                                            $rowLabel = $j->jam_ke;
+                                            break;
+                                        }
+                                    }
+                                @endphp
+                                <td class="px-3 py-3 bg-gray-50 text-gray-600 font-bold border-r border-gray-200">{{ $rowLabel }}</td>
                                 @foreach($hariAktif as $h)
                                     @php
-                                        $jam = $rowMap[$i][$h] ?? null;
+                                        $jam = $jamMap[$h][$i] ?? null;
                                     @endphp
                                     
                                     @if(!$jam)
                                         <td class="px-4 py-3 bg-gray-50 border-r border-gray-100"></td>
                                     @elseif($jam->is_istirahat)
-                                        <td class="px-4 py-3 bg-amber-50/50 border-r border-gray-100 relative group">
+                                        <td class="px-4 py-3 bg-amber-50/50 border-r border-gray-100 relative group text-center">
                                             <div class="flex flex-col items-center justify-center py-2 text-amber-600/70">
                                                 <svg class="w-4 h-4 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                                <span class="text-[10px] font-bold uppercase tracking-wider">Istirahat</span>
+                                                <span class="text-[10px] font-bold uppercase tracking-wider">{{ $jam->nama_kegiatan ?? 'Istirahat' }}</span>
+                                                <span class="text-[9px] text-amber-600/60 mt-0.5">{{ substr($jam->jam_mulai,0,5) }}-{{ substr($jam->jam_selesai,0,5) }}</span>
                                             </div>
                                         </td>
                                     @else

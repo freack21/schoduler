@@ -107,16 +107,23 @@ class GenerateJadwal extends Component
         $allDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $dbDays = JamPelajaran::select('hari')->distinct()->pluck('hari')->toArray();
         $hariAktif = array_values(array_intersect($allDays, $dbDays));
-        $maxJamKe = JamPelajaran::max('jam_ke') ?? 0;
+
+        // Prepare sequential map of JamPelajaran
+        $jams = JamPelajaran::orderBy('jam_mulai')->get();
+        $jamMap = [];
+        $maxPos = 0;
+        foreach ($hariAktif as $h) {
+            $jamsForHari = $jams->where('hari', $h)->sortBy('jam_mulai')->values();
+            foreach ($jamsForHari as $pos => $jam) {
+                $jamMap[$h][$pos] = $jam;
+                if ($pos > $maxPos) {
+                    $maxPos = $pos;
+                }
+            }
+        }
 
         if ($this->showResult && $this->status === 'done') {
             $kelasList = Kelas::orderBy('tingkat_id')->orderBy('nama')->get();
-            
-            $jams = JamPelajaran::all();
-            $jamMap = [];
-            foreach($jams as $jam) {
-                $jamMap[$jam->hari][$jam->jam_ke] = $jam;
-            }
 
             foreach ($kelasList as $kelas) {
                 $activeTahunAjaran = \App\Models\Pengaturan::activeTahunAjaran();
@@ -137,9 +144,9 @@ class GenerateJadwal extends Component
                 }
 
                 $matrix = [];
-                for ($i = 1; $i <= $maxJamKe; $i++) {
+                for ($p = 0; $p <= $maxPos; $p++) {
                     foreach ($hariAktif as $h) {
-                        $matrix[$i][$h] = [];
+                        $matrix[$p][$h] = [];
                     }
                 }
 
@@ -150,7 +157,17 @@ class GenerateJadwal extends Component
                     $kode = $entry->mapel->kode;
                     $mapelGlobalSeq[$kode] = ($mapelGlobalSeq[$kode] ?? 0) + 1;
                     
-                    $matrix[$jam->jam_ke][$cleanHari][] = [
+                    $pos = 0;
+                    if (isset($jamMap[$cleanHari])) {
+                        foreach ($jamMap[$cleanHari] as $pIdx => $jModel) {
+                            if ($jModel->id === $jam->id) {
+                                $pos = $pIdx;
+                                break;
+                            }
+                        }
+                    }
+
+                    $matrix[$pos][$cleanHari][] = [
                         'mapel' => $kode,
                         'guru' => explode(',', $entry->guru->user->nama_lengkap)[0],
                         'seq' => $mapelGlobalSeq[$kode],
@@ -164,19 +181,20 @@ class GenerateJadwal extends Component
                 }
 
                 // Fill blanks and breaks
-                for ($i = 1; $i <= $maxJamKe; $i++) {
+                for ($p = 0; $p <= $maxPos; $p++) {
                     foreach ($hariAktif as $h) {
-                        $jam = $jamMap[$h][$i] ?? null;
+                        $jam = $jamMap[$h][$p] ?? null;
                         if ($jam) {
                             if ($jam->is_istirahat) {
-                                $matrix[$i][$h][] = [
+                                $matrix[$p][$h][] = [
                                     'is_istirahat' => true,
                                     'is_empty' => false,
                                     'jam_mulai' => $jam->jam_mulai,
                                     'jam_selesai' => $jam->jam_selesai,
+                                    'kegiatan' => $jam->nama_kegiatan ?? 'Istirahat',
                                 ];
-                            } else if (empty($matrix[$i][$h])) {
-                                $matrix[$i][$h][] = [
+                            } else if (empty($matrix[$p][$h])) {
+                                $matrix[$p][$h][] = [
                                     'is_istirahat' => false,
                                     'is_empty' => true,
                                     'jam_mulai' => $jam->jam_mulai,
@@ -197,7 +215,8 @@ class GenerateJadwal extends Component
         return view('livewire.admin.generate-jadwal', [
             'jadwalData' => $jadwalData,
             'hari' => $hariAktif,
-            'maxJamKe' => $maxJamKe,
+            'maxPos' => $maxPos,
+            'jamMap' => $jamMap,
         ]);
     }
 }
