@@ -184,11 +184,11 @@
                                             <td class="px-2 py-1.5 text-center border border-gray-100 align-top">
                                                 <div class="flex flex-col gap-2">
                                                     @foreach($cellItems as $cell)
-                                                        @if(isset($cell['is_istirahat']) && $cell['is_istirahat'])
-                                                            <div class="bg-amber-50 border border-amber-100/50 rounded-lg px-2 py-1.5 w-full">
-                                                                <div class="text-[10px] uppercase tracking-wider font-bold text-amber-700">Istirahat</div>
-                                                                <div class="text-[10px] text-amber-600/70">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
-                                                            </div>
+                                                         @if(isset($cell['is_istirahat']) && $cell['is_istirahat'])
+                                                             <div class="bg-amber-50 border border-amber-100/50 rounded-lg px-2 py-1.5 w-full">
+                                                                 <div class="text-[10px] uppercase tracking-wider font-bold text-amber-700">{{ $cell['kegiatan'] ?? 'Istirahat' }}</div>
+                                                                 <div class="text-[10px] text-amber-600/70">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
+                                                             </div>
                                                         @elseif(isset($cell['is_empty']) && $cell['is_empty'])
                                                             <div class="bg-gray-50/50 border border-gray-100 rounded-lg px-2 py-1.5 w-full">
                                                                 <div class="text-[10px] text-gray-400">{{ substr($cell['jam_mulai'],0,5) }}-{{ substr($cell['jam_selesai'],0,5) }}</div>
