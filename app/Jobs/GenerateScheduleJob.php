@@ -55,7 +55,7 @@ class GenerateScheduleJob implements ShouldQueue
             $jamsForHari = $jamList->where('hari', trim($hari))->sortBy('jam_mulai');
             $jIdx = 0;
             foreach ($jamsForHari as $jam) {
-                if ($jam->is_istirahat) continue;
+                if ($jam->is_istirahat || $jam->jam_ke == 0) continue;
                 
                 $slotMap[$s] = [
                     'hari' => trim($hari),
