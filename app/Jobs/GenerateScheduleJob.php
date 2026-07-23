@@ -608,13 +608,12 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        $total = $guruConflicts 
-               + $kelasConflicts 
-               + ($sameDayMapelPenalty * 0.1)
-               + ($distViolations * 0.01) 
-               + ($gapPenalties * 0.001) 
-               + ($packingPenalty * 0.0001)
-               + ($frontLoadPenalty * 0.00001);
+        $total = ($guruConflicts + $kelasConflicts) * 10000
+               + ($sameDayMapelPenalty * 10)
+               + ($distViolations * 1) 
+               + ($gapPenalties * 0.1) 
+               + ($packingPenalty * 0.01)
+               + ($frontLoadPenalty * 0.001);
 
         return [
             'guru_conflicts' => $guruConflicts,
@@ -690,8 +689,8 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
-        // Targeted Repair (Local Search) for conflicts (30% chance)
-        if ($this->randFloat() < 0.3) {
+        // Targeted Repair (Local Search) for conflicts (50% chance)
+        if ($this->randFloat() < 0.5) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
             
@@ -710,7 +709,7 @@ class GenerateScheduleJob implements ShouldQueue
                     $bestScore = $eval['total'];
                     
                     shuffle($validStarts);
-                    $testSlots = array_slice($validStarts, 0, 15);
+                    $testSlots = array_slice($validStarts, 0, 30);
                     
                     foreach ($testSlots as $testSlot) {
                         $chromosome['slots'][$bIdx] = $testSlot;
@@ -729,8 +728,8 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // SWAP MUTATION: Targeted swap for dense schedules (30% chance)
-        if ($this->randFloat() < 0.3) {
+        // SWAP MUTATION: Targeted swap for dense schedules (50% chance)
+        if ($this->randFloat() < 0.5) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
             
