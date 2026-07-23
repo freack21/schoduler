@@ -359,7 +359,7 @@ class GenerateScheduleJob implements ShouldQueue
                 'fitness' => $finalFitness,
                 'violations' => $hard,
                 'dist_violations' => $final['dist_violations'] + $final['same_day_mapel'],
-                'message' => $hard > 0 ? "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang." : "Jadwal berhasil digenerate tanpa bentrok fisik (Sempurna)!",
+                'message' => $hard > 0 ? "Jadwal digenerate dengan {$hard} bentrok. Perlu di-generate ulang." : "Jadwal berhasil digenerate tanpa bentrok.",
             ]);
         } else {
             $genState->update(['status' => 'failed', 'message' => 'Gagal menghasilkan jadwal']);
