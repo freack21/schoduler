@@ -174,12 +174,45 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
+        // ── INITIALIZE GURU ASSIGNMENTS ──
+        $assignedGurus = [];
+        $guruLoad = [];
+        
+        $dIndices = array_keys($demands);
+        // Sort demands to assign the ones with fewest eligible teachers first (MRV)
+        usort($dIndices, function($a, $b) use ($demands) {
+            $countA = array_sum(array_map('count', $demands[$a]['eligible_gurus']));
+            $countB = array_sum(array_map('count', $demands[$b]['eligible_gurus']));
+            return $countA <=> $countB;
+        });
+
+        foreach ($dIndices as $dIdx) {
+            $demand = $demands[$dIdx];
+            $picked = [];
+            foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                // Find eligible teacher with the minimum current load
+                $bestGuru = $eligible[0];
+                $minLoad = PHP_INT_MAX;
+                foreach ($eligible as $gid) {
+                    $load = $guruLoad[$gid] ?? 0;
+                    if ($load < $minLoad) {
+                        $minLoad = $load;
+                        $bestGuru = $gid;
+                    }
+                }
+                $picked[$mId] = $bestGuru;
+                $guruLoad[$bestGuru] = ($guruLoad[$bestGuru] ?? 0) + $demand['jam_per_minggu'];
+            }
+            $assignedGurus[$dIdx] = $picked;
+        }
+
         $evalContext = [
             'demands' => $demands,
             'blocks' => $blocks,
             'demandBlocks' => $demandBlocks,
             'slotMap' => $slotMap,
             'validBlockStarts' => $validBlockStarts,
+            'gurus' => $assignedGurus,
         ];
 
         // ── INITIAL POPULATION ──
@@ -302,7 +335,7 @@ class GenerateScheduleJob implements ShouldQueue
                 $block = $evalContext['blocks'][$bIdx];
                 $dIdx = $block['demand_idx'];
                 $demand = $evalContext['demands'][$dIdx];
-                $guruMap = $bestChromosome['gurus'][$dIdx];
+                $guruMap = $evalContext['gurus'][$dIdx];
                 $kelasId = $demand['kelas_id'];
                 
                 $canSave = true;
@@ -368,20 +401,10 @@ class GenerateScheduleJob implements ShouldQueue
 
     private function createRandomChromosome(array $ctx): array
     {
-        $demands = $ctx['demands'];
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
         
-        $gurus = [];
         $slots = [];
-
-        foreach ($demands as $dIdx => $demand) {
-            $picked = [];
-            foreach ($demand['eligible_gurus'] as $mId => $eligibleList) {
-                $picked[$mId] = $eligibleList[array_rand($eligibleList)];
-            }
-            $gurus[$dIdx] = $picked;
-        }
 
         foreach ($blocks as $bIdx => $block) {
             $size = $block['size'];
@@ -389,7 +412,7 @@ class GenerateScheduleJob implements ShouldQueue
             $slots[$bIdx] = $validStarts[array_rand($validStarts)];
         }
 
-        return ['gurus' => $gurus, 'slots' => $slots];
+        return ['slots' => $slots];
     }
 
     private function createSmartChromosome(array $ctx): array
@@ -398,35 +421,10 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
         $slotMap = $ctx['slotMap'];
+        $gurus = $ctx['gurus'];
         
-        $gurus = [];
         $slots = [];
-        $guruLoad = [];
         
-        // 1. Assign Gurus (Load Balancing)
-        $dIndices = array_keys($demands);
-        usort($dIndices, fn($a, $b) => array_sum(array_map('count', $demands[$a]['eligible_gurus'])) <=> array_sum(array_map('count', $demands[$b]['eligible_gurus'])));
-
-        foreach ($dIndices as $dIdx) {
-            $demand = $demands[$dIdx];
-            $picked = [];
-            foreach ($demand['eligible_gurus'] as $mId => $eligible) {
-                shuffle($eligible);
-                $bestGuru = $eligible[0];
-                $minLoad = PHP_INT_MAX;
-                foreach ($eligible as $gid) {
-                    $load = $guruLoad[$gid] ?? 0;
-                    if ($load < $minLoad) {
-                        $minLoad = $load;
-                        $bestGuru = $gid;
-                    }
-                }
-                $picked[$mId] = $bestGuru;
-                $guruLoad[$bestGuru] = ($guruLoad[$bestGuru] ?? 0) + $demand['jam_per_minggu'];
-            }
-            $gurus[$dIdx] = $picked;
-        }
-
         // 2. Assign Slots (Minimize Conflicts)
         $usedGuruSlots = [];
         $usedKelasSlots = [];
@@ -496,7 +494,7 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        return ['gurus' => $gurus, 'slots' => $slots];
+        return ['slots' => $slots];
     }
 
     private function evaluate(array $chromosome, array $ctx): array
@@ -523,7 +521,7 @@ class GenerateScheduleJob implements ShouldQueue
         foreach ($blocks as $bIdx => $block) {
             $dIdx = $block['demand_idx'];
             $demand = $demands[$dIdx];
-            $guruMap = $chromosome['gurus'][$dIdx];
+            $guruMap = $ctx['gurus'][$dIdx];
             $kelasId = $demand['kelas_id'];
             $start = $chromosome['slots'][$bIdx];
             $size = $block['size'];
@@ -646,8 +644,8 @@ class GenerateScheduleJob implements ShouldQueue
             return [$p1, $p2];
         }
 
-        $c1 = ['gurus' => [], 'slots' => []];
-        $c2 = ['gurus' => [], 'slots' => []];
+        $c1 = ['slots' => []];
+        $c2 = ['slots' => []];
         
         $totalBlocks = count($p1['slots']);
         if ($totalBlocks < 2) return [$p1, $p2];
@@ -663,20 +661,6 @@ class GenerateScheduleJob implements ShouldQueue
             } else {
                 $c1['slots'][$bIdx] = $p2['slots'][$bIdx];
                 $c2['slots'][$bIdx] = $p1['slots'][$bIdx];
-            }
-        }
-        
-        $dIdxKeys = array_keys($p1['gurus']);
-        $demandCrossoverPoint = (int) (($crossoverPoint / $totalBlocks) * count($dIdxKeys));
-        if ($demandCrossoverPoint === 0) $demandCrossoverPoint = 1;
-        
-        foreach ($dIdxKeys as $i => $dIdx) {
-            if ($i < $demandCrossoverPoint) {
-                $c1['gurus'][$dIdx] = $p1['gurus'][$dIdx];
-                $c2['gurus'][$dIdx] = $p2['gurus'][$dIdx];
-            } else {
-                $c1['gurus'][$dIdx] = $p2['gurus'][$dIdx];
-                $c2['gurus'][$dIdx] = $p1['gurus'][$dIdx];
             }
         }
 
@@ -774,18 +758,6 @@ class GenerateScheduleJob implements ShouldQueue
                 $validStarts = $validBlockStarts[$size];
                 if (!empty($validStarts)) {
                     $chromosome['slots'][$bIdx] = $validStarts[array_rand($validStarts)];
-                }
-            }
-        }
-
-        // Mutate gurus
-        foreach ($demands as $dIdx => $demand) {
-            if ($this->randFloat() < $mutRate) {
-                $eligibleMap = $demand['eligible_gurus'];
-                $mIdToMutate = array_rand($eligibleMap);
-                $eligible = $eligibleMap[$mIdToMutate];
-                if (count($eligible) > 1) {
-                    $chromosome['gurus'][$dIdx][$mIdToMutate] = $eligible[array_rand($eligible)];
                 }
             }
         }

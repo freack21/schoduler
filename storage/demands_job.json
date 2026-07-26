@@ -1,0 +1,5130 @@
+[
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                6,
+                65,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            7
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "7": [
+                10
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                11,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            13
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "13": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                54,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                27,
+                32
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            22
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "22": [
+                30
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                37,
+                50
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            25
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "25": [
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                43
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            26
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "26": [
+                45,
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 1,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                6,
+                65,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            7
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "7": [
+                10
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                11,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            13
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "13": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                54,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                27,
+                32
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            22
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "22": [
+                30
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                37,
+                50
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            25
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "25": [
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                43
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            26
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "26": [
+                45,
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 2,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                6,
+                65,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            7
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "7": [
+                10
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                11,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            13
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "13": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                54,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                27,
+                32
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            22
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "22": [
+                30
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                37,
+                50
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            25
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "25": [
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                43
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            26
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "26": [
+                45,
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 3,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                6,
+                65,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            7
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "7": [
+                10
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                11,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            13
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "13": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                54,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                27,
+                32
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            22
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "22": [
+                30
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                37,
+                50
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            25
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "25": [
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                43
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            26
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "26": [
+                45,
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 4,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                6,
+                65,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            7
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "7": [
+                10
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                11,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            13
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "13": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                54,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                27,
+                32
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            22
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "22": [
+                30
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                37,
+                50
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            25
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "25": [
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                43
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            26
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "26": [
+                45,
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 5,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                6,
+                65,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            7
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "7": [
+                10
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                11,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            13
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "13": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                54,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                27,
+                32
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            22
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "22": [
+                30
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                37,
+                50
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            25
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "25": [
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                43
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            26
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "26": [
+                45,
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 6,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                53
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            1
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "1": [
+                2,
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            2
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "2": [
+                9,
+                45,
+                46,
+                53,
+                3
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            14
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "14": [
+                16
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            18
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "18": [
+                28,
+                37,
+                49,
+                1,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 7,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            1
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "1": [
+                2,
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            2
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "2": [
+                9,
+                45,
+                46,
+                53,
+                3
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            14
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "14": [
+                16
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            18
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "18": [
+                28,
+                37,
+                49,
+                1,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 8,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            1
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "1": [
+                2,
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            2
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "2": [
+                9,
+                45,
+                46,
+                53,
+                3
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            14
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "14": [
+                16
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            18
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "18": [
+                28,
+                37,
+                49,
+                1,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 9,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            1
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "1": [
+                2,
+                42
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            2
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "2": [
+                9,
+                45,
+                46,
+                53,
+                3
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            14
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "14": [
+                16
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            18
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "18": [
+                28,
+                37,
+                49,
+                1,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 10,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            5
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "5": [
+                5,
+                6,
+                65,
+                47
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            8
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "8": [
+                10,
+                14
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            10
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "10": [
+                11,
+                23,
+                38,
+                18
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            23
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "23": [
+                30,
+                55
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 11,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            5
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "5": [
+                5,
+                6,
+                65,
+                47
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            8
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "8": [
+                10,
+                14
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            10
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "10": [
+                11,
+                23,
+                38,
+                18
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            23
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "23": [
+                30,
+                55
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 12,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            5
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "5": [
+                5,
+                6,
+                65,
+                47
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            8
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "8": [
+                10,
+                14
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            10
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "10": [
+                11,
+                23,
+                38,
+                18
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            23
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "23": [
+                30,
+                55
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 13,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                19,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            5
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "5": [
+                5,
+                6,
+                65,
+                47
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            8
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "8": [
+                10,
+                14
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            10
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "10": [
+                11,
+                23,
+                38,
+                18
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                15,
+                17,
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                20,
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21,
+                52
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34,
+                48,
+                54
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                28,
+                35,
+                49,
+                51,
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29,
+                36
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            23
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "23": [
+                30,
+                55
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                31,
+                33,
+                25,
+                27
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40,
+                41,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 14,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                46,
+                48,
+                53,
+                8
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 15,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 16,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 17,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 18,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 19,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 20,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            3
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 3,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "3": [
+                4,
+                44
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            4
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "4": [
+                5,
+                7
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            6
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "6": [
+                8,
+                48
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            11
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "11": [
+                12,
+                24
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            12
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "12": [
+                13
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            9
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "9": [
+                18,
+                23,
+                38
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            16
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "16": [
+                21
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            17
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 4,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "17": [
+                22,
+                34
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            19
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 1,
+        "jam_per_hari": 1,
+        "eligible_gurus": {
+            "19": [
+                25,
+                27,
+                31
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            20
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "20": [
+                26,
+                66
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            21
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "21": [
+                29
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            15
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "15": [
+                39
+            ]
+        }
+    },
+    {
+        "kelas_id": 21,
+        "mapel_ids": [
+            24
+        ],
+        "is_parallel": false,
+        "jam_per_minggu": 2,
+        "jam_per_hari": 2,
+        "eligible_gurus": {
+            "24": [
+                40
+            ]
+        }
+    }
+]
