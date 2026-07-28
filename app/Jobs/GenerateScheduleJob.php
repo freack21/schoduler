@@ -770,8 +770,8 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
-        // Targeted Repair (Local Search) for slots (15% chance)
-        if ($this->randFloat() < 0.15) {
+        // Targeted Repair (Local Search) for slots (always run)
+        if (true) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
             
@@ -844,8 +844,8 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // Targeted Teacher Repair (15% chance)
-        if ($this->randFloat() < 0.15) {
+        // Targeted Teacher Repair (always run)
+        if (true) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
             if (!empty($conflicts)) {
