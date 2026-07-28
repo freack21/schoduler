@@ -435,7 +435,16 @@ class GenerateScheduleJob implements ShouldQueue
             $slots[$bIdx] = $validStarts[array_rand($validStarts)];
         }
 
-        return ['slots' => $slots, 'teachers' => $ctx['gurus']];
+        $teachers = [];
+        foreach ($ctx['demands'] as $dIdx => $demand) {
+            $picked = [];
+            foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                $picked[$mId] = $eligible[array_rand($eligible)];
+            }
+            $teachers[$dIdx] = $picked;
+        }
+
+        return ['slots' => $slots, 'teachers' => $teachers];
     }
 
     private function createSmartChromosome(array $ctx): array
@@ -444,9 +453,33 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
         $slotMap = $ctx['slotMap'];
-        $gurus = $ctx['gurus'];
         
         $slots = [];
+        
+        // 1. Assign Teachers (Load Balanced & Randomized Order)
+        $gurus = [];
+        $guruLoad = [];
+        $dIndices = array_keys($demands);
+        shuffle($dIndices);
+        
+        foreach ($dIndices as $dIdx) {
+            $demand = $demands[$dIdx];
+            $picked = [];
+            foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                $bestGuru = $eligible[0];
+                $minLoad = PHP_INT_MAX;
+                foreach ($eligible as $gid) {
+                    $load = $guruLoad[$gid] ?? 0;
+                    if ($load < $minLoad) {
+                        $minLoad = $load;
+                        $bestGuru = $gid;
+                    }
+                }
+                $picked[$mId] = $bestGuru;
+                $guruLoad[$bestGuru] = ($guruLoad[$bestGuru] ?? 0) + $demand['jam_per_minggu'];
+            }
+            $gurus[$dIdx] = $picked;
+        }
         
         // 2. Assign Slots (Minimize Conflicts)
         $usedGuruSlots = [];
