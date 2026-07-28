@@ -235,11 +235,28 @@ foreach ($bIndices as $bIdx) {
     $slots[$bIdx] = $bestSlot;
     for ($i = 0; $i < $size; $i++) {
         $sIdx = $bestSlot + $i;
-        foreach ($guruMap as $guruId) {
-            if (isset($usedGuruSlots[$guruId][$sIdx])) $guruConflicts++;
-            $usedGuruSlots[$guruId][$sIdx] = true;
+        $day = $slotMap[$sIdx]['hari'];
+        $jam = $slotMap[$sIdx]['jam_ke'];
+        
+        foreach ($guruMap as $mId => $guruId) {
+            if (isset($usedGuruSlots[$guruId][$sIdx])) {
+                $guruConflicts++;
+                $g = \App\Models\Guru::with('user')->find($guruId);
+                $mapel = \App\Models\Mapel::find($mId);
+                $k = \App\Models\Kelas::find($kelasId);
+                $otherKelasId = $usedGuruSlots[$guruId][$sIdx];
+                $ok = \App\Models\Kelas::find($otherKelasId);
+                $okName = $ok->nama ?? 'Kelas Lain';
+                $clashInfo[] = "🚨 GURU CLASH: Guru '" . ($g->user->nama_lengkap ?? $g->nama) . "' mengajar Mapel '{$mapel->nama}' di Kelas '{$k->nama}' pada {$day} jam ke-{$jam}, tapi guru ini sudah mengajar di kelas '{$okName}'!";
+            }
+            $usedGuruSlots[$guruId][$sIdx] = $kelasId;
         }
-        if (isset($usedKelasSlots[$kelasId][$sIdx])) $kelasConflicts++;
+        if (isset($usedKelasSlots[$kelasId][$sIdx])) {
+            $kelasConflicts++;
+            $k = \App\Models\Kelas::find($kelasId);
+            $mapel = \App\Models\Mapel::find(array_key_first($guruMap));
+            $clashInfo[] = "🚨 KELAS CLASH: Kelas '{$k->nama}' dijadwalkan Mapel '" . ($mapel->nama ?? 'NULL') . "' pada {$day} jam ke-{$jam}, tapi kelas ini sudah terpakai di mapel/kegiatan lain!";
+        }
         $usedKelasSlots[$kelasId][$sIdx] = true;
     }
 }
@@ -247,4 +264,13 @@ foreach ($bIndices as $bIdx) {
 echo "Smart Chromosome Simulation Result:\n";
 echo "   Guru Conflicts: {$guruConflicts}\n";
 echo "   Kelas Conflicts: {$kelasConflicts}\n";
-echo "   Total Hard Conflicts: " . ($guruConflicts + $kelasConflicts) . "\n";
+echo "   Total Hard Conflicts: " . ($guruConflicts + $kelasConflicts) . "\n\n";
+
+if (!empty($clashInfo)) {
+    echo "=== RENTETAN DETIL BENTROK (15 Teratas) ===\n";
+    $shown = array_slice(array_unique($clashInfo), 0, 15);
+    foreach ($shown as $info) {
+        echo "{$info}\n";
+    }
+}
+
