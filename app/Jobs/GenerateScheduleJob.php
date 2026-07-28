@@ -261,21 +261,23 @@ class GenerateScheduleJob implements ShouldQueue
 
             usort($indexed, fn($a, $b) => $b['f'] <=> $a['f']);
 
-            // Local search on the best chromosome of the generation
-            $repaired = $this->applyLocalSearch($indexed[0]['c'], $evalContext);
-            $repairedEval = $this->evaluate($repaired, $evalContext);
-            $repairedScore = $repairedEval['total'];
-            $repairedFitness = 1.0 / (1.0 + $repairedScore);
-            
-            $indexed[0]['c'] = $repaired;
-            $indexed[0]['s'] = $repairedScore;
-            $indexed[0]['f'] = $repairedFitness;
-            $population[$indexed[0]['idx']] = $repaired;
-            $fitnessValues[$indexed[0]['idx']] = $repairedFitness;
-            
-            if ($repairedScore < $bestScore) {
-                $bestScore = $repairedScore;
-                $bestChromosome = $repaired;
+            // Local search on the best chromosome of the generation (every 5 generations to stay fast)
+            if ($gen % 5 === 0) {
+                $repaired = $this->applyLocalSearch($indexed[0]['c'], $evalContext);
+                $repairedEval = $this->evaluate($repaired, $evalContext);
+                $repairedScore = $repairedEval['total'];
+                $repairedFitness = 1.0 / (1.0 + $repairedScore);
+                
+                $indexed[0]['c'] = $repaired;
+                $indexed[0]['s'] = $repairedScore;
+                $indexed[0]['f'] = $repairedFitness;
+                $population[$indexed[0]['idx']] = $repaired;
+                $fitnessValues[$indexed[0]['idx']] = $repairedFitness;
+                
+                if ($repairedScore < $bestScore) {
+                    $bestScore = $repairedScore;
+                    $bestChromosome = $repaired;
+                }
             }
 
             if ($bestScore < $lastBestScore) {
@@ -821,7 +823,7 @@ class GenerateScheduleJob implements ShouldQueue
         // Targeted Joint Slot-Teacher Local Search (up to 3 passes)
         $improved = true;
         $pass = 0;
-        while ($improved && $pass < 3) {
+        while ($improved && $pass < 1) {
             $improved = false;
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
