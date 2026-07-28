@@ -66,16 +66,39 @@ class AdjustCurriculumPeminatan extends Command
             $this->line("🗑️ Mengosongkan pemetaan kurikulum lama Kelas XI & XII.");
 
             // 5. Definisikan Mapel Wajib (Sesuai List Dinda)
-            // ID Mapel: Agama Islam (16), Agama Kristen (21), PPKN (12), B.Indo (17), B.Ing (3), Mat Wajib (11), Sejarah (9), PJOK (15), Seni Budaya (6), PKWU (24), Informatika (20), BK (19)
-            $wajibMapelIds = [16, 21, 12, 17, 3, 11, 9, 15, 6, 24, 20, 19];
+            $wajibMapelNames = [
+                'Pendidikan Agama Islam',
+                'Pendidikan Agama Kristen',
+                'PPKN',
+                'Bahasa Indonesia',
+                'Bahasa Inggris',
+                'Matematika Wajib',
+                'Sejarah',
+                'PJOK',
+                'Seni Budaya',
+                'PKWU',
+                'Informatika',
+                'BK'
+            ];
 
             // 6. Definisikan Mapel Peminatan XI
-            $peminatanXiMipa = [18, 2, 14, 1]; // Mat Lanjut (18), Biologi Lanjut (2), Fisika Lanjut (14), Kimia Lanjut (1)
-            $peminatanXiIps  = [5, 8, 23, 10]; // Ekonomi Lanjut (5), Sosiologi Lanjut (8), Geografi Lanjut (23), Sejarah Pem. Lanjut (10)
+            $peminatanXiMipaNames = ['Matematika Lanjut', 'Biologi Lanjutan', 'Fisika Lanjutan', 'Kimia Lanjutan'];
+            $peminatanXiIpsNames  = ['Ekonomi Lanjutan', 'Sosiologi Lanjutan', 'Geografi Lanjutan', 'Sejarah Peminatan Lanjutan'];
 
-            // 7. Definisikan Mapel Peminatan XII (Sesuai List Dinda)
-            $peminatanXiiMipa = [18, 2, 14, 1]; // Mat Lanjut (18), Biologi Lanjut (2), Fisika Lanjut (14), Kimia Lanjut (1)
-            $peminatanXiiIps  = [5, 23, 10]; // Ekonomi Lanjut (5), Geografi Lanjut (23), Sejarah Pem. Lanjut (10)
+            // 7. Definisikan Mapel Peminatan XII
+            $peminatanXiiMipaNames = ['Matematika Lanjut', 'Biologi Lanjutan', 'Fisika Lanjutan', 'Kimia Lanjutan'];
+            $peminatanXiiIpsNames  = ['Ekonomi Lanjutan', 'Geografi Lanjutan', 'Sejarah Peminatan Lanjutan'];
+
+            // Helper to get IDs
+            $getIds = function($names) {
+                return Mapel::whereIn('nama', $names)->pluck('id')->toArray();
+            };
+
+            $wajibMapelIds = $getIds($wajibMapelNames);
+            $peminatanXiMipa = $getIds($peminatanXiMipaNames);
+            $peminatanXiIps = $getIds($peminatanXiIpsNames);
+            $peminatanXiiMipa = $getIds($peminatanXiiMipaNames);
+            $peminatanXiiIps = $getIds($peminatanXiiIpsNames);
 
             // Seed Kelas XI Wajib
             foreach ($wajibMapelIds as $mid) {
