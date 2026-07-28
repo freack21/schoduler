@@ -284,8 +284,12 @@ class GenerateScheduleJob implements ShouldQueue
             }
             
             $currentMutationRate = $this->mutationRate;
-            if ($stagnantGenerations > 10) {
-                $currentMutationRate = min(0.2, $this->mutationRate + ($stagnantGenerations * 0.01));
+            if ($stagnantGenerations > 40) {
+                $currentMutationRate = 0.45;
+            } elseif ($stagnantGenerations > 15) {
+                $currentMutationRate = 0.25;
+            } elseif ($stagnantGenerations > 5) {
+                $currentMutationRate = 0.15;
             }
 
             if ($gen === 0) {
