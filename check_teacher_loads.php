@@ -12,11 +12,16 @@ use App\Models\Kurikulum;
 $gurus = Guru::with(['user'])->get();
 $guruLoads = [];
 
+echo "DEBUG: Total Gurus count: " . count($gurus) . "\n";
+
 foreach ($gurus as $g) {
     $name = $g->user->nama_lengkap ?? $g->nama;
     
     // Find all classes/subjects taught by this teacher
     $mappings = GuruMapel::where('guru_id', $g->id)->get();
+    if (count($mappings) > 0) {
+        echo "DEBUG: Guru '{$name}' has " . count($mappings) . " mappings\n";
+    }
     
     $totalHours = 0;
     $classesCount = 0;
