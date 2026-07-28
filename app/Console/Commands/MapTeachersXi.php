@@ -45,37 +45,30 @@ class MapTeachersXi extends Command
                 foreach ($mapelIds as $mapelId) {
                     $mapel = \App\Models\Mapel::find($mapelId);
                     
-                    // Cek apakah mapel ini sudah punya guru pengampu di tingkat ini
-                    $hasTeacher = $guruMapelAll->where('mapel_id', $mapelId)
-                        ->where('tingkat_id', $tingkatId)
-                        ->isNotEmpty();
+                    // Cari guru pengampu mapel ini di tingkat lain
+                    $otherMappings = \App\Models\GuruMapel::with('guru.user')
+                        ->where('mapel_id', $mapelId)
+                        ->get();
 
-                    if (!$hasTeacher) {
-                        // Cari guru pengampu mapel ini di tingkat lain
-                        $otherMappings = \App\Models\GuruMapel::with('guru.user')
-                            ->where('mapel_id', $mapelId)
-                            ->get();
+                    if ($otherMappings->isNotEmpty()) {
+                        // Ambil guru unik di tingkat lain
+                        $uniqueGurus = $otherMappings->unique('guru_id');
+                        foreach ($uniqueGurus as $other) {
+                            // Cek double insert
+                            $exists = \App\Models\GuruMapel::where('guru_id', $other->guru_id)
+                                ->where('mapel_id', $mapelId)
+                                ->where('tingkat_id', $tingkatId)
+                                ->exists();
 
-                        if ($otherMappings->isNotEmpty()) {
-                            // Ambil guru unik di tingkat lain
-                            $uniqueGurus = $otherMappings->unique('guru_id');
-                            foreach ($uniqueGurus as $other) {
-                                // Cek double insert
-                                $exists = \App\Models\GuruMapel::where('guru_id', $other->guru_id)
-                                    ->where('mapel_id', $mapelId)
-                                    ->where('tingkat_id', $tingkatId)
-                                    ->exists();
-
-                                if (!$exists) {
-                                    \App\Models\GuruMapel::create([
-                                        'guru_id' => $other->guru_id,
-                                        'mapel_id' => $mapelId,
-                                        'tingkat_id' => $tingkatId,
-                                        'jurusan_id' => $other->jurusan_id,
-                                    ]);
-                                    $createdCount++;
-                                    $this->line("✅ Memetakan Guru '{$other->guru->user->nama_lengkap}' untuk Mapel '{$mapel->nama}' ke Tingkat '{$tingkat->nama}'");
-                                }
+                            if (!$exists) {
+                                \App\Models\GuruMapel::create([
+                                    'guru_id' => $other->guru_id,
+                                    'mapel_id' => $mapelId,
+                                    'tingkat_id' => $tingkatId,
+                                    'jurusan_id' => $other->jurusan_id,
+                                ]);
+                                $createdCount++;
+                                $this->line("✅ Memetakan Guru '{$other->guru->user->nama_lengkap}' untuk Mapel '{$mapel->nama}' ke Tingkat '{$tingkat->nama}'");
                             }
                         }
                     }

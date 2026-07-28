@@ -38,7 +38,8 @@ class AdjustCurriculumPeminatan extends Command
             // 2. Bagi Kelas XI: XI-1 s.d XI-4 (MIPA), XI-5 s.d XI-8 (IPS)
             $kelasXI = Kelas::where('tingkat_id', $tingkatXI->id)->orderBy('nama')->get();
             foreach ($kelasXI as $kelas) {
-                $num = (int) filter_var($kelas->nama, FILTER_SANITIZE_NUMBER_INT);
+                $parts = explode('-', $kelas->nama);
+                $num = isset($parts[1]) ? (int) filter_var($parts[1], FILTER_SANITIZE_NUMBER_INT) : 0;
                 if ($num >= 1 && $num <= 4) {
                     $kelas->jurusan_id = $mipa->id;
                 } else {
@@ -51,7 +52,8 @@ class AdjustCurriculumPeminatan extends Command
             // 3. Bagi Kelas XII: XII-1 s.d XII-4 (MIPA), XII-5 s.d XII-7 (IPS)
             $kelasXII = Kelas::where('tingkat_id', $tingkatXII->id)->orderBy('nama')->get();
             foreach ($kelasXII as $kelas) {
-                $num = (int) filter_var($kelas->nama, FILTER_SANITIZE_NUMBER_INT);
+                $parts = explode('-', $kelas->nama);
+                $num = isset($parts[1]) ? (int) filter_var($parts[1], FILTER_SANITIZE_NUMBER_INT) : 0;
                 if ($num >= 1 && $num <= 4) {
                     $kelas->jurusan_id = $mipa->id;
                 } else {
