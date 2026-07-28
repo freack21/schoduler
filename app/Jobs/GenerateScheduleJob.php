@@ -268,9 +268,24 @@ class GenerateScheduleJob implements ShouldQueue
                 $stagnantGenerations++;
             }
             
+            if ($stagnantGenerations > 25) {
+                \Illuminate\Support\Facades\Log::info("GA stagnant for 25 generations. Performing cataclysmic reset!");
+                $newPop = [$bestChromosome];
+                $smartCount = (int)($this->populationSize * 0.5);
+                for ($i = 1; $i < $smartCount; $i++) {
+                    $newPop[] = $this->createSmartChromosome($evalContext);
+                }
+                for ($i = $smartCount; $i < $this->populationSize; $i++) {
+                    $newPop[] = $this->createRandomChromosome($evalContext);
+                }
+                $population = $newPop;
+                $stagnantGenerations = 0;
+                continue;
+            }
+            
             $currentMutationRate = $this->mutationRate;
-            if ($stagnantGenerations > 15) {
-                $currentMutationRate = min(0.8, $this->mutationRate + ($stagnantGenerations * 0.02));
+            if ($stagnantGenerations > 10) {
+                $currentMutationRate = min(0.2, $this->mutationRate + ($stagnantGenerations * 0.01));
             }
 
             if ($gen === 0) {
