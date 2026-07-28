@@ -773,12 +773,13 @@ class GenerateScheduleJob implements ShouldQueue
                     $bestSlot = $chromosome['slots'][$bIdx];
                     $bestScore = $eval['total'];
                     
+                    shuffle($validStarts);
                     $testSlots = $validStarts;
                     
                     foreach ($testSlots as $testSlot) {
                         $chromosome['slots'][$bIdx] = $testSlot;
                         $testEval = $this->evaluate($chromosome, $ctx);
-                        if ($testEval['total'] < $bestScore) {
+                        if ($testEval['total'] <= $bestScore) {
                             $bestScore = $testEval['total'];
                             $bestSlot = $testSlot;
                             $eval = $testEval;
@@ -844,7 +845,7 @@ class GenerateScheduleJob implements ShouldQueue
                         foreach ($eligible as $guruId) {
                             $chromosome['teachers'][$dIdx][$mId] = $guruId;
                             $testEval = $this->evaluate($chromosome, $ctx);
-                            if ($testEval['total'] < $bestScore) {
+                            if ($testEval['total'] <= $bestScore) {
                                 $bestScore = $testEval['total'];
                                 $bestGuru = $guruId;
                                 $eval = $testEval;
