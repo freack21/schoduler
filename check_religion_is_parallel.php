@@ -19,6 +19,15 @@ echo "=== DIAGNOSTICS: SUBJECT DEMAND VS ELIGIBLE TEACHERS ===\n";
 
 $analyzed = [];
 
+$f = DB::table('failed_jobs')->orderBy('id', 'desc')->first();
+if ($f) {
+    echo "=== FAILED JOB EXCEPTION ===\n";
+    echo $f->exception . "\n";
+} else {
+    echo "No failed jobs!\n";
+}
+exit;
+
 foreach ($kelasList as $kelas) {
     $kuriList = $kurikulumList->where('tingkat_id', $kelas->tingkat_id);
     if ($kelas->jurusan_id) {
