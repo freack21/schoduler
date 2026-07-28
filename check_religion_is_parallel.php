@@ -19,12 +19,18 @@ echo "=== DIAGNOSTICS: SUBJECT DEMAND VS ELIGIBLE TEACHERS ===\n";
 
 $analyzed = [];
 
-$f = DB::table('failed_jobs')->orderBy('id', 'desc')->first();
-if ($f) {
-    echo "=== FAILED JOB EXCEPTION ===\n";
-    echo $f->exception . "\n";
-} else {
-    echo "No failed jobs!\n";
+$kristenMapel = App\Models\Mapel::where('nama', 'like', '%Kristen%')->first();
+if ($kristenMapel) {
+    $totalHours = App\Models\Kurikulum::where('mapel_id', $kristenMapel->id)->get()->sum(function($k) {
+        return $k->mapel->jam_per_minggu;
+    });
+    echo "Total Kristen hours needed: {$totalHours} jam/minggu\n";
+    
+    $gurus = App\Models\GuruMapel::where('mapel_id', $kristenMapel->id)->get();
+    echo "Kristen teachers:\n";
+    foreach ($gurus as $g) {
+        echo "- {$g->guru->nama} (ID: {$g->guru_id})\n";
+    }
 }
 exit;
 
