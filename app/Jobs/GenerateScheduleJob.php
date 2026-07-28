@@ -632,20 +632,7 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        if (!empty($conflictingBlocks)) {
-            $total = ($guruConflicts + $kelasConflicts) * 10000 + $overloadPenalty;
-            return [
-                'guru_conflicts' => $guruConflicts,
-                'kelas_conflicts' => $kelasConflicts,
-                'same_day_mapel' => 0,
-                'dist_violations' => 0,
-                'packing_penalty' => 0,
-                'total' => $total,
-                'conflicting_blocks' => array_keys($conflictingBlocks),
-            ];
-        }
 
-        // Jika tidak ada hard conflict, baru hitung soft constraints untuk optimasi kualitas
         foreach ($blocks as $bIdx => $block) {
             $dIdx = $block['demand_idx'];
             $demand = $demands[$dIdx];
