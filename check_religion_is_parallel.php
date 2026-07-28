@@ -19,22 +19,19 @@ echo "=== DIAGNOSTICS: SUBJECT DEMAND VS ELIGIBLE TEACHERS ===\n";
 
 $analyzed = [];
 
-$classes = App\Models\Kelas::all();
-$kurikulumList = App\Models\Kurikulum::with('mapel')->get();
-foreach ($classes as $k) {
-    $kuriList = $kurikulumList->where('tingkat_id', $k->tingkat_id);
-    if ($k->jurusan_id) {
-        $kuriList = $kuriList->filter(fn($kuri) => is_null($kuri->jurusan_id) || $kuri->jurusan_id == $k->jurusan_id);
-    } else {
-        $kuriList = $kuriList->whereNull('jurusan_id');
-    }
-    $load = 0;
-    foreach ($kuriList as $kuri) {
-        if ($kuri->mapel) {
-            $load += $kuri->mapel->jam_per_minggu;
-        }
-    }
-    echo "Kelas: {$k->nama} -> Beban: $load jam/minggu\n";
+$demands = json_decode(file_get_contents('storage/demands_job.json'), true);
+$blocks = json_decode(file_get_contents('storage/blocks_job.json'), true);
+$classSlots = [];
+foreach ($blocks as $bIdx => $block) {
+    $dIdx = $block['demand_idx'];
+    $demand = $demands[$dIdx];
+    $kelasId = $demand['kelas_id'];
+    $classSlots[$kelasId] = ($classSlots[$kelasId] ?? 0) + $block['size'];
+}
+foreach ($classSlots as $kelasId => $slots) {
+    $kelas = App\Models\Kelas::find($kelasId);
+    $name = $kelas ? $kelas->nama : "Kelas {$kelasId}";
+    echo "- {$name}: {$slots} slots\n";
 }
 exit;
 
