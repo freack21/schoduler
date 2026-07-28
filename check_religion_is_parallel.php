@@ -22,6 +22,7 @@ $analyzed = [];
 $demands = json_decode(file_get_contents('storage/demands_job.json'), true);
 $blocks = json_decode(file_get_contents('storage/blocks_job.json'), true);
 $chromosome = json_decode(file_get_contents('storage/best_chromosome.json'), true);
+
 $slotMap = [];
 $jamList = App\Models\JamPelajaran::all();
 $hariAktif = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
@@ -35,7 +36,8 @@ foreach ($hariAktif as $hari) {
     }
 }
 
-// 1. Build occupied slots for all classes and teachers
+// 1. Build busy slots for Seni Budaya teachers
+$sbGuruIds = [140, 178, 180, 185]; // From the clash logs
 $guruSlots = [];
 $kelasSlots = [];
 foreach ($blocks as $idx => $block) {
@@ -55,72 +57,44 @@ foreach ($blocks as $idx => $block) {
     }
 }
 
-echo "=== DETAILED CLASH ANALYSIS ===\n";
-foreach ($blocks as $idx => $block) {
-    $dIdx = $block['demand_idx'];
-    $demand = $demands[$dIdx];
-    $kelasId = $demand['kelas_id'];
-    $start = $chromosome['slots'][$idx];
-    $size = $block['size'];
-    $gMap = $chromosome['teachers'][$dIdx];
-    
-    $kelas = App\Models\Kelas::find($kelasId);
-    $kelasName = $kelas ? $kelas->nama : "Kelas {$kelasId}";
-    
-    // Check if this block is clashing
-    $hasKelasClash = false;
-    $clashingWith = [];
-    for ($i = 0; $i < $size; $i++) {
-        $s = $start + $i;
-        if (count($kelasSlots[$kelasId][$s]) > 1) {
-            $hasKelasClash = true;
-            foreach ($kelasSlots[$kelasId][$s] as $otherIdx) {
-                if ($otherIdx !== $idx) $clashingWith[$otherIdx] = true;
-            }
+echo "=== SENI BUDAYA GURU BUSY SLOTS ===\n";
+foreach ($sbGuruIds as $gId) {
+    $guru = App\Models\Guru::with('user')->find($gId);
+    $name = $guru ? ($guru->user->nama_lengkap ?? $guru->nama) : "Guru {$gId}";
+    echo "- {$name} (ID: {$gId}) is busy in slots: ";
+    $busy = [];
+    for ($s = 0; $s < 44; $s++) {
+        if (isset($guruSlots[$gId][$s])) {
+            $day = $slotMap[$s]['hari'];
+            $jam = $slotMap[$s]['jam_ke'];
+            $busy[] = "{$day}-J{$jam}";
         }
     }
-    
-    if ($hasKelasClash) {
-        $mapelNames = [];
-        foreach ($demand['mapel_ids'] as $mId) {
-            $mapelNames[] = App\Models\Mapel::find($mId)->nama;
-        }
-        $mapelStr = implode(' + ', $mapelNames);
-        
-        $day = $slotMap[$start]['hari'];
-        $jam = $slotMap[$start]['jam_ke'];
-        
-        echo "\n🚨 Block #{$idx}: '{$mapelStr}' in {$kelasName} scheduled at {$day} jam ke-{$jam} (size {$size}) clashes with:\n";
-        foreach (array_keys($clashingWith) as $otherIdx) {
-            $otherDIdx = $blocks[$otherIdx]['demand_idx'];
-            $otherDemand = $demands[$otherDIdx];
-            $otherMapelNames = [];
-            foreach ($otherDemand['mapel_ids'] as $mId) {
-                $otherMapelNames[] = App\Models\Mapel::find($mId)->nama;
-            }
-            $otherMapelStr = implode(' + ', $otherMapelNames);
-            $otherStart = $chromosome['slots'][$otherIdx];
-            $otherDay = $slotMap[$otherStart]['hari'];
-            $otherJam = $slotMap[$otherStart]['jam_ke'];
-            echo "  - Block #{$otherIdx}: '{$otherMapelStr}' scheduled at {$otherDay} jam ke-{$otherJam}\n";
-        }
-        
-        // Analyze eligible teachers
-        echo "  Eligible teachers for this block:\n";
-        foreach ($demand['eligible_gurus'] as $mId => $gurus) {
-            $mName = App\Models\Mapel::find($mId)->nama;
-            $assignedId = $gMap[$mId];
-            $assignedGuru = App\Models\Guru::with('user')->find($assignedId);
-            $assignedName = $assignedGuru ? ($assignedGuru->user->nama_lengkap ?? $assignedGuru->nama) : "Guru {$assignedId}";
-            echo "    * {$mName} (Assigned: {$assignedName}):\n";
-            foreach ($gurus as $gId) {
-                $guru = App\Models\Guru::with('user')->find($gId);
-                $name = $guru ? ($guru->user->nama_lengkap ?? $guru->nama) : "Guru {$gId}";
-                $busyCount = isset($guruSlots[$gId]) ? count($guruSlots[$gId]) : 0;
-                echo "      - {$name} (ID: {$gId}) | Busy in {$busyCount} slots\n";
-            }
+    echo implode(', ', $busy) . "\n";
+}
+
+$targetClasses = ['XI-3', 'XI-5', 'XII-3'];
+echo "\n=== TARGET CLASSES EMPTY SLOTS ===\n";
+foreach ($targetClasses as $cName) {
+    $kelas = App\Models\Kelas::where('nama', $cName)->first();
+    if (!$kelas) continue;
+    $kId = $kelas->id;
+    echo "- Class {$cName} (ID: {$kId}) occupied slots: ";
+    $occupied = [];
+    $empty = [];
+    for ($s = 0; $s < 44; $s++) {
+        if (isset($kelasSlots[$kId][$s])) {
+            $day = $slotMap[$s]['hari'];
+            $jam = $slotMap[$s]['jam_ke'];
+            $occupied[] = "{$day}-J{$jam}";
+        } else {
+            $day = $slotMap[$s]['hari'];
+            $jam = $slotMap[$s]['jam_ke'];
+            $empty[] = "{$day}-J{$jam}";
         }
     }
+    echo implode(', ', $occupied) . "\n";
+    echo "  * Empty slots: " . implode(', ', $empty) . "\n";
 }
 exit;
 
