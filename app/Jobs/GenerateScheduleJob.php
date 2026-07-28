@@ -729,21 +729,8 @@ class GenerateScheduleJob implements ShouldQueue
         $c1 = ['slots' => [], 'teachers' => []];
         $c2 = ['slots' => [], 'teachers' => []];
         
-        $totalBlocks = count($p1['slots']);
-        if ($totalBlocks < 2) return [$p1, $p2];
-        
-        $crossoverPoint = rand(1, $totalBlocks - 1);
-        $bIdxKeys = array_keys($p1['slots']);
-        
-        foreach ($bIdxKeys as $i => $bIdx) {
-            if ($i < $crossoverPoint) {
-                $c1['slots'][$bIdx] = $p1['slots'][$bIdx];
-                $c2['slots'][$bIdx] = $p2['slots'][$bIdx];
-            } else {
-                $c1['slots'][$bIdx] = $p2['slots'][$bIdx];
-                $c2['slots'][$bIdx] = $p1['slots'][$bIdx];
-            }
-        }
+        $c1['slots'] = $p1['slots'];
+        $c2['slots'] = $p2['slots'];
 
         // Crossover teacher assignments
         $demandKeys = array_keys($p1['teachers']);
