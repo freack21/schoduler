@@ -746,7 +746,7 @@ class GenerateScheduleJob implements ShouldQueue
                     $bestScore = $eval['total'];
                     
                     shuffle($validStarts);
-                    $testSlots = array_slice($validStarts, 0, 30);
+                    $testSlots = array_slice($validStarts, 0, 8);
                     
                     foreach ($testSlots as $testSlot) {
                         $chromosome['slots'][$bIdx] = $testSlot;
