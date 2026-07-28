@@ -22,7 +22,7 @@ class GenerateScheduleJob implements ShouldQueue
     public $timeout = 900;
 
     // GA parameters
-    private int $populationSize = 150;
+    private int $populationSize = 200;
     private int $maxGenerations = 500;
     private float $crossoverRate = 0.8;
     private float $mutationRate = 0.1;
@@ -830,7 +830,7 @@ class GenerateScheduleJob implements ShouldQueue
             
             if (!empty($conflicts)) {
                 shuffle($conflicts);
-                $toRepair = array_slice($conflicts, 0, mt_rand(2, 4));
+                $toRepair = [ $conflicts[array_rand($conflicts)] ];
                 
                 foreach ($toRepair as $bIdx) {
                     $block = $blocks[$bIdx];
