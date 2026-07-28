@@ -673,8 +673,8 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
-        // Targeted Repair (Local Search) for conflicts (50% chance)
-        if ($this->randFloat() < 0.5) {
+        // Targeted Repair (Local Search) for conflicts (15% chance)
+        if ($this->randFloat() < 0.15) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
             
@@ -712,8 +712,8 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // SWAP MUTATION: Targeted swap for dense schedules (50% chance)
-        if ($this->randFloat() < 0.5) {
+        // SWAP MUTATION: Targeted swap for dense schedules (15% chance)
+        if ($this->randFloat() < 0.15) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
             
