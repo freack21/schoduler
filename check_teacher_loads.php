@@ -44,10 +44,10 @@ foreach ($gurus as $g) {
                 })
                 ->first();
                 
-            if ($kur) {
-                $totalHours += $kur->jam_per_minggu;
+            if ($kur && $kur->mapel) {
+                $totalHours += $kur->mapel->jam_per_minggu;
                 $classesCount++;
-                $classDetails[] = "{$k->nama} ({$kur->mapel->nama}: {$kur->jam_per_minggu} jam)";
+                $classDetails[] = "{$k->nama} ({$kur->mapel->nama}: {$kur->mapel->jam_per_minggu} jam)";
             }
         }
     }
