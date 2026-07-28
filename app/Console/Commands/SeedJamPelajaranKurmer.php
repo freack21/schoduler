@@ -45,14 +45,14 @@ class SeedJamPelajaranKurmer extends Command
                 ['07:45', '08:30', false, null, 45],
                 ['08:30', '09:15', false, null, 45],
                 ['09:15', '10:00', false, null, 45],
-                ['10:00', '10:15', true, 'Istirahat 1', 15],
-                ['10:15', '11:00', false, null, 45],
-                ['11:00', '11:45', false, null, 45],
-                ['11:45', '12:30', true, 'Istirahat 2 (Ishoma)', 45],
-                ['12:30', '13:15', false, null, 45],
-                ['13:15', '14:00', false, null, 45],
-                ['14:00', '14:45', false, null, 45],
-                ['14:45', '15:30', false, null, 45],
+                ['10:00', '10:20', true, 'Istirahat 1', 20],
+                ['10:20', '11:05', false, null, 45],
+                ['11:05', '11:50', false, null, 45],
+                ['11:50', '12:30', false, null, 40],
+                ['12:30', '13:20', true, 'Istirahat 2 (Ishoma)', 50],
+                ['13:20', '14:00', false, null, 40],
+                ['14:00', '14:40', false, null, 40],
+                ['14:40', '15:20', false, null, 40],
             ];
             $this->buildDay('Senin', $waktuSenin, $jadwal);
 
@@ -66,11 +66,11 @@ class SeedJamPelajaranKurmer extends Command
                 ['10:15', '10:30', true, 'Istirahat 1', 15],
                 ['10:30', '11:15', false, null, 45],
                 ['11:15', '12:00', false, null, 45],
-                ['12:00', '12:45', true, 'Istirahat 2 (Ishoma)', 45],
-                ['12:45', '13:30', false, null, 45],
-                ['13:30', '14:15', false, null, 45],
-                ['14:15', '15:00', false, null, 45],
-                ['15:00', '15:45', false, null, 45],
+                ['12:00', '12:40', true, 'Istirahat 2 (Ishoma)', 40],
+                ['12:40', '13:20', false, null, 40],
+                ['13:20', '14:00', false, null, 40],
+                ['14:00', '14:40', false, null, 40],
+                ['14:40', '15:20', false, null, 40],
             ];
             $this->buildDay('Selasa', $waktuSelasaKamis, $jadwal);
             $this->buildDay('Rabu', $waktuSelasaKamis, $jadwal);
@@ -79,15 +79,12 @@ class SeedJamPelajaranKurmer extends Command
             // ─── JUMAT ───
             $waktuJumat = [
                 ['07:00', '07:30', true, 'Senam / Jumat Bersih / Imtak', 30],
-                ['07:30', '08:10', false, null, 40],
-                ['08:10', '08:50', false, null, 40],
-                ['08:50', '09:30', false, null, 40],
-                ['09:30', '09:45', true, 'Istirahat 1', 15],
-                ['09:45', '10:25', false, null, 40],
-                ['10:25', '11:05', false, null, 40],
-                ['11:05', '13:00', true, 'Shalat Jumat & Istirahat', 115],
-                ['13:00', '13:40', false, null, 40],
-                ['13:40', '14:20', false, null, 40],
+                ['07:30', '08:15', false, null, 45],
+                ['08:15', '09:00', false, null, 45],
+                ['09:00', '09:45', false, null, 45],
+                ['09:45', '10:00', true, 'Istirahat 1', 15],
+                ['10:00', '10:40', false, null, 40],
+                ['10:40', '11:20', false, null, 40],
             ];
             $this->buildDay('Jumat', $waktuJumat, $jadwal);
 
@@ -96,8 +93,8 @@ class SeedJamPelajaranKurmer extends Command
                 JamPelajaran::create($row);
             }
 
-            $this->info("✅ Jadwal berhasil dibuat! Total Slot Pelajaran Aktif: 46 Jam/Minggu.");
-            $this->line("💡 Sekolah selesai paling lambat jam 15:45.");
+            $this->info("✅ Jadwal berhasil dibuat! Total Slot Pelajaran Aktif: 44 Jam/Minggu.");
+            $this->line("💡 Sekolah selesai jam 15:20 (Senin-Kamis) dan 11:20 (Jumat).");
 
         } catch (\Exception $e) {
             $this->error("❌ Gagal: " . $e->getMessage());
