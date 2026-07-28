@@ -19,18 +19,22 @@ echo "=== DIAGNOSTICS: SUBJECT DEMAND VS ELIGIBLE TEACHERS ===\n";
 
 $analyzed = [];
 
-$kristenMapel = App\Models\Mapel::where('nama', 'like', '%Kristen%')->first();
-if ($kristenMapel) {
-    $totalHours = App\Models\Kurikulum::where('mapel_id', $kristenMapel->id)->get()->sum(function($k) {
-        return $k->mapel->jam_per_minggu;
-    });
-    echo "Total Kristen hours needed: {$totalHours} jam/minggu\n";
-    
-    $gurus = App\Models\GuruMapel::where('mapel_id', $kristenMapel->id)->get();
-    echo "Kristen teachers:\n";
-    foreach ($gurus as $g) {
-        echo "- {$g->guru->nama} (ID: {$g->guru_id})\n";
+$classes = App\Models\Kelas::all();
+$kurikulumList = App\Models\Kurikulum::with('mapel')->get();
+foreach ($classes as $k) {
+    $kuriList = $kurikulumList->where('tingkat_id', $k->tingkat_id);
+    if ($k->jurusan_id) {
+        $kuriList = $kuriList->filter(fn($kuri) => is_null($kuri->jurusan_id) || $kuri->jurusan_id == $k->jurusan_id);
+    } else {
+        $kuriList = $kuriList->whereNull('jurusan_id');
     }
+    $load = 0;
+    foreach ($kuriList as $kuri) {
+        if ($kuri->mapel) {
+            $load += $kuri->mapel->jam_per_minggu;
+        }
+    }
+    echo "Kelas: {$k->nama} -> Beban: $load jam/minggu\n";
 }
 exit;
 
