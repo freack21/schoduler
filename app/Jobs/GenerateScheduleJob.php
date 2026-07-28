@@ -24,7 +24,7 @@ class GenerateScheduleJob implements ShouldQueue
     // GA parameters
     private int $populationSize = 150;
     private int $maxGenerations = 500;
-    private float $crossoverRate = 0.8;
+    private float $crossoverRate = 0.0;
     private float $mutationRate = 0.1;
     private int $eliteCount = 2;
     private int $scheduleGenerationId;
