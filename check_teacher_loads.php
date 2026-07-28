@@ -32,8 +32,11 @@ foreach ($gurus as $g) {
         $kelas = $kelasQuery->get();
         foreach ($kelas as $k) {
             $kur = Kurikulum::where('tingkat_id', $k->tingkat_id)
-                ->where('jurusan_id', $k->jurusan_id)
                 ->where('mapel_id', $m->mapel_id)
+                ->where(function($q) use ($k) {
+                    $q->where('jurusan_id', $k->jurusan_id)
+                      ->orWhereNull('jurusan_id');
+                })
                 ->first();
                 
             if ($kur) {
