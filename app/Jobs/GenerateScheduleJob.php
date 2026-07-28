@@ -593,7 +593,7 @@ class GenerateScheduleJob implements ShouldQueue
         $conflictingBlocks = [];
         
         $guruDailyLoad = [];
-        $kelasDailySlots = [];
+        $kelasDailyOccupied = [];
         $frontLoadPenalty = 0;
         $kelasMapelDay = [];
         $sameDayMapelPenalty = 0;
@@ -644,7 +644,7 @@ class GenerateScheduleJob implements ShouldQueue
             for ($i = 0; $i < $size; $i++) {
                 $sIdx = $start + $i;
                 $dayIdx = $slotMap[$sIdx]['hari_idx'];
-                $kelasDailySlots[$kelasId][$dayIdx][] = $sIdx;
+                $kelasDailyOccupied[$kelasId][$dayIdx][$slotMap[$sIdx]['jam_pos']] = true;
                 $frontLoadPenalty += $dayIdx;
                 
                 if (!isset($maxSIdx[$kelasId]) || $sIdx > $maxSIdx[$kelasId]) {
@@ -684,20 +684,21 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         $gapPenalties = 0;
-        foreach ($kelasDailySlots as $kId => $days) {
-            foreach ($days as $dIdx => $slots) {
-                sort($slots);
-                $count = count($slots);
-                if ($count > 0) {
-                    $startOfDayIdx = $slots[0] - $slotMap[$slots[0]]['jam_pos'];
-                    $gapPenalties += ($slots[0] - $startOfDayIdx);
-                    
-                    for ($i = 1; $i < $count; $i++) {
-                        $diff = $slots[$i] - $slots[$i - 1];
-                        if ($diff > 1) {
-                            $gapPenalties += ($diff - 1) * 3;
-                        }
+        foreach ($kelasDailyOccupied as $kId => $days) {
+            foreach ($days as $dIdx => $occupied) {
+                $first = 999;
+                $last = -1;
+                $count = 0;
+                for ($j = 0; $j < 11; $j++) {
+                    if (isset($occupied[$j])) {
+                        if ($first === 999) $first = $j;
+                        $last = $j;
+                        $count++;
                     }
+                }
+                if ($count > 0) {
+                    $gaps = ($last - $first + 1) - $count;
+                    $gapPenalties += ($gaps * 3) + $first;
                 }
             }
         }
