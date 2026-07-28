@@ -77,6 +77,23 @@ foreach ($kelasList as $kelas) {
 }
 echo "========================================\n\n";
 
+echo "=== DETAIL MAPEL UNTUK XI-1 DI SERVER ===\n";
+$xi1 = $kelasList->where('nama', 'XI-1')->first();
+if ($xi1) {
+    $kuriXI1 = $kurikulumList->where('tingkat_id', $xi1->tingkat_id);
+    if ($xi1->jurusan_id) {
+        $kuriXI1 = $kuriXI1->filter(fn($kuri) => is_null($kuri->jurusan_id) || $kuri->jurusan_id == $xi1->jurusan_id);
+    } else {
+        $kuriXI1 = $kuriXI1->whereNull('jurusan_id');
+    }
+    foreach ($kuriXI1 as $k) {
+        if ($k->mapel) {
+            echo "- {$k->mapel->nama} ({$k->mapel->jam_per_minggu} jam) | Parallel: " . ($k->mapel->is_parallel ? 'YA' : 'TIDAK') . " | Kelompok: " . ($k->mapel->kelompok_paralel ?: 'NULL') . "\n";
+        }
+    }
+}
+echo "========================================\n\n";
+
 $demands = [];
 foreach ($kelasList as $k) {
     $kuriList = $kurikulumList->where('tingkat_id', $k->tingkat_id);
