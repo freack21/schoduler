@@ -335,7 +335,7 @@ class GenerateScheduleJob implements ShouldQueue
                 $block = $evalContext['blocks'][$bIdx];
                 $dIdx = $block['demand_idx'];
                 $demand = $evalContext['demands'][$dIdx];
-                $guruMap = $evalContext['gurus'][$dIdx];
+                $guruMap = $bestChromosome['teachers'][$dIdx];
                 $kelasId = $demand['kelas_id'];
                 
                 $canSave = true;
@@ -412,7 +412,7 @@ class GenerateScheduleJob implements ShouldQueue
             $slots[$bIdx] = $validStarts[array_rand($validStarts)];
         }
 
-        return ['slots' => $slots];
+        return ['slots' => $slots, 'teachers' => $ctx['gurus']];
     }
 
     private function createSmartChromosome(array $ctx): array
@@ -494,7 +494,7 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        return ['slots' => $slots];
+        return ['slots' => $slots, 'teachers' => $gurus];
     }
 
     private function evaluate(array $chromosome, array $ctx): array
@@ -521,7 +521,7 @@ class GenerateScheduleJob implements ShouldQueue
         foreach ($blocks as $bIdx => $block) {
             $dIdx = $block['demand_idx'];
             $demand = $demands[$dIdx];
-            $guruMap = $ctx['gurus'][$dIdx];
+            $guruMap = $chromosome['teachers'][$dIdx];
             $kelasId = $demand['kelas_id'];
             $start = $chromosome['slots'][$bIdx];
             $size = $block['size'];
@@ -644,14 +644,13 @@ class GenerateScheduleJob implements ShouldQueue
             return [$p1, $p2];
         }
 
-        $c1 = ['slots' => []];
-        $c2 = ['slots' => []];
+        $c1 = ['slots' => [], 'teachers' => []];
+        $c2 = ['slots' => [], 'teachers' => []];
         
         $totalBlocks = count($p1['slots']);
         if ($totalBlocks < 2) return [$p1, $p2];
         
         $crossoverPoint = rand(1, $totalBlocks - 1);
-
         $bIdxKeys = array_keys($p1['slots']);
         
         foreach ($bIdxKeys as $i => $bIdx) {
@@ -664,6 +663,19 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
+        // Crossover teacher assignments
+        $demandKeys = array_keys($p1['teachers']);
+        $cPointT = rand(1, count($demandKeys) - 1);
+        foreach ($demandKeys as $i => $dIdx) {
+            if ($i < $cPointT) {
+                $c1['teachers'][$dIdx] = $p1['teachers'][$dIdx];
+                $c2['teachers'][$dIdx] = $p2['teachers'][$dIdx];
+            } else {
+                $c1['teachers'][$dIdx] = $p2['teachers'][$dIdx];
+                $c2['teachers'][$dIdx] = $p1['teachers'][$dIdx];
+            }
+        }
+
         return [$c1, $c2];
     }
 
@@ -673,7 +685,7 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
-        // Targeted Repair (Local Search) for conflicts (15% chance)
+        // Targeted Repair (Local Search) for slots (15% chance)
         if ($this->randFloat() < 0.15) {
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
@@ -723,7 +735,6 @@ class GenerateScheduleJob implements ShouldQueue
                 $kelasId = $demands[$block['demand_idx']]['kelas_id'];
                 $size = $block['size'];
                 
-                // Cari block lain di kelas yang sama dengan ukuran yang sama
                 $sameKelasBlocks = [];
                 foreach ($blocks as $idx => $b) {
                     if ($idx !== $bIdx && $b['size'] === $size && $demands[$b['demand_idx']]['kelas_id'] === $kelasId) {
@@ -734,15 +745,12 @@ class GenerateScheduleJob implements ShouldQueue
                 if (!empty($sameKelasBlocks)) {
                     $swapTarget = $sameKelasBlocks[array_rand($sameKelasBlocks)];
                     
-                    // Lakukan swap
                     $temp = $chromosome['slots'][$bIdx];
                     $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
                     $chromosome['slots'][$swapTarget] = $temp;
                     
-                    // Evaluasi, kalau makin hancur, rollback
                     $testEval = $this->evaluate($chromosome, $ctx);
                     if ($testEval['total'] > $eval['total']) {
-                        // Rollback
                         $temp = $chromosome['slots'][$bIdx];
                         $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
                         $chromosome['slots'][$swapTarget] = $temp;
@@ -751,13 +759,53 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        // Mutate slots
+        // Targeted Teacher Repair (15% chance)
+        if ($this->randFloat() < 0.15) {
+            $eval = $this->evaluate($chromosome, $ctx);
+            $conflicts = $eval['conflicting_blocks'];
+            if (!empty($conflicts)) {
+                $bIdx = $conflicts[array_rand($conflicts)];
+                $dIdx = $blocks[$bIdx]['demand_idx'];
+                $demand = $demands[$dIdx];
+                
+                foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                    if (count($eligible) > 1) {
+                        $bestGuru = $chromosome['teachers'][$dIdx][$mId];
+                        $bestScore = $eval['total'];
+                        
+                        foreach ($eligible as $guruId) {
+                            $chromosome['teachers'][$dIdx][$mId] = $guruId;
+                            $testEval = $this->evaluate($chromosome, $ctx);
+                            if ($testEval['total'] < $bestScore) {
+                                $bestScore = $testEval['total'];
+                                $bestGuru = $guruId;
+                                $eval = $testEval;
+                            }
+                        }
+                        $chromosome['teachers'][$dIdx][$mId] = $bestGuru;
+                    }
+                }
+            }
+        }
+
+        // Mutate slots randomly
         foreach ($blocks as $bIdx => $block) {
             if ($this->randFloat() < $mutRate) {
                 $size = $block['size'];
                 $validStarts = $validBlockStarts[$size];
                 if (!empty($validStarts)) {
                     $chromosome['slots'][$bIdx] = $validStarts[array_rand($validStarts)];
+                }
+            }
+        }
+
+        // Mutate teachers randomly
+        foreach ($demands as $dIdx => $demand) {
+            if ($this->randFloat() < $mutRate) {
+                foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                    if (count($eligible) > 1) {
+                        $chromosome['teachers'][$dIdx][$mId] = $eligible[array_rand($eligible)];
+                    }
                 }
             }
         }
