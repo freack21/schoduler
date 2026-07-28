@@ -58,6 +58,25 @@ echo "Total Kelas: " . $kelasList->count() . "\n";
 echo "Total Kurikulum Mapping: " . $kurikulumList->count() . "\n";
 echo "Total Guru Mapel Mapping: " . $guruMapelAll->count() . "\n";
 
+echo "\n=== BEBAN BELAJAR PER KELAS DI SERVER ===\n";
+foreach ($kelasList as $kelas) {
+    $kuriList = $kurikulumList->where('tingkat_id', $kelas->tingkat_id);
+    if ($kelas->jurusan_id) {
+        $kuriList = $kuriList->filter(fn($kuri) => is_null($kuri->jurusan_id) || $kuri->jurusan_id == $kelas->jurusan_id);
+    } else {
+        $kuriList = $kuriList->whereNull('jurusan_id');
+    }
+    
+    $load = 0;
+    foreach ($kuriList as $kuri) {
+        if ($kuri->mapel) {
+            $load += $kuri->mapel->jam_per_minggu;
+        }
+    }
+    echo "Kelas: {$kelas->nama} | Peminatan: " . ($kelas->jurusan->nama ?? 'Semua') . " | Beban: {$load} jam/minggu\n";
+}
+echo "========================================\n\n";
+
 $demands = [];
 foreach ($kelasList as $k) {
     $kuriList = $kurikulumList->where('tingkat_id', $k->tingkat_id);
