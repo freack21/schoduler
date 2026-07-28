@@ -45,7 +45,7 @@ Artisan::command('jadwal:generate {--timeout=1800 : Maksimal waktu proses dalam 
     $process->start();
 
     // Beri waktu sejenak agar job masuk antrian sebelum worker mengecek 'empty'
-    usleep(500000);
+    sleep(2);
 
     $startedAt = time();
     $lastLineLength = 0;
