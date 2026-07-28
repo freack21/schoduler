@@ -10,7 +10,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('jadwal:generate {--timeout=900 : Maksimal waktu proses dalam detik} {--poll=1 : Interval refresh progress dalam detik}', function () {
+Artisan::command('jadwal:generate {--timeout=1800 : Maksimal waktu proses dalam detik} {--poll=1 : Interval refresh progress dalam detik}', function () {
     $timeout = max(60, (int) $this->option('timeout'));
     $poll = max(1, (int) $this->option('poll'));
 

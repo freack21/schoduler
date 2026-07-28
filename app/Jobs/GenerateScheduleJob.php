@@ -557,7 +557,37 @@ class GenerateScheduleJob implements ShouldQueue
                     $hasConflict = true;
                 }
                 $kelasSlots[$kelasId][$sIdx] = true;
+            }
 
+            if ($hasConflict) {
+                $conflictingBlocks[$bIdx] = true;
+            }
+        }
+
+        if (!empty($conflictingBlocks)) {
+            $total = ($guruConflicts + $kelasConflicts) * 10000;
+            return [
+                'guru_conflicts' => $guruConflicts,
+                'kelas_conflicts' => $kelasConflicts,
+                'same_day_mapel' => 0,
+                'dist_violations' => 0,
+                'packing_penalty' => 0,
+                'total' => $total,
+                'conflicting_blocks' => array_keys($conflictingBlocks),
+            ];
+        }
+
+        // Jika tidak ada hard conflict, baru hitung soft constraints untuk optimasi kualitas
+        foreach ($blocks as $bIdx => $block) {
+            $dIdx = $block['demand_idx'];
+            $demand = $demands[$dIdx];
+            $guruMap = $chromosome['teachers'][$dIdx];
+            $kelasId = $demand['kelas_id'];
+            $start = $chromosome['slots'][$bIdx];
+            $size = $block['size'];
+
+            for ($i = 0; $i < $size; $i++) {
+                $sIdx = $start + $i;
                 $dayIdx = $slotMap[$sIdx]['hari_idx'];
                 $kelasDailySlots[$kelasId][$dayIdx][] = $sIdx;
                 $frontLoadPenalty += $dayIdx;
@@ -566,9 +596,6 @@ class GenerateScheduleJob implements ShouldQueue
                     $maxSIdx[$kelasId] = $sIdx;
                 }
                 $totalSlotsUsed[$kelasId] = ($totalSlotsUsed[$kelasId] ?? 0) + 1;
-            }
-            if ($hasConflict) {
-                $conflictingBlocks[$bIdx] = true;
             }
 
             $dayIdx = $slotMap[$start]['hari_idx'];
@@ -579,7 +606,6 @@ class GenerateScheduleJob implements ShouldQueue
             foreach ($demand['mapel_ids'] as $mapelId) {
                 if (isset($kelasMapelDay[$kelasId][$dayIdx][$mapelId])) {
                     $sameDayMapelPenalty++;
-                    $conflictingBlocks[$bIdx] = true;
                 }
                 $kelasMapelDay[$kelasId][$dayIdx][$mapelId] = true;
             }
