@@ -330,6 +330,13 @@ class GenerateScheduleJob implements ShouldQueue
                 $newPop[] = $indexed[$i]['c'];
             }
 
+            if ($stagnantGenerations > 5 && count($indexed) > 0) {
+                $best = $indexed[0]['c'];
+                for ($j = 0; $j < 15; $j++) {
+                    $newPop[] = $this->mutateRandom($best, $evalContext, 0.02);
+                }
+            }
+
             while (count($newPop) < $this->populationSize) {
                 $p1 = $this->tournamentSelect($population, $fitnessValues);
                 $p2 = $this->tournamentSelect($population, $fitnessValues);
