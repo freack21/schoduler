@@ -24,7 +24,7 @@ class GenerateScheduleJob implements ShouldQueue
     // GA parameters
     private int $populationSize = 150;
     private int $maxGenerations = 500;
-    private float $crossoverRate = 0.0;
+    private float $crossoverRate = 0.8;
     private float $mutationRate = 0.1;
     private int $eliteCount = 2;
     private int $scheduleGenerationId;
@@ -570,6 +570,21 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $slotMap = $ctx['slotMap'];
         
+        $teacherTotalLoad = [];
+        foreach ($chromosome['teachers'] as $dIdx => $gMap) {
+            $demand = $demands[$dIdx];
+            $hours = $demand['jam_per_minggu'];
+            foreach ($gMap as $guruId) {
+                $teacherTotalLoad[$guruId] = ($teacherTotalLoad[$guruId] ?? 0) + $hours;
+            }
+        }
+        $overloadPenalty = 0;
+        foreach ($teacherTotalLoad as $gId => $load) {
+            if ($load > 24) {
+                $overloadPenalty += ($load - 24) * 100;
+            }
+        }
+
         $guruSlots = [];
         $kelasSlots = [];
         $guruConflicts = 0;
@@ -617,7 +632,7 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         if (!empty($conflictingBlocks)) {
-            $total = ($guruConflicts + $kelasConflicts) * 10000;
+            $total = ($guruConflicts + $kelasConflicts) * 10000 + $overloadPenalty;
             return [
                 'guru_conflicts' => $guruConflicts,
                 'kelas_conflicts' => $kelasConflicts,
@@ -700,6 +715,7 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         $total = ($guruConflicts + $kelasConflicts) * 10000
+               + $overloadPenalty
                + ($sameDayMapelPenalty * 10)
                + ($distViolations * 1) 
                + ($gapPenalties * 0.1) 
