@@ -302,6 +302,14 @@ class GenerateScheduleJob implements ShouldQueue
 
                 $bestEval = $this->evaluate($bestChromosome, $evalContext);
                 $hard = $bestEval['guru_conflicts'] + $bestEval['kelas_conflicts']; // same_day_mapel moved to dist_violations
+                
+                try {
+                    $clashDetails = $this->getClashDetails($bestChromosome, $evalContext);
+                    file_put_contents(storage_path('latest_clashes.txt'), implode("\n", $clashDetails));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error("Failed to write latest clashes: " . $e->getMessage());
+                }
+
                 $genState->update([
                     'generation' => $gen + 1,
                     'fitness' => $indexed[0]['f'],
@@ -852,6 +860,57 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         return $chromosome;
+    }
+
+    private function getClashDetails(array $chromosome, array $ctx): array
+    {
+        $demands = $ctx['demands'];
+        $blocks = $ctx['blocks'];
+        $slotMap = $ctx['slotMap'];
+        
+        $guruSlots = [];
+        $kelasSlots = [];
+        $details = [];
+        
+        foreach ($blocks as $bIdx => $block) {
+            $dIdx = $block['demand_idx'];
+            $demand = $demands[$dIdx];
+            $start = $chromosome['slots'][$bIdx];
+            $size = $block['size'];
+            $guruMap = $chromosome['teachers'][$dIdx];
+            $kelasId = $demand['kelas_id'];
+            
+            $kelas = \App\Models\Kelas::find($kelasId);
+            $kelasName = $kelas ? $kelas->nama : "Kelas {$kelasId}";
+            
+            for ($i = 0; $i < $size; $i++) {
+                $sIdx = $start + $i;
+                $slot = $slotMap[$sIdx] ?? null;
+                $day = $slot ? $slot['hari'] : "Hari {$sIdx}";
+                $jam = $slot ? $slot['jam_ke'] : "Jam {$sIdx}";
+                
+                foreach ($guruMap as $mId => $guruId) {
+                    $guru = \App\Models\Guru::with('user')->find($guruId);
+                    $guruName = $guru ? ($guru->user->nama_lengkap ?? $guru->nama) : "Guru {$guruId}";
+                    $mapel = \App\Models\Mapel::find($mId);
+                    $mapelName = $mapel ? $mapel->nama : "Mapel {$mId}";
+                    
+                    if (isset($guruSlots[$guruId][$sIdx])) {
+                        $otherInfo = $guruSlots[$guruId][$sIdx];
+                        $details[] = "🚨 GURU CLASH: {$guruName} mengajar '{$mapelName}' di '{$kelasName}' pada {$day} jam ke-{$jam}, tapi beliau sudah mengajar '{$otherInfo['mapel']}' di '{$otherInfo['kelas']}'!";
+                    }
+                    $guruSlots[$guruId][$sIdx] = ['kelas' => $kelasName, 'mapel' => $mapelName];
+                }
+                
+                if (isset($kelasSlots[$kelasId][$sIdx])) {
+                    $otherInfo = $kelasSlots[$kelasId][$sIdx];
+                    $details[] = "🚨 KELAS CLASH: {$kelasName} dijadwalkan '{$mapelName}' pada {$day} jam ke-{$jam}, tapi kelas ini sudah terpakai di '{$otherInfo['mapel']}'!";
+                }
+                $kelasSlots[$kelasId][$sIdx] = ['mapel' => $mapelName];
+            }
+        }
+        
+        return $details;
     }
 
     private function randFloat(): float
