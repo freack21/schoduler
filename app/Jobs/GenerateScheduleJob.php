@@ -22,7 +22,7 @@ class GenerateScheduleJob implements ShouldQueue
     public $timeout = 900;
 
     // GA parameters
-    private int $populationSize = 100;
+    private int $populationSize = 150;
     private int $maxGenerations = 500;
     private float $crossoverRate = 0.8;
     private float $mutationRate = 0.1;
