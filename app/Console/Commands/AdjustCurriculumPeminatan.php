@@ -29,6 +29,13 @@ class AdjustCurriculumPeminatan extends Command
 
         DB::beginTransaction();
         try {
+            // 0. Update Agama Islam & Kristen agar menjadi mapel paralel
+            Mapel::whereIn('nama', ['Pendidikan Agama Islam', 'Pendidikan Agama Kristen'])->update([
+                'is_parallel' => true,
+                'kelompok_paralel' => 'agama'
+            ]);
+            $this->line("✅ Mengatur Pendidikan Agama Islam & Kristen sebagai Mapel Paralel.");
+
             // 1. Dapatkan atau buat Jurusan MIPA & IPS
             $mipa = Jurusan::firstOrCreate(['kode' => 'MIPA'], ['nama' => 'MIPA']);
             $ips = Jurusan::firstOrCreate(['kode' => 'IPS'], ['nama' => 'IPS']);
