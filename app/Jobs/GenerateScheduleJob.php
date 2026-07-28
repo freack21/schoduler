@@ -261,6 +261,23 @@ class GenerateScheduleJob implements ShouldQueue
 
             usort($indexed, fn($a, $b) => $b['f'] <=> $a['f']);
 
+            // Local search on the best chromosome of the generation
+            $repaired = $this->applyLocalSearch($indexed[0]['c'], $evalContext);
+            $repairedEval = $this->evaluate($repaired, $evalContext);
+            $repairedScore = $repairedEval['total'];
+            $repairedFitness = 1.0 / (1.0 + $repairedScore);
+            
+            $indexed[0]['c'] = $repaired;
+            $indexed[0]['s'] = $repairedScore;
+            $indexed[0]['f'] = $repairedFitness;
+            $population[$indexed[0]['idx']] = $repaired;
+            $fitnessValues[$indexed[0]['idx']] = $repairedFitness;
+            
+            if ($repairedScore < $bestScore) {
+                $bestScore = $repairedScore;
+                $bestChromosome = $repaired;
+            }
+
             if ($bestScore < $lastBestScore) {
                 $lastBestScore = $bestScore;
                 $stagnantGenerations = 0;
@@ -770,109 +787,6 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
-        // Targeted Repair (Local Search) for slots (always run)
-        if (true) {
-            $eval = $this->evaluate($chromosome, $ctx);
-            $conflicts = $eval['conflicting_blocks'];
-            
-            if (!empty($conflicts)) {
-                shuffle($conflicts);
-                $toRepair = array_slice($conflicts, 0, mt_rand(1, 3));
-                
-                foreach ($toRepair as $bIdx) {
-                    $block = $blocks[$bIdx];
-                    $size = $block['size'];
-                    $validStarts = $validBlockStarts[$size];
-                    
-                    if (empty($validStarts)) continue;
-                    
-                    $bestSlot = $chromosome['slots'][$bIdx];
-                    $bestScore = $eval['total'];
-                    
-                    shuffle($validStarts);
-                    $testSlots = $validStarts;
-                    
-                    foreach ($testSlots as $testSlot) {
-                        $chromosome['slots'][$bIdx] = $testSlot;
-                        $testEval = $this->evaluate($chromosome, $ctx);
-                        if ($testEval['total'] <= $bestScore) {
-                            $bestScore = $testEval['total'];
-                            $bestSlot = $testSlot;
-                            $eval = $testEval;
-                            if ($testEval['guru_conflicts'] + $testEval['kelas_conflicts'] == 0) {
-                                break;
-                            }
-                        }
-                    }
-                    $chromosome['slots'][$bIdx] = $bestSlot;
-                }
-            }
-        }
-
-        // SWAP MUTATION: Targeted swap for dense schedules (15% chance)
-        if ($this->randFloat() < 0.15) {
-            $eval = $this->evaluate($chromosome, $ctx);
-            $conflicts = $eval['conflicting_blocks'];
-            
-            if (!empty($conflicts)) {
-                $bIdx = array_rand($conflicts);
-                $block = $blocks[$bIdx];
-                $kelasId = $demands[$block['demand_idx']]['kelas_id'];
-                $size = $block['size'];
-                
-                $sameKelasBlocks = [];
-                foreach ($blocks as $idx => $b) {
-                    if ($idx !== $bIdx && $b['size'] === $size && $demands[$b['demand_idx']]['kelas_id'] === $kelasId) {
-                        $sameKelasBlocks[] = $idx;
-                    }
-                }
-                
-                if (!empty($sameKelasBlocks)) {
-                    $swapTarget = $sameKelasBlocks[array_rand($sameKelasBlocks)];
-                    
-                    $temp = $chromosome['slots'][$bIdx];
-                    $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
-                    $chromosome['slots'][$swapTarget] = $temp;
-                    
-                    $testEval = $this->evaluate($chromosome, $ctx);
-                    if ($testEval['total'] > $eval['total']) {
-                        $temp = $chromosome['slots'][$bIdx];
-                        $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
-                        $chromosome['slots'][$swapTarget] = $temp;
-                    }
-                }
-            }
-        }
-
-        // Targeted Teacher Repair (always run)
-        if (true) {
-            $eval = $this->evaluate($chromosome, $ctx);
-            $conflicts = $eval['conflicting_blocks'];
-            if (!empty($conflicts)) {
-                $bIdx = $conflicts[array_rand($conflicts)];
-                $dIdx = $blocks[$bIdx]['demand_idx'];
-                $demand = $demands[$dIdx];
-                
-                foreach ($demand['eligible_gurus'] as $mId => $eligible) {
-                    if (count($eligible) > 1) {
-                        $bestGuru = $chromosome['teachers'][$dIdx][$mId];
-                        $bestScore = $eval['total'];
-                        
-                        foreach ($eligible as $guruId) {
-                            $chromosome['teachers'][$dIdx][$mId] = $guruId;
-                            $testEval = $this->evaluate($chromosome, $ctx);
-                            if ($testEval['total'] <= $bestScore) {
-                                $bestScore = $testEval['total'];
-                                $bestGuru = $guruId;
-                                $eval = $testEval;
-                            }
-                        }
-                        $chromosome['teachers'][$dIdx][$mId] = $bestGuru;
-                    }
-                }
-            }
-        }
-
         // Mutate slots randomly
         foreach ($blocks as $bIdx => $block) {
             if ($this->randFloat() < $mutRate) {
@@ -890,6 +804,81 @@ class GenerateScheduleJob implements ShouldQueue
                 foreach ($demand['eligible_gurus'] as $mId => $eligible) {
                     if (count($eligible) > 1) {
                         $chromosome['teachers'][$dIdx][$mId] = $eligible[array_rand($eligible)];
+                    }
+                }
+            }
+        }
+
+        return $chromosome;
+    }
+
+    private function applyLocalSearch(array $chromosome, array $ctx): array
+    {
+        $demands = $ctx['demands'];
+        $blocks = $ctx['blocks'];
+        $validBlockStarts = $ctx['validBlockStarts'];
+
+        // 1. Targeted Repair for slots (up to 3 passes)
+        $improved = true;
+        $pass = 0;
+        while ($improved && $pass < 3) {
+            $improved = false;
+            $eval = $this->evaluate($chromosome, $ctx);
+            $conflicts = $eval['conflicting_blocks'];
+            
+            if (!empty($conflicts)) {
+                shuffle($conflicts);
+                $toRepair = array_slice($conflicts, 0, mt_rand(2, 4));
+                
+                foreach ($toRepair as $bIdx) {
+                    $block = $blocks[$bIdx];
+                    $size = $block['size'];
+                    $validStarts = $validBlockStarts[$size];
+                    if (empty($validStarts)) continue;
+                    
+                    $bestSlot = $chromosome['slots'][$bIdx];
+                    $bestScore = $eval['total'];
+                    
+                    shuffle($validStarts);
+                    foreach ($validStarts as $testSlot) {
+                        $chromosome['slots'][$bIdx] = $testSlot;
+                        $testEval = $this->evaluate($chromosome, $ctx);
+                        if ($testEval['total'] < $bestScore) {
+                            $bestScore = $testEval['total'];
+                            $bestSlot = $testSlot;
+                            $eval = $testEval;
+                            $improved = true;
+                        }
+                    }
+                    $chromosome['slots'][$bIdx] = $bestSlot;
+                }
+            }
+            $pass++;
+        }
+
+        // 2. Targeted Teacher Repair
+        $eval = $this->evaluate($chromosome, $ctx);
+        $conflicts = $eval['conflicting_blocks'];
+        if (!empty($conflicts)) {
+            shuffle($conflicts);
+            $toRepair = array_slice($conflicts, 0, mt_rand(2, 4));
+            foreach ($toRepair as $bIdx) {
+                $dIdx = $blocks[$bIdx]['demand_idx'];
+                $demand = $demands[$dIdx];
+                foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                    if (count($eligible) > 1) {
+                        $bestGuru = $chromosome['teachers'][$dIdx][$mId];
+                        $bestScore = $eval['total'];
+                        foreach ($eligible as $guruId) {
+                            $chromosome['teachers'][$dIdx][$mId] = $guruId;
+                            $testEval = $this->evaluate($chromosome, $ctx);
+                            if ($testEval['total'] < $bestScore) {
+                                $bestScore = $testEval['total'];
+                                $bestGuru = $guruId;
+                                $eval = $testEval;
+                            }
+                        }
+                        $chromosome['teachers'][$dIdx][$mId] = $bestGuru;
                     }
                 }
             }
