@@ -840,14 +840,14 @@ class GenerateScheduleJob implements ShouldQueue
                     
                     $dIdx = $block['demand_idx'];
                     $demand = $demands[$dIdx];
+                    $kelasId = $demand['kelas_id'];
                     
                     $bestSlot = $chromosome['slots'][$bIdx];
                     $bestScore = $eval['total'];
                     $bestTeachers = $chromosome['teachers'][$dIdx];
                     
+                    // 1. Try joint slot-teacher moves
                     shuffle($validStarts);
-                    
-                    // Generate all possible teacher assignment combinations for this demand
                     $teacherCombos = [[]];
                     foreach ($demand['eligible_gurus'] as $mId => $eligible) {
                         $nextCombos = [];
@@ -861,7 +861,6 @@ class GenerateScheduleJob implements ShouldQueue
                     
                     foreach ($validStarts as $testSlot) {
                         $chromosome['slots'][$bIdx] = $testSlot;
-                        
                         foreach ($teacherCombos as $combo) {
                             $chromosome['teachers'][$dIdx] = $combo;
                             $testEval = $this->evaluate($chromosome, $ctx);
@@ -874,9 +873,38 @@ class GenerateScheduleJob implements ShouldQueue
                             }
                         }
                     }
-                    
                     $chromosome['slots'][$bIdx] = $bestSlot;
                     $chromosome['teachers'][$dIdx] = $bestTeachers;
+                    
+                    // 2. Try class-intra-swap moves
+                    $sameClassBlocks = [];
+                    foreach ($blocks as $idx => $b) {
+                        if ($idx !== $bIdx && $b['size'] === $size && $demands[$b['demand_idx']]['kelas_id'] === $kelasId) {
+                            $sameClassBlocks[] = $idx;
+                        }
+                    }
+                    
+                    if (!empty($sameClassBlocks)) {
+                        shuffle($sameClassBlocks);
+                        foreach ($sameClassBlocks as $swapTarget) {
+                            $temp = $chromosome['slots'][$bIdx];
+                            $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
+                            $chromosome['slots'][$swapTarget] = $temp;
+                            
+                            $testEval = $this->evaluate($chromosome, $ctx);
+                            if ($testEval['total'] < $bestScore) {
+                                $bestScore = $testEval['total'];
+                                $bestSlot = $chromosome['slots'][$bIdx];
+                                $eval = $testEval;
+                                $improved = true;
+                            } else {
+                                // Revert
+                                $temp = $chromosome['slots'][$bIdx];
+                                $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
+                                $chromosome['slots'][$swapTarget] = $temp;
+                            }
+                        }
+                    }
                 }
             }
             $pass++;
