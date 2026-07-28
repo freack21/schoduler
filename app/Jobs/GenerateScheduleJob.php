@@ -818,7 +818,7 @@ class GenerateScheduleJob implements ShouldQueue
         $blocks = $ctx['blocks'];
         $validBlockStarts = $ctx['validBlockStarts'];
 
-        // 1. Targeted Repair for slots (up to 3 passes)
+        // Targeted Joint Slot-Teacher Local Search (up to 3 passes)
         $improved = true;
         $pass = 0;
         while ($improved && $pass < 3) {
@@ -836,52 +836,48 @@ class GenerateScheduleJob implements ShouldQueue
                     $validStarts = $validBlockStarts[$size];
                     if (empty($validStarts)) continue;
                     
+                    $dIdx = $block['demand_idx'];
+                    $demand = $demands[$dIdx];
+                    
                     $bestSlot = $chromosome['slots'][$bIdx];
                     $bestScore = $eval['total'];
+                    $bestTeachers = $chromosome['teachers'][$dIdx];
                     
                     shuffle($validStarts);
+                    
+                    // Generate all possible teacher assignment combinations for this demand
+                    $teacherCombos = [[]];
+                    foreach ($demand['eligible_gurus'] as $mId => $eligible) {
+                        $nextCombos = [];
+                        foreach ($teacherCombos as $combo) {
+                            foreach ($eligible as $guruId) {
+                                $nextCombos[] = $combo + [$mId => $guruId];
+                            }
+                        }
+                        $teacherCombos = $nextCombos;
+                    }
+                    
                     foreach ($validStarts as $testSlot) {
                         $chromosome['slots'][$bIdx] = $testSlot;
-                        $testEval = $this->evaluate($chromosome, $ctx);
-                        if ($testEval['total'] < $bestScore) {
-                            $bestScore = $testEval['total'];
-                            $bestSlot = $testSlot;
-                            $eval = $testEval;
-                            $improved = true;
-                        }
-                    }
-                    $chromosome['slots'][$bIdx] = $bestSlot;
-                }
-            }
-            $pass++;
-        }
-
-        // 2. Targeted Teacher Repair
-        $eval = $this->evaluate($chromosome, $ctx);
-        $conflicts = $eval['conflicting_blocks'];
-        if (!empty($conflicts)) {
-            shuffle($conflicts);
-            $toRepair = array_slice($conflicts, 0, mt_rand(2, 4));
-            foreach ($toRepair as $bIdx) {
-                $dIdx = $blocks[$bIdx]['demand_idx'];
-                $demand = $demands[$dIdx];
-                foreach ($demand['eligible_gurus'] as $mId => $eligible) {
-                    if (count($eligible) > 1) {
-                        $bestGuru = $chromosome['teachers'][$dIdx][$mId];
-                        $bestScore = $eval['total'];
-                        foreach ($eligible as $guruId) {
-                            $chromosome['teachers'][$dIdx][$mId] = $guruId;
+                        
+                        foreach ($teacherCombos as $combo) {
+                            $chromosome['teachers'][$dIdx] = $combo;
                             $testEval = $this->evaluate($chromosome, $ctx);
                             if ($testEval['total'] < $bestScore) {
                                 $bestScore = $testEval['total'];
-                                $bestGuru = $guruId;
+                                $bestSlot = $testSlot;
+                                $bestTeachers = $combo;
                                 $eval = $testEval;
+                                $improved = true;
                             }
                         }
-                        $chromosome['teachers'][$dIdx][$mId] = $bestGuru;
                     }
+                    
+                    $chromosome['slots'][$bIdx] = $bestSlot;
+                    $chromosome['teachers'][$dIdx] = $bestTeachers;
                 }
             }
+            $pass++;
         }
 
         return $chromosome;
