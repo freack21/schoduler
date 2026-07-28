@@ -310,8 +310,9 @@ class GenerateScheduleJob implements ShouldQueue
                 try {
                     $clashDetails = $this->getClashDetails($bestChromosome, $evalContext);
                     file_put_contents(storage_path('latest_clashes.txt'), implode("\n", $clashDetails));
+                    file_put_contents(storage_path('best_chromosome.json'), json_encode($bestChromosome, JSON_PRETTY_PRINT));
                 } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("Failed to write latest clashes: " . $e->getMessage());
+                    \Illuminate\Support\Facades\Log::error("Failed to write latest clashes/chromosome: " . $e->getMessage());
                 }
 
                 $genState->update([
