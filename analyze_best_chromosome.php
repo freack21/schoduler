@@ -65,7 +65,7 @@ foreach (array_slice($guruLoads, 0, 15, true) as $guruId => $load) {
 }
 
 echo "\n=== DETAILED SCHEDULE FOR CLASHING CLASSES ===\n";
-$targetClasses = ['XI-1', 'XI-5', 'XI-6', 'XII-2', 'XII-6'];
+$targetClasses = ['XI-2', 'XI-3', 'XI-6', 'XI-8', 'XII-4', 'XII-7'];
 foreach ($targetClasses as $cName) {
     $kelas = Kelas::where('nama', $cName)->first();
     if (!$kelas) continue;
