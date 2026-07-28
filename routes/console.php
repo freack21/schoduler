@@ -87,7 +87,7 @@ Artisan::command('jadwal:generate {--timeout=1800 : Maksimal waktu proses dalam 
             break;
         }
 
-        if (!$process->isRunning() && $status !== 'done') {
+        if (!$process->isRunning() && !in_array($status, ['running', 'done'], true) && $generation === 0 && $elapsed > 5) {
             $genState->update([
                 'status' => 'error',
                 'message' => 'Queue worker berhenti tidak wajar sebelum jadwal selesai.',
