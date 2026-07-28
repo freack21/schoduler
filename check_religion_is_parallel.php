@@ -6,50 +6,86 @@ $kernel->bootstrap();
 
 use App\Models\Mapel;
 
-$filePath = storage_path('best_chromosome.json');
-$demands = json_decode(file_get_contents(storage_path('demands_job.json')), true);
-$blocks = json_decode(file_get_contents(storage_path('blocks_job.json')), true);
-$chromosome = json_decode(file_get_contents($filePath), true);
+use App\Models\Kelas;
+use App\Models\Kurikulum;
+use App\Models\GuruMapel;
+use App\Models\Guru;
 
-$jamList = \App\Models\JamPelajaran::all();
-$allDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-$dbDays = $jamList->pluck('hari')->unique()->toArray();
-$hariAktif = array_values(array_intersect($allDays, $dbDays));
+$kelasList = Kelas::all();
+$kurikulumList = Kurikulum::with('mapel')->get();
+$guruMapelAll = GuruMapel::all();
 
-$slotMap = [];
-$s = 0;
-foreach ($hariAktif as $hari) {
-    $jamsForHari = $jamList->where('hari', trim($hari))->sortBy('jam_mulai');
-    foreach ($jamsForHari as $jam) {
-        if ($jam->is_istirahat || $jam->jam_ke == 0) continue;
-        $slotMap[$s] = [
-            'hari' => trim($hari),
-            'jam_ke' => $jam->jam_ke,
-            'slot_idx' => $s,
-        ];
-        $s++;
+echo "=== DIAGNOSTICS: SUBJECT DEMAND VS ELIGIBLE TEACHERS ===\n";
+
+$analyzed = [];
+
+foreach ($kelasList as $kelas) {
+    $kuriList = $kurikulumList->where('tingkat_id', $kelas->tingkat_id);
+    if ($kelas->jurusan_id) {
+        $kuriList = $kuriList->filter(fn($kuri) => is_null($kuri->jurusan_id) || $kuri->jurusan_id == $kelas->jurusan_id);
+    } else {
+        $kuriList = $kuriList->whereNull('jurusan_id');
+    }
+    
+    foreach ($kuriList as $kuri) {
+        $mapel = $kuri->mapel;
+        $key = "{$kelas->tingkat_id}_{$kelas->jurusan_id}_{$mapel->id}";
+        
+        if (!isset($analyzed[$key])) {
+            $analyzed[$key] = [
+                'tingkat_id' => $kelas->tingkat_id,
+                'jurusan_id' => $kelas->jurusan_id,
+                'mapel_id' => $mapel->id,
+                'mapel_nama' => $mapel->nama,
+                'jam_per_minggu' => $mapel->jam_per_minggu,
+                'kelas_count' => 0,
+                'classes' => [],
+                'eligible_gurus' => []
+            ];
+            
+            // Find eligible teachers
+            $eligible = $guruMapelAll->where('mapel_id', $mapel->id)
+                ->where('tingkat_id', $kelas->tingkat_id)
+                ->filter(fn($gm) => is_null($gm->jurusan_id) || $gm->jurusan_id == $kelas->jurusan_id)
+                ->pluck('guru_id')
+                ->unique()
+                ->toArray();
+                
+            $teacherNames = [];
+            foreach ($eligible as $gid) {
+                $guru = Guru::with('user')->find($gid);
+                $teacherNames[] = $guru ? ($guru->user->nama_lengkap ?? $guru->nama) : "G{$gid}";
+            }
+            $analyzed[$key]['eligible_gurus'] = $teacherNames;
+        }
+        
+        $analyzed[$key]['kelas_count']++;
+        $analyzed[$key]['classes'][] = $kelas->nama;
     }
 }
 
-$lidyaId = 191; // Lidya Febrianti
-echo "=== LIDYA FEBRIANTI SCHEDULE ON FRIDAY ===\n";
-foreach ($blocks as $bIdx => $block) {
-    $dIdx = $block['demand_idx'];
-    $demand = $demands[$dIdx];
-    $teachers = $chromosome['teachers'][$dIdx] ?? [];
+// Print results ordered by demand / teachers ratio (bottleneck index)
+usort($analyzed, function($a, $b) {
+    $demandA = $a['kelas_count'] * $a['jam_per_minggu'];
+    $teachersA = count($a['eligible_gurus']) ?: 1;
+    $ratioA = $demandA / $teachersA;
     
-    if (in_array($lidyaId, $teachers)) {
-        $start = $chromosome['slots'][$bIdx];
-        $size = $block['size'];
-        $kelas = \App\Models\Kelas::find($demand['kelas_id']);
-        
-        for ($i = 0; $i < $size; $i++) {
-            $sIdx = $start + $i;
-            $slot = $slotMap[$sIdx] ?? null;
-            if ($slot && $slot['hari'] === 'Jumat') {
-                echo "- Jumat Jam ke-{$slot['jam_ke']} | Kelas: {$kelas->nama} (Block: B{$bIdx})\n";
-            }
-        }
-    }
+    $demandB = $b['kelas_count'] * $b['jam_per_minggu'];
+    $teachersB = count($b['eligible_gurus']) ?: 1;
+    $ratioB = $demandB / $teachersB;
+    
+    return $ratioB <=> $ratioA; // Descending
+});
+
+foreach ($analyzed as $a) {
+    $demand = $a['kelas_count'] * $a['jam_per_minggu'];
+    $tCount = count($a['eligible_gurus']);
+    $ratio = $tCount > 0 ? round($demand / $tCount, 1) : 999;
+    
+    echo "Mapel: {$a['mapel_nama']} | Tingkat: {$a['tingkat_id']} | Jurusan: " . ($a['jurusan_id'] ?: 'NULL') . "\n";
+    echo "  - Classes: " . implode(', ', $a['classes']) . " ({$a['kelas_count']} classes)\n";
+    echo "  - Hours/class: {$a['jam_per_minggu']} | Total Demand: {$demand} hours\n";
+    echo "  - Eligible Teachers ({$tCount}): " . implode(', ', $a['eligible_gurus']) . "\n";
+    echo "  - Bottleneck Ratio (Hours/Teacher): {$ratio} hours/teacher\n\n";
 }
 exit;
