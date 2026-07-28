@@ -6,8 +6,14 @@ $kernel->bootstrap();
 
 use App\Models\Mapel;
 
-$parallelMapels = Mapel::where('is_parallel', true)->get();
-echo "=== PARALLEL MAPELS ===\n";
-foreach ($parallelMapels as $m) {
-    echo "- Mapel: {$m->nama} (ID: {$m->id}) | kelompok_paralel: '{$m->kelompok_paralel}'\n";
+foreach (App\Models\Kelas::all() as $k) {
+    $kuriList = App\Models\Kurikulum::where('tingkat_id', $k->tingkat_id)->get();
+    $load = 0;
+    foreach ($kuriList as $kuri) {
+        if (is_null($kuri->jurusan_id) || $kuri->jurusan_id == $k->jurusan_id) {
+            $load += $kuri->mapel->jam_per_minggu;
+        }
+    }
+    echo "Kelas: {$k->nama} -> Beban: {$load} jam/minggu\n";
 }
+exit;
