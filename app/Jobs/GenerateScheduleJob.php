@@ -261,8 +261,8 @@ class GenerateScheduleJob implements ShouldQueue
 
             usort($indexed, fn($a, $b) => $b['f'] <=> $a['f']);
 
-            // Local search on the best chromosome of the generation (every 5 generations to stay fast)
-            if ($gen % 5 === 0) {
+            // Local search on the best chromosome of the generation (every 3 generations to stay fast)
+            if ($gen % 3 === 0) {
                 $repaired = $this->applyLocalSearch($indexed[0]['c'], $evalContext);
                 $repairedEval = $this->evaluate($repaired, $evalContext);
                 $repairedScore = $repairedEval['total'];
@@ -830,7 +830,7 @@ class GenerateScheduleJob implements ShouldQueue
             
             if (!empty($conflicts)) {
                 shuffle($conflicts);
-                $toRepair = [ $conflicts[array_rand($conflicts)] ];
+                $toRepair = array_slice($conflicts, 0, mt_rand(1, 2));
                 
                 foreach ($toRepair as $bIdx) {
                     $block = $blocks[$bIdx];
