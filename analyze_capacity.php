@@ -12,18 +12,30 @@ foreach($jamList as $j) {
 }
 echo "Total Slot (Aktif): " . $totalJam . "\n\n";
 
-$kelas = App\Models\Kelas::all();
+$kelas = App\Models\Kelas::with(['tingkat', 'jurusan'])->get();
+$kurikulumAll = App\Models\Kurikulum::with('mapel')->get();
+
 foreach($kelas as $k) {
-    $kuri = App\Models\Kurikulum::where('kelas_id', $k->id)->get();
-    $jam = $kuri->sum('jam_per_minggu');
-    // Kurangi jam untuk mapel is_parallel karena gabung
-    $parallel = App\Models\Kurikulum::where('kelas_id', $k->id)
-        ->join('mapel', 'mapel.id', '=', 'kurikulum.mapel_id')
-        ->where('mapel.is_parallel', 1)
-        ->get();
+    $kuriList = $kurikulumAll->where('tingkat_id', $k->tingkat_id);
+    if ($k->jurusan_id) {
+        $kuriList = $kuriList->filter(function($kuri) use ($k) {
+            return is_null($kuri->jurusan_id) || $kuri->jurusan_id == $k->jurusan_id;
+        });
+    } else {
+        $kuriList = $kuriList->whereNull('jurusan_id');
+    }
+    
+    $jam = $kuriList->sum('jam_per_minggu');
+    
+    // Group parallel mapel to avoid double counting their hours
+    $parallel = $kuriList->filter(function($kuri) {
+        return $kuri->mapel && $kuri->mapel->is_parallel == 1;
+    });
     
     // Group by kelompok parallel
-    $parallelGroups = $parallel->groupBy('kelompok_paralel');
+    $parallelGroups = $parallel->groupBy(function($item) {
+        return $item->mapel->kelompok_paralel ?? ('id_' . $item->mapel->id);
+    });
     $parallelDiscount = 0;
     foreach($parallelGroups as $group => $items) {
         // Only one of them counts towards actual slot usage
