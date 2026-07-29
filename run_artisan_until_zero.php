@@ -39,7 +39,7 @@ while (true) {
         2 => ["pipe", "w"]  // stderr
     ];
     
-    $process = proc_open('php artisan jadwal:generate', $descriptorspec, $pipes);
+    $process = proc_open('php artisan jadwal:generate --timeout=2400', $descriptorspec, $pipes);
     
     if (is_resource($process)) {
         // Read output line by line

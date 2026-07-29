@@ -19,7 +19,7 @@ class GenerateScheduleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $timeout = 1800;
+    public $timeout = 2400;
 
     // GA parameters
     private int $populationSize = 200;
