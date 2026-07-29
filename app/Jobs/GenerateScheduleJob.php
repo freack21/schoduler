@@ -740,7 +740,7 @@ class GenerateScheduleJob implements ShouldQueue
             }
         }
 
-        $total = ($guruConflicts + $kelasConflicts) * 10000
+        $total = ($guruConflicts + $kelasConflicts) * 1000000
                + $overloadPenalty
                + ($sameDayMapelPenalty * 10)
                + ($distViolations * 1) 
