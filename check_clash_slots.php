@@ -53,7 +53,7 @@ foreach ($kelasTargets as $namaKelas) {
     // Cek mapel yang clash
     foreach ($mapelTargets[$namaKelas] as $namaMapel) {
         echo "\nMapel '$namaMapel' di kurikulum $namaKelas:\n";
-        $kurikulums = Kurikulum::whereHas('mapel', fn($q) => $q->where('nama_mapel', $namaMapel))
+        $kurikulums = Kurikulum::whereHas('mapel', function($q) use ($namaMapel) { $q->where('nama_mapel', $namaMapel); })
             ->where('kelas_id', $kelas->id)
             ->with('mapel')
             ->get();
