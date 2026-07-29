@@ -19,7 +19,7 @@ class GenerateScheduleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $timeout = 2400;
+    public $timeout = 0; // systemd manages timeout via --timeout=99999
 
     // GA parameters
     private int $populationSize = 200;
@@ -288,19 +288,32 @@ class GenerateScheduleJob implements ShouldQueue
                 $stagnantGenerations++;
             }
             
-            if ($stagnantGenerations > 80) {
-                \Illuminate\Support\Facades\Log::info("GA stagnant for 80 generations. Performing cataclysmic reset!");
+            if ($stagnantGenerations >= 120) {
+                // Stage 3: Cataclysmic reset — keep only best + fresh population
+                Log::info("GA stagnant 120 gen. Cataclysmic reset. bestScore={$bestScore}");
                 $newPop = [$bestChromosome];
-                $smartCount = (int)($this->populationSize * 0.5);
-                for ($i = 1; $i < $smartCount; $i++) {
+                $smartCount = (int)($this->populationSize * 0.3);
+                for ($i = 1; $i <= $smartCount; $i++) {
                     $newPop[] = $this->createSmartChromosome($evalContext);
                 }
-                for ($i = $smartCount; $i < $this->populationSize; $i++) {
+                while (count($newPop) < $this->populationSize) {
                     $newPop[] = $this->createRandomChromosome($evalContext);
                 }
                 $population = $newPop;
                 $stagnantGenerations = 0;
                 continue;
+            } elseif ($stagnantGenerations === 60) {
+                // Stage 2: Soft reset — keep elite + inject smart+random
+                Log::info("GA stagnant 60 gen. Soft reset. bestScore={$bestScore}");
+                $newPop = array_slice(array_column($indexed, 'c'), 0, $this->eliteCount);
+                $smartCount = (int)($this->populationSize * 0.4);
+                for ($i = 0; $i < $smartCount; $i++) {
+                    $newPop[] = $this->createSmartChromosome($evalContext);
+                }
+                while (count($newPop) < $this->populationSize) {
+                    $newPop[] = $this->createRandomChromosome($evalContext);
+                }
+                $population = $newPop;
             }
             
             $currentMutationRate = $this->mutationRate;

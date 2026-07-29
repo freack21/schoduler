@@ -66,7 +66,8 @@ while (true) {
         echo "Bentrok Hard: {$violations}\n";
         echo "Pesan: {$message}\n";
         
-        if ($status === 'done' && $violations === 0) {
+        // Sukses jika violations == 0, apapun statusnya (job bisa timeout meski GA sudah temukan solusi 0 bentrok)
+        if ($violations === 0 && $latestGen->generation > 0) {
             echo "\n🎉 SELESAI! Jadwal berhasil digenerate dengan 0 bentrok pada Percobaan ke-{$attempt}!\n";
             break;
         }
