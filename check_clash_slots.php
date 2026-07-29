@@ -36,7 +36,8 @@ foreach ($kelasTargets as $namaKelas) {
     $usedSlots = [];
     foreach ($jadwal as $j) {
         $key = $j->hari . ' jam ' . $j->jamPelajaran->jam_ke;
-        echo "  {$j->hari} jam {$j->jamPelajaran->jam_ke}: {$j->mapel->nama_mapel} ({$j->guru->nama_guru ?? 'N/A'})\n";
+        $guruNama = $j->guru ? $j->guru->nama_guru : 'N/A';
+        echo "  {$j->hari} jam {$j->jamPelajaran->jam_ke}: {$j->mapel->nama_mapel} ({$guruNama})\n";
         $usedSlots[$key] = true;
     }
     
