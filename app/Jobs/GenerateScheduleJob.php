@@ -633,6 +633,7 @@ class GenerateScheduleJob implements ShouldQueue
         
         $maxSIdx = [];
         $totalSlotsUsed = [];
+        $kelasSlotSum = [];
 
         foreach ($blocks as $bIdx => $block) {
             $dIdx = $block['demand_idx'];
@@ -684,6 +685,7 @@ class GenerateScheduleJob implements ShouldQueue
                     $maxSIdx[$kelasId] = $sIdx;
                 }
                 $totalSlotsUsed[$kelasId] = ($totalSlotsUsed[$kelasId] ?? 0) + 1;
+                $kelasSlotSum[$kelasId] = ($kelasSlotSum[$kelasId] ?? 0) + $sIdx;
             }
 
             $dayIdx = $slotMap[$start]['hari_idx'];
@@ -700,10 +702,12 @@ class GenerateScheduleJob implements ShouldQueue
         }
 
         $packingPenalty = 0;
-        foreach ($maxSIdx as $kId => $maxS) {
+        foreach ($kelasSlotSum as $kId => $sumS) {
             $used = $totalSlotsUsed[$kId] ?? 0;
             if ($used > 0) {
-                $packingPenalty += ($maxS - $used + 1);
+                // Minimum possible sum if slots are perfectly packed from index 0
+                $minPossibleSum = ($used * ($used - 1)) / 2;
+                $packingPenalty += ($sumS - $minPossibleSum);
             }
         }
 
@@ -741,7 +745,7 @@ class GenerateScheduleJob implements ShouldQueue
                + ($sameDayMapelPenalty * 10)
                + ($distViolations * 1) 
                + ($gapPenalties * 0.1) 
-               + ($packingPenalty * 0.01)
+               + ($packingPenalty * 100) // Sangat tinggi agar jadwal strict front-loaded
                + ($frontLoadPenalty * 0.001);
 
         return [
