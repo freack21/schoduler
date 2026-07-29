@@ -837,7 +837,7 @@ class GenerateScheduleJob implements ShouldQueue
         // Targeted Joint Slot-Teacher Local Search (up to 3 passes)
         $improved = true;
         $pass = 0;
-        while ($improved && $pass < 1) {
+        while ($improved && $pass < 3) {
             $improved = false;
             $eval = $this->evaluate($chromosome, $ctx);
             $conflicts = $eval['conflicting_blocks'];
@@ -890,10 +890,10 @@ class GenerateScheduleJob implements ShouldQueue
                     $chromosome['slots'][$bIdx] = $bestSlot;
                     $chromosome['teachers'][$dIdx] = $bestTeachers;
                     
-                    // 2. Try class-intra-swap moves
+                    // 2. Try class-intra-swap moves (cross-size allowed)
                     $sameClassBlocks = [];
                     foreach ($blocks as $idx => $b) {
-                        if ($idx !== $bIdx && $b['size'] === $size && $demands[$b['demand_idx']]['kelas_id'] === $kelasId) {
+                        if ($idx !== $bIdx && $demands[$b['demand_idx']]['kelas_id'] === $kelasId) {
                             $sameClassBlocks[] = $idx;
                         }
                     }
@@ -901,9 +901,18 @@ class GenerateScheduleJob implements ShouldQueue
                     if (!empty($sameClassBlocks)) {
                         shuffle($sameClassBlocks);
                         foreach ($sameClassBlocks as $swapTarget) {
-                            $temp = $chromosome['slots'][$bIdx];
-                            $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
-                            $chromosome['slots'][$swapTarget] = $temp;
+                            $targetBlock = $blocks[$swapTarget];
+                            $targetSize = $targetBlock['size'];
+                            $mySlot = $chromosome['slots'][$bIdx];
+                            $targetSlot = $chromosome['slots'][$swapTarget];
+                            
+                            // Validate cross-size: ensure each slot is valid for its new block
+                            $mySlotValidForTarget = in_array($mySlot, $validBlockStarts[$targetSize] ?? []);
+                            $targetSlotValidForMe = in_array($targetSlot, $validBlockStarts[$size] ?? []);
+                            if (!$mySlotValidForTarget || !$targetSlotValidForMe) continue;
+                            
+                            $chromosome['slots'][$bIdx] = $targetSlot;
+                            $chromosome['slots'][$swapTarget] = $mySlot;
                             
                             $testEval = $this->evaluate($chromosome, $ctx);
                             if ($testEval['total'] <= $bestScore) {
@@ -913,9 +922,8 @@ class GenerateScheduleJob implements ShouldQueue
                                 $improved = true;
                             } else {
                                 // Revert
-                                $temp = $chromosome['slots'][$bIdx];
-                                $chromosome['slots'][$bIdx] = $chromosome['slots'][$swapTarget];
-                                $chromosome['slots'][$swapTarget] = $temp;
+                                $chromosome['slots'][$bIdx] = $mySlot;
+                                $chromosome['slots'][$swapTarget] = $targetSlot;
                             }
                         }
                     }
