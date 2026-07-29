@@ -21,7 +21,7 @@ $mapelTargets = [
 ];
 
 foreach ($kelasTargets as $namaKelas) {
-    $kelas = Kelas::where('nama_kelas', $namaKelas)->first();
+    $kelas = Kelas::where('nama', $namaKelas)->first();
     if (!$kelas) { echo "Kelas $namaKelas tidak ditemukan!\n"; continue; }
 
     echo "\n=== $namaKelas (ID: {$kelas->id}) ===\n";
