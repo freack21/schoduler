@@ -25,7 +25,9 @@ foreach($kelas as $k) {
         $kuriList = $kuriList->whereNull('jurusan_id');
     }
     
-    $jam = $kuriList->sum('jam_per_minggu');
+    $jam = $kuriList->sum(function($k) {
+        return $k->mapel ? $k->mapel->jam_per_minggu : 0;
+    });
     
     // Group parallel mapel to avoid double counting their hours
     $parallel = $kuriList->filter(function($kuri) {
@@ -41,7 +43,7 @@ foreach($kelas as $k) {
         // Only one of them counts towards actual slot usage
         // Wait, they all have the same jam_per_minggu. We should subtract all except one.
         $first = $items->first();
-        $discount = $items->sum('jam_per_minggu') - $first->jam_per_minggu;
+        $discount = $items->sum(function($k){ return $k->mapel ? $k->mapel->jam_per_minggu : 0; }) - ($first->mapel ? $first->mapel->jam_per_minggu : 0);
         $parallelDiscount += $discount;
     }
     
